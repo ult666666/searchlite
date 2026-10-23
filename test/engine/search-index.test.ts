@@ -265,6 +265,9 @@ describe('serialization', () => {
       expect(restored.search(query), query).toEqual(index.search(query));
     }
     expect(restored.explain('heap', 'binary tree')).toEqual(index.explain('heap', 'binary tree'));
+    expect(restored.highlight('heap', 'body', 'binary')).toBe(
+      index.highlight('heap', 'body', 'binary'),
+    );
   });
 
   it('keeps working after a restore', () => {

@@ -7,8 +7,10 @@ import {
   type TraceEntry,
 } from './engine/execute';
 import { FieldIndex } from './engine/field-index';
+import { buildSnippet, markTokens, type HighlightOptions } from './engine/highlight';
 import { compileQuery, type Plan } from './engine/plan';
 import { SearchliteError } from './errors';
+import { cosineSimilarity, reciprocalRankFusion } from './hybrid';
 import { at } from './internal/at';
 import {
   resolveIndexOptions,
@@ -56,6 +58,30 @@ export interface Explanation {
   k1: number;
   /** One entry per clause that contributed to the score, in query order. */
   clauses: ClauseExplanation[];
+}
+
+export interface HybridSearchOptions {
+  /** Keyword query for the BM25F ranking. */
+  query?: string | QueryNode;
+  /** Query embedding for the cosine-similarity ranking. */
+  vector?: readonly number[];
+  /** Number of fused results to return. Default 10. */
+  k?: number;
+  /** How many results to take from each ranking before fusing. Default 100. */
+  depth?: number;
+  /** Reciprocal Rank Fusion constant. Default 60. */
+  rrfK?: number;
+}
+
+export interface HybridResult {
+  id: string;
+  /** Reciprocal Rank Fusion score. */
+  score: number;
+  fields: Record<string, unknown>;
+  /** 1-based rank and BM25F score in the keyword ranking, if the document was in it. */
+  lexical?: { rank: number; score: number };
+  /** 1-based rank and cosine similarity in the vector ranking, if the document was in it. */
+  semantic?: { rank: number; similarity: number };
 }
 
 export interface FieldStats {
@@ -379,6 +405,92 @@ export class SearchIndex {
     };
   }
 
+  /**
+   * Returns an HTML snippet of a stored field with the query's matches wrapped in `<mark>`.
+   * The snippet is the window of the field that contains the most distinct matched terms, and
+   * all document text in it is HTML-escaped, so it is safe to insert with `innerHTML`.
+   * @throws {SearchliteError} if the document does not exist, or the field is not both
+   * searchable and stored.
+   */
+  highlight(
+    id: string | number,
+    field: string,
+    query: string | QueryNode,
+    options: HighlightOptions & SearchOptions = {},
+  ): string {
+    const number = this.#numberOf(id);
+    const fieldIndex = this.#fieldNames.indexOf(field);
+    if (fieldIndex === -1) {
+      throw argumentError(`"${field}" is not a searchable field`);
+    }
+    if (!this.#options.storeFields.includes(field)) {
+      throw argumentError(
+        `Field "${field}" is not stored, so it cannot be highlighted; add it to storeFields`,
+      );
+    }
+    const maxLength = options.maxLength ?? 160;
+    if (typeof maxLength !== 'number' || Number.isNaN(maxLength) || maxLength <= 0) {
+      throw argumentError(`maxLength must be a positive number, got ${String(maxLength)}`);
+    }
+    if (options.ellipsis !== undefined && typeof options.ellipsis !== 'string') {
+      throw argumentError('ellipsis must be a string');
+    }
+    const record = this.#record(number);
+    const text = fieldTexts(record.stored[field], field, record.id).join(', ');
+    const tokens = at(this.#fields, fieldIndex).analyzer.analyze(text);
+    const plan = this.#compile(query, this.#settings(options, 10));
+    const trace = plan ? (this.#traced(plan, this.#context(), number)?.trace ?? []) : [];
+    const targets = trace.flatMap((entry) =>
+      entry.plan.targets.filter(
+        (target, t) => target.field === fieldIndex && at(entry.frequencies, t) > 0,
+      ),
+    );
+    return buildSnippet(text, tokens, markTokens(tokens, targets), { ...options, maxLength });
+  }
+
+  /**
+   * Hybrid retrieval: ranks documents by BM25F for `query` and by cosine similarity to
+   * `vector`, then merges the two rankings with Reciprocal Rank Fusion (Cormack et al., 2009).
+   * Either input may be omitted to get a single ranking in the same result format.
+   */
+  searchHybrid(options: HybridSearchOptions): HybridResult[] {
+    requireObject(options, 'searchHybrid expects an options object');
+    const { query, vector } = options;
+    if (query === undefined && vector === undefined) {
+      throw argumentError('searchHybrid needs a query, a vector, or both');
+    }
+    const k = positiveLimit('k', options.k, 10);
+    const depth = positiveLimit('depth', options.depth, 100);
+    const lexical = query === undefined ? [] : this.search(query, { limit: depth });
+    const semantic = vector === undefined ? [] : this.#nearestNeighbours(vector, depth);
+    const fused = reciprocalRankFusion(
+      [lexical.map((result) => result.id), semantic.map((result) => result.id)],
+      options.rrfK === undefined ? {} : { k: options.rrfK },
+    );
+    const lexicalRanks = new Map(
+      lexical.map((result, i) => [result.id, { rank: i + 1, score: result.score }]),
+    );
+    const semanticRanks = new Map(
+      semantic.map((result, i) => [result.id, { rank: i + 1, similarity: result.similarity }]),
+    );
+    return fused.slice(0, k).map(({ id, score }) => {
+      const result: HybridResult = {
+        id,
+        score,
+        fields: { ...this.#record(this.#numberOf(id)).stored },
+      };
+      const lexicalRank = lexicalRanks.get(id);
+      const semanticRank = semanticRanks.get(id);
+      if (lexicalRank) {
+        result.lexical = lexicalRank;
+      }
+      if (semanticRank) {
+        result.semantic = semanticRank;
+      }
+      return result;
+    });
+  }
+
   /** Document count and per-field statistics. */
   stats(): IndexStats {
     const fields: Record<string, FieldStats> = {};
@@ -604,6 +716,36 @@ export class SearchIndex {
       this.#dimensions ??= document.vector.length;
       this.#vectorCount++;
     }
+  }
+
+  #nearestNeighbours(
+    vector: readonly number[],
+    limit: number,
+  ): { id: string; similarity: number }[] {
+    if (this.#options.vectorField === undefined) {
+      throw argumentError('This index has no vectorField, so it cannot rank by vector');
+    }
+    if (!validVector(vector)) {
+      throw argumentError('The query vector must be a non-empty array of finite numbers');
+    }
+    if (this.#dimensions !== undefined && vector.length !== this.#dimensions) {
+      throw argumentError(
+        `The query vector has ${vector.length} dimensions, but this index uses ${this.#dimensions}`,
+      );
+    }
+    // Exact (brute-force) nearest neighbours: fine for thousands of documents, not millions.
+    const top = new TopK<[number, number]>(
+      limit,
+      ([documentA, a], [documentB, b]) => a > b || (a === b && documentA < documentB),
+    );
+    for (const [number, record] of this.#documents) {
+      if (record.vector) {
+        top.push([number, cosineSimilarity(vector, record.vector)]);
+      }
+    }
+    return top
+      .sorted()
+      .map(([number, similarity]) => ({ id: this.#record(number).id, similarity }));
   }
 
   #settings(options: SearchOptions, defaultLimit: number): QuerySettings {

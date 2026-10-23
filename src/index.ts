@@ -3,7 +3,22 @@ export { normalizeText } from './analysis/normalize';
 export { porterStem } from './analysis/porter';
 export { ENGLISH_STOPWORDS } from './analysis/stopwords';
 export { tokenize, type RawToken } from './analysis/tokenizer';
+export type { ClauseExplanation, FieldExplanation } from './engine/execute';
+export { escapeHtml, type HighlightOptions } from './engine/highlight';
 export { QuerySyntaxError, SearchliteError, type ErrorCode } from './errors';
+export { formatExplanation } from './format';
+export {
+  cosineSimilarity,
+  reciprocalRankFusion,
+  type FusedResult,
+  type FusionOptions,
+} from './hybrid';
+export type {
+  FieldOptions,
+  IndexOptions,
+  ResolvedFieldOptions,
+  ResolvedIndexOptions,
+} from './options';
 export type {
   AndNode,
   FuzzyNode,
@@ -22,19 +37,13 @@ export {
   type DefaultOperator,
   type ParseOptions,
 } from './query/parser';
-export { osaDistance } from './structures/edit-distance';
-export type { ClauseExplanation, FieldExplanation } from './engine/execute';
-export type {
-  FieldOptions,
-  IndexOptions,
-  ResolvedFieldOptions,
-  ResolvedIndexOptions,
-} from './options';
 export {
   SNAPSHOT_VERSION,
   SearchIndex,
   type Explanation,
   type FieldStats,
+  type HybridResult,
+  type HybridSearchOptions,
   type IndexSnapshot,
   type IndexStats,
   type SearchDocument,
@@ -42,3 +51,4 @@ export {
   type SearchResult,
   type SnapshotDocument,
 } from './search-index';
+export { osaDistance } from './structures/edit-distance';
