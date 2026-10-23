@@ -1,0 +1,83 @@
+{
+  "name": "searchlite",
+  "version": "0.1.0",
+  "description": "A zero-dependency full-text search engine for TypeScript: BM25F ranking, a query language, phrase/prefix/fuzzy search, highlighting, hybrid retrieval and an evaluation harness.",
+  "keywords": [
+    "search",
+    "full-text-search",
+    "bm25",
+    "bm25f",
+    "inverted-index",
+    "information-retrieval",
+    "query-parser",
+    "fuzzy-search",
+    "hybrid-search",
+    "typescript"
+  ],
+  "homepage": "https://github.com/ult666666/searchlite#readme",
+  "bugs": "https://github.com/ult666666/searchlite/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ult666666/searchlite.git"
+  },
+  "license": "MIT",
+  "author": "Charles Dai",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:demo": "vite build demo",
+    "dev": "vite demo",
+    "preview": "vite preview demo",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.build.json --noEmit && tsc -p demo/tsconfig.json",
+    "eval": "tsx scripts/eval.ts",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run build && npm run build:demo",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^20.19.43",
+    "@vitest/coverage-v8": "^4.1.12",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^8.3.5",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "esbuild": "^0.28.2"
+  }
+}
