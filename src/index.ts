@@ -23,3 +23,22 @@ export {
   type ParseOptions,
 } from './query/parser';
 export { osaDistance } from './structures/edit-distance';
+export type { ClauseExplanation, FieldExplanation } from './engine/execute';
+export type {
+  FieldOptions,
+  IndexOptions,
+  ResolvedFieldOptions,
+  ResolvedIndexOptions,
+} from './options';
+export {
+  SNAPSHOT_VERSION,
+  SearchIndex,
+  type Explanation,
+  type FieldStats,
+  type IndexSnapshot,
+  type IndexStats,
+  type SearchDocument,
+  type SearchOptions,
+  type SearchResult,
+  type SnapshotDocument,
+} from './search-index';
