@@ -22,8 +22,11 @@ import type { QueryNode } from './query/ast';
 import { parseQuery, type DefaultOperator } from './query/parser';
 import { TopK } from './structures/top-k';
 
-/** A document to index: any object with an id property and string (or string array) fields. */
-export type SearchDocument = Readonly<Record<string, unknown>>;
+/**
+ * A document to index: any object (including instances of your own interfaces) with an id
+ * property and string, number or string-array fields. Its shape is checked at runtime.
+ */
+export type SearchDocument = object;
 
 export interface SearchOptions {
   /** Maximum number of results. Default 10; `Infinity` returns every match. */

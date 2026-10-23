@@ -6,6 +6,18 @@ export { tokenize, type RawToken } from './analysis/tokenizer';
 export type { ClauseExplanation, FieldExplanation } from './engine/execute';
 export { escapeHtml, type HighlightOptions } from './engine/highlight';
 export { QuerySyntaxError, SearchliteError, type ErrorCode } from './errors';
+export {
+  averagePrecision,
+  evaluate,
+  ndcgAtK,
+  precisionAtK,
+  recallAtK,
+  reciprocalRank,
+  type EvaluationReport,
+  type MetricValues,
+  type Qrels,
+  type Run,
+} from './evaluation';
 export { formatExplanation } from './format';
 export {
   cosineSimilarity,

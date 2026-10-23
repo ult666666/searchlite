@@ -1,0 +1,373 @@
+/**
+ * A small glossary of software-engineering, data and finance concepts, written for this
+ * repository. It is the corpus behind the web demo and `npm run eval`.
+ */
+export interface GlossaryEntry {
+  id: string;
+  title: string;
+  body: string;
+  tags: string[];
+}
+
+export const GLOSSARY: GlossaryEntry[] = [
+  {
+    id: 'binary-search',
+    title: 'Binary search',
+    body: 'Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.',
+    tags: ['algorithms', 'searching'],
+  },
+  {
+    id: 'hash-table',
+    title: 'Hash table',
+    body: 'A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.',
+    tags: ['data-structures', 'hashing'],
+  },
+  {
+    id: 'binary-heap',
+    title: 'Binary heap',
+    body: 'A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.',
+    tags: ['data-structures', 'priority-queue'],
+  },
+  {
+    id: 'inverted-index',
+    title: 'Inverted index',
+    body: 'An inverted index maps each term to the list of documents that contain it, called a postings list. Search engines answer keyword queries by fetching and intersecting postings lists instead of scanning every document. Storing term positions in the postings makes phrase queries possible.',
+    tags: ['search', 'data-structures'],
+  },
+  {
+    id: 'b-tree',
+    title: 'B-tree',
+    body: 'A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.',
+    tags: ['data-structures', 'databases'],
+  },
+  {
+    id: 'big-o-notation',
+    title: 'Big-O notation',
+    body: 'Big-O notation describes how the running time or memory use of an algorithm grows with the size of its input. It keeps the dominant term and drops constant factors, so an algorithm that takes 3n² + 5n steps is O(n²). Engineers use it to compare approaches before measuring real performance.',
+    tags: ['algorithms', 'complexity'],
+  },
+  {
+    id: 'dynamic-programming',
+    title: 'Dynamic programming',
+    body: 'Dynamic programming solves problems with overlapping subproblems by solving each subproblem once and reusing the stored answer. It can be written top-down with memoization or bottom-up by filling a table. Edit distance, shortest paths and the knapsack problem are classic examples.',
+    tags: ['algorithms', 'optimization'],
+  },
+  {
+    id: 'garbage-collection',
+    title: 'Garbage collection',
+    body: 'Garbage collection is automatic memory management: the runtime finds objects that the program can no longer reach and frees their memory. Tracing collectors mark everything reachable from a set of roots and sweep the rest, while reference counting frees an object as soon as its count drops to zero. It prevents most use-after-free bugs at the cost of occasional pauses.',
+    tags: ['programming', 'memory'],
+  },
+  {
+    id: 'race-condition',
+    title: 'Race condition',
+    body: 'A race condition occurs when the result of a program depends on the timing of threads or processes that access shared data. If two threads read, modify and write the same counter without coordination, one update can silently overwrite the other. Locks, atomic operations and immutable data are common defenses.',
+    tags: ['concurrency', 'bugs'],
+  },
+  {
+    id: 'deadlock',
+    title: 'Deadlock',
+    body: 'A deadlock happens when two or more threads wait forever because each one holds a lock that another needs. It requires mutual exclusion, hold-and-wait, no preemption and a circular wait. Acquiring locks in a consistent global order is a simple way to prevent it.',
+    tags: ['concurrency', 'bugs'],
+  },
+  {
+    id: 'unit-testing',
+    title: 'Unit testing',
+    body: 'Unit testing checks small pieces of code, such as a single function or class, in isolation from the rest of the system. Good unit tests are fast, deterministic and focused on behavior rather than implementation details. They act as a safety net that lets developers refactor with confidence.',
+    tags: ['testing', 'software-engineering'],
+  },
+  {
+    id: 'continuous-integration',
+    title: 'Continuous integration',
+    body: 'Continuous integration is the practice of merging code changes into a shared branch frequently and verifying each change with an automated build and test run. A CI server runs the pipeline on every push or pull request and reports failures before the code is merged. Catching integration problems early keeps the main branch releasable.',
+    tags: ['devops', 'testing'],
+  },
+  {
+    id: 'version-control',
+    title: 'Version control',
+    body: 'A version control system records the history of changes to a codebase so that developers can collaborate, compare revisions and roll back mistakes. Git is a distributed version control system in which every clone holds the full history. Branches let a team work on features in parallel and merge them later.',
+    tags: ['software-engineering', 'git'],
+  },
+  {
+    id: 'rest-api',
+    title: 'REST API',
+    body: 'A REST API exposes resources over HTTP using standard methods such as GET, POST, PUT and DELETE. Each request carries all the information the server needs, so the server keeps no client session state between calls. Responses use status codes to signal success or failure.',
+    tags: ['web', 'apis'],
+  },
+  {
+    id: 'idempotency',
+    title: 'Idempotency',
+    body: 'An operation is idempotent when performing it several times has the same effect as performing it once. Idempotency lets a client safely retry a request after a timeout without, for example, charging a customer twice. Payment APIs often accept an idempotency key so the server can recognize duplicate requests.',
+    tags: ['apis', 'distributed-systems'],
+  },
+  {
+    id: 'caching',
+    title: 'Caching',
+    body: 'A cache keeps copies of frequently used data in a faster storage layer so that later requests can skip the slow path. Eviction policies such as least recently used decide which entries to drop when the cache is full. The hard part is invalidation: making sure stale entries are refreshed when the source data changes.',
+    tags: ['performance', 'systems'],
+  },
+  {
+    id: 'load-balancing',
+    title: 'Load balancing',
+    body: 'A load balancer distributes incoming requests across a pool of servers so that no single machine is overwhelmed. Common strategies include round robin, least connections and hashing on a client identifier. Health checks automatically take failed servers out of the pool.',
+    tags: ['systems', 'scalability'],
+  },
+  {
+    id: 'microservices',
+    title: 'Microservices',
+    body: 'A microservice architecture splits an application into small services that each own one business capability and talk to each other over the network. Teams can deploy and scale services independently, but they must handle network failures, versioned APIs and distributed debugging. A well-structured monolith is often the better starting point.',
+    tags: ['architecture', 'distributed-systems'],
+  },
+  {
+    id: 'containers',
+    title: 'Containers',
+    body: 'A container packages an application together with its libraries and configuration so that it runs the same way on a laptop and in production. Containers share the host operating system kernel, which makes them lighter than virtual machines. Docker popularized the image format, and orchestrators such as Kubernetes schedule containers across clusters.',
+    tags: ['devops', 'infrastructure'],
+  },
+  {
+    id: 'rate-limiting',
+    title: 'Rate limiting',
+    body: 'Rate limiting caps how many requests a client may send in a period of time. The token bucket algorithm refills tokens at a steady rate and makes each request spend one, which allows short bursts while enforcing an average limit. It protects services from abuse and from accidental overload.',
+    tags: ['apis', 'systems'],
+  },
+  {
+    id: 'message-queue',
+    title: 'Message queue',
+    body: 'A message queue lets one service hand work to another asynchronously by storing messages until a consumer processes them. Queues absorb traffic spikes and decouple producers from consumers. Because a message may be delivered more than once, consumers are usually written to be idempotent.',
+    tags: ['distributed-systems', 'architecture'],
+  },
+  {
+    id: 'database-index',
+    title: 'Database index',
+    body: 'A database index is an auxiliary data structure that speeds up queries on one or more columns, much like the index at the back of a book. Most indexes are B-trees, which support both equality lookups and range scans. Indexes make reads faster but slow down writes and take extra storage.',
+    tags: ['databases', 'performance'],
+  },
+  {
+    id: 'acid-transactions',
+    title: 'ACID transactions',
+    body: "ACID names the guarantees of a database transaction: atomicity, consistency, isolation and durability. Atomicity means all of a transaction's changes happen or none do, and durability means committed changes survive a crash. Isolation levels control how much concurrent transactions can see of each other's unfinished work.",
+    tags: ['databases', 'reliability'],
+  },
+  {
+    id: 'cap-theorem',
+    title: 'CAP theorem',
+    body: 'The CAP theorem says that when a network partition occurs, a distributed data store has to choose between consistency and availability. A consistent system may refuse requests during the partition, while an available one answers with possibly stale data. Many systems settle for eventual consistency, where replicas converge once the partition heals.',
+    tags: ['distributed-systems', 'databases'],
+  },
+  {
+    id: 'sql-join',
+    title: 'SQL join',
+    body: "A join combines rows from two tables based on a related column, such as an order's customer id. An inner join keeps only matching rows, while a left join keeps every row of the left table and fills missing matches with nulls. Database engines execute joins with nested loops, hash joins or merge joins.",
+    tags: ['databases', 'sql'],
+  },
+  {
+    id: 'sharding',
+    title: 'Sharding',
+    body: 'Sharding splits a large dataset across several database servers, with each shard holding a subset of the rows. A shard key, such as a user id, determines where each row lives. Sharding scales writes horizontally but makes cross-shard queries and transactions harder.',
+    tags: ['databases', 'scalability'],
+  },
+  {
+    id: 'trie',
+    title: 'Trie',
+    body: 'A trie, or prefix tree, stores strings character by character so that words with a common prefix share a path from the root. Finding every word that starts with a given prefix only requires walking down to the prefix node. Tries are used for autocomplete, spell checking and fuzzy matching.',
+    tags: ['data-structures', 'strings'],
+  },
+  {
+    id: 'edit-distance',
+    title: 'Edit distance',
+    body: 'Edit distance measures how different two strings are by counting the minimum number of single-character edits that turn one into the other. Levenshtein distance allows insertions, deletions and substitutions, and the Damerau variant also counts swapping two adjacent characters as a single edit. Spell checkers use it to suggest corrections for typos.',
+    tags: ['algorithms', 'strings'],
+  },
+  {
+    id: 'bm25',
+    title: 'BM25',
+    body: 'BM25 is a ranking function that scores how well a document matches a keyword query. It rewards rare terms through inverse document frequency, gives diminishing returns to repeated occurrences of a term, and normalizes for document length. BM25F extends it to documents with several weighted fields, such as a title and a body.',
+    tags: ['search', 'ranking'],
+  },
+  {
+    id: 'tf-idf',
+    title: 'TF-IDF',
+    body: 'TF-IDF weights a term by how often it appears in a document multiplied by how rare it is across the collection. Words that appear almost everywhere get low weights, while distinctive words get high ones. TF-IDF vectors are a classic way to compare documents and to rank search results.',
+    tags: ['search', 'text-mining'],
+  },
+  {
+    id: 'precision-and-recall',
+    title: 'Precision and recall',
+    body: 'Precision is the fraction of retrieved items that are relevant, and recall is the fraction of relevant items that were retrieved. A search engine that returns everything has perfect recall but poor precision. The F1 score combines the two into one number using their harmonic mean.',
+    tags: ['evaluation', 'search'],
+  },
+  {
+    id: 'overfitting',
+    title: 'Overfitting',
+    body: 'A model overfits when it memorizes noise in its training data, so it performs well on that data but poorly on new examples. Overfitting is more likely with very flexible models and small datasets. Regularization, more data and early stopping help, and a held-out validation set reveals the problem.',
+    tags: ['machine-learning', 'modeling'],
+  },
+  {
+    id: 'cross-validation',
+    title: 'Cross-validation',
+    body: 'Cross-validation estimates how well a model will generalize by repeatedly training on part of the data and testing on the rest. In k-fold cross-validation the data is split into k folds and each fold serves as the test set once. Averaging the k scores gives a steadier estimate than a single train-test split.',
+    tags: ['machine-learning', 'evaluation'],
+  },
+  {
+    id: 'gradient-descent',
+    title: 'Gradient descent',
+    body: 'Gradient descent minimizes a loss function by repeatedly moving the model parameters a small step in the direction opposite to the gradient. The learning rate sets the step size: too large and training diverges, too small and it crawls. Stochastic gradient descent estimates the gradient from small batches of examples.',
+    tags: ['machine-learning', 'optimization'],
+  },
+  {
+    id: 'linear-regression',
+    title: 'Linear regression',
+    body: 'Linear regression models a numeric outcome as a weighted sum of input features plus an intercept. The weights are usually fitted by ordinary least squares, which minimizes the sum of squared errors. Its coefficients are easy to interpret, which makes it a common baseline.',
+    tags: ['statistics', 'machine-learning'],
+  },
+  {
+    id: 'logistic-regression',
+    title: 'Logistic regression',
+    body: 'Logistic regression is a classification model that predicts the probability of a binary outcome. It passes a linear combination of the features through the sigmoid function to get a value between zero and one. The model is trained by maximizing the likelihood, typically with gradient descent.',
+    tags: ['statistics', 'classification'],
+  },
+  {
+    id: 'embeddings',
+    title: 'Embeddings',
+    body: 'An embedding represents an item such as a word, a sentence or an image as a dense vector of numbers. Models learn embeddings so that similar items end up close together in the vector space. Semantic search retrieves the documents whose embeddings are nearest to the embedding of the query.',
+    tags: ['machine-learning', 'search'],
+  },
+  {
+    id: 'cosine-similarity',
+    title: 'Cosine similarity',
+    body: 'Cosine similarity measures the angle between two vectors by dividing their dot product by the product of their lengths. It ranges from -1 to 1 and ignores magnitude, so a long document and a short one about the same topic can still score highly. It is the standard way to compare embeddings.',
+    tags: ['mathematics', 'search'],
+  },
+  {
+    id: 'ab-testing',
+    title: 'A/B testing',
+    body: 'A/B testing compares two versions of a product, such as two checkout pages, by randomly assigning users to each version and measuring an outcome like the conversion rate. Randomization makes sure that a difference in the outcome is caused by the change rather than by who saw it. The experiment should run until it reaches its planned sample size.',
+    tags: ['experimentation', 'statistics'],
+  },
+  {
+    id: 'statistical-significance',
+    title: 'Statistical significance',
+    body: 'A result is statistically significant when it would be unlikely to occur by chance if there were no real effect. The p-value is the probability of seeing data at least as extreme as the observed data under the null hypothesis. A small p-value is not the same thing as a large or important effect.',
+    tags: ['statistics', 'experimentation'],
+  },
+  {
+    id: 'feature-scaling',
+    title: 'Feature scaling',
+    body: 'Feature scaling puts numeric inputs on comparable ranges before a model is trained. Standardization subtracts the mean and divides by the standard deviation, while min-max scaling maps values into the range from zero to one. Distance-based methods and gradient descent behave much better on scaled features.',
+    tags: ['machine-learning', 'data-preparation'],
+  },
+  {
+    id: 'etl-pipeline',
+    title: 'ETL pipeline',
+    body: 'An ETL pipeline extracts data from source systems, transforms it into a clean and consistent shape, and loads it into a destination such as a data warehouse. ELT pipelines load the raw data first and transform it inside the warehouse. Reliable pipelines are scheduled, monitored and safe to rerun after a failure.',
+    tags: ['data-engineering', 'pipelines'],
+  },
+  {
+    id: 'data-warehouse',
+    title: 'Data warehouse',
+    body: 'A data warehouse is a database designed for analytical queries over large amounts of historical data. It typically stores data in a columnar format and organizes it into fact and dimension tables. Analysts use it for reporting and dashboards rather than for day-to-day transactions.',
+    tags: ['data-engineering', 'analytics'],
+  },
+  {
+    id: 'compound-interest',
+    title: 'Compound interest',
+    body: 'Compound interest is interest earned on both the original principal and the interest already added to it. Because growth builds on itself, a balance growing at a fixed annual rate doubles in roughly 72 divided by the rate years, a shortcut known as the rule of 72. The more often interest compounds, the faster the balance grows.',
+    tags: ['finance', 'investing'],
+  },
+  {
+    id: 'net-present-value',
+    title: 'Net present value',
+    body: "Net present value is the sum of a project's future cash flows discounted back to today, minus the initial investment. Discounting reflects the time value of money: a dollar received next year is worth less than a dollar today. A project with a positive NPV is expected to create value at the chosen discount rate.",
+    tags: ['finance', 'valuation'],
+  },
+  {
+    id: 'discounted-cash-flow',
+    title: 'Discounted cash flow',
+    body: 'A discounted cash flow model values a company by forecasting its free cash flows and discounting them at the cost of capital. A terminal value captures the cash flows beyond the forecast period. The result is very sensitive to the growth and discount rate assumptions.',
+    tags: ['finance', 'valuation'],
+  },
+  {
+    id: 'internal-rate-of-return',
+    title: 'Internal rate of return',
+    body: "The internal rate of return is the discount rate that makes the net present value of a series of cash flows equal to zero. Companies compare a project's IRR with their cost of capital to decide whether to invest. IRR can be misleading when the cash flows change sign more than once.",
+    tags: ['finance', 'valuation'],
+  },
+  {
+    id: 'bond-yield',
+    title: 'Bond yield',
+    body: "A bond's yield to maturity is the annual return an investor earns by buying the bond at its current price and holding it until it matures. Bond prices and yields move in opposite directions: when market interest rates rise, existing bonds with lower coupons fall in price. The current yield is simply the annual coupon divided by the price.",
+    tags: ['finance', 'fixed-income'],
+  },
+  {
+    id: 'diversification',
+    title: 'Diversification',
+    body: 'Diversification spreads money across assets whose returns do not move perfectly together, which lowers the volatility of the overall portfolio. It reduces company-specific risk but cannot remove market-wide risk. Index funds offer cheap diversification across hundreds of companies.',
+    tags: ['investing', 'risk'],
+  },
+  {
+    id: 'sharpe-ratio',
+    title: 'Sharpe ratio',
+    body: "The Sharpe ratio measures risk-adjusted return: the portfolio's return above the risk-free rate divided by the standard deviation of its returns. A higher ratio means more excess return per unit of volatility. Because it treats upside and downside swings alike, some analysts prefer the Sortino ratio.",
+    tags: ['investing', 'risk'],
+  },
+  {
+    id: 'volatility',
+    title: 'Volatility',
+    body: "Volatility measures how widely an asset's price swings, usually as the annualized standard deviation of its returns. High volatility means a wider range of likely outcomes, good and bad. Implied volatility is the market's forecast of future volatility, derived from option prices.",
+    tags: ['investing', 'risk'],
+  },
+  {
+    id: 'call-option',
+    title: 'Call option',
+    body: "A call option gives its buyer the right, but not the obligation, to buy an asset at a fixed strike price on or before an expiration date. The buyer pays a premium for this right and profits if the asset's price rises well above the strike. Options are used both to hedge positions and to speculate.",
+    tags: ['derivatives', 'finance'],
+  },
+  {
+    id: 'arbitrage',
+    title: 'Arbitrage',
+    body: 'Arbitrage is the attempt to profit from a price difference for the same asset in different markets, for example by buying where it is cheap while simultaneously selling where it is expensive. True arbitrage carries no risk, so competition among traders makes such opportunities rare and brief. Arbitrage helps keep prices consistent across markets.',
+    tags: ['trading', 'finance'],
+  },
+  {
+    id: 'market-capitalization',
+    title: 'Market capitalization',
+    body: "Market capitalization is the total market value of a company's outstanding shares, calculated as the share price times the number of shares. Investors use it to group companies into small-cap, mid-cap and large-cap categories. It reflects the value of the equity only, not the company's debt.",
+    tags: ['investing', 'valuation'],
+  },
+  {
+    id: 'price-to-earnings',
+    title: 'Price-to-earnings ratio',
+    body: "The price-to-earnings ratio divides a company's share price by its earnings per share. It tells investors how much they are paying for each dollar of profit and is one of the most common valuation multiples. A high P/E can signal expected growth or an overpriced stock.",
+    tags: ['investing', 'valuation'],
+  },
+  {
+    id: 'liquidity',
+    title: 'Liquidity',
+    body: 'Liquidity describes how quickly an asset can be bought or sold without moving its price much. Large stocks and government bonds are highly liquid, while real estate and private companies are not. For a company, liquidity also means having enough cash to meet its short-term obligations.',
+    tags: ['finance', 'trading'],
+  },
+  {
+    id: 'double-entry-bookkeeping',
+    title: 'Double-entry bookkeeping',
+    body: 'Double-entry bookkeeping records every transaction in at least two accounts, as a debit in one and a credit in another. Because total debits must equal total credits, the books can be checked for errors with a trial balance. It is the foundation of the balance sheet and the income statement.',
+    tags: ['accounting', 'finance'],
+  },
+  {
+    id: 'order-book',
+    title: 'Order book',
+    body: 'An order book lists the outstanding buy and sell orders for a security, organized by price level. The highest bid and the lowest ask define the bid-ask spread, and a trade happens when an incoming order crosses the spread. A limit order waits in the book at its price, while a market order executes immediately against the best available price.',
+    tags: ['trading', 'market-structure'],
+  },
+  {
+    id: 'value-at-risk',
+    title: 'Value at risk',
+    body: 'Value at risk estimates the loss that a portfolio should not exceed over a given period at a chosen confidence level, such as 99 percent over one day. It can be computed from historical returns, from a parametric model or by Monte Carlo simulation. VaR says nothing about how large the losses can be beyond that threshold.',
+    tags: ['risk', 'finance'],
+  },
+  {
+    id: 'inflation',
+    title: 'Inflation',
+    body: 'Inflation is the general rise in prices over time, which reduces the purchasing power of money. Central banks usually target a low and stable inflation rate and raise interest rates when inflation runs too high. Real returns subtract inflation from nominal returns.',
+    tags: ['economics', 'finance'],
+  },
+];

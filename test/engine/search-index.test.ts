@@ -180,8 +180,8 @@ describe('removing and replacing', () => {
 
   it('can empty the index completely', () => {
     const index = build();
-    for (const doc of DOCS) {
-      index.remove(doc.id as string);
+    for (const id of ['heap', 'trie', 'hash', 'bloom']) {
+      index.remove(id);
     }
     expect(index.size).toBe(0);
     expect(index.stats().fields.body).toEqual({ documents: 0, averageLength: 0, terms: 0 });
