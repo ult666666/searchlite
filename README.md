@@ -44,7 +44,13 @@ any result, and the evaluation harness measures whether a change actually helps.
 
 ## Quick start
 
-searchlite is not published to npm. Install it from source:
+searchlite is not published to npm. Install it from the GitHub release (Node 20+; ESM and CommonJS):
+
+```bash
+npm install https://github.com/ult666666/searchlite/releases/download/v0.1.0/searchlite-0.1.0.tgz
+```
+
+Each release also attaches a SHA-256 checksum. Or build it from source:
 
 ```bash
 git clone https://github.com/ult666666/searchlite.git
