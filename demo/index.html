@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="searchlite demo: BM25F full-text search with a query language, running in the browser."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>searchlite demo</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>searchlite</h1>
+      <p class="tagline">
+        A zero-dependency full-text search engine for TypeScript. This page indexes a 60-entry
+        glossary of software, data and finance terms and searches it entirely in your browser.
+      </p>
+    </header>
+
+    <main>
+      <form class="search" role="search" id="search-form">
+        <label for="query">Search the glossary</label>
+        <input
+          id="query"
+          name="q"
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          aria-describedby="query-help"
+          placeholder='Try "binary heap" or volatlity~1'
+        />
+        <p id="query-help" class="hint">
+          Results update as you type, and the word you are typing is matched as a prefix. Press
+          <kbd>/</kbd> to jump to the search box.
+        </p>
+      </form>
+
+      <div class="examples">
+        <span id="examples-label">Examples:</span>
+        <ul aria-labelledby="examples-label">
+          <li>
+            <button type="button" data-query="present value of cash flows">
+              present value of cash flows
+            </button>
+          </li>
+          <li><button type="button" data-query='"binary heap"'>"binary heap"</button></li>
+          <li><button type="button" data-query="title:hash*">title:hash*</button></li>
+          <li><button type="button" data-query="volatlity~1">volatlity~1</button></li>
+          <li><button type="button" data-query="risk -option">risk -option</button></li>
+          <li>
+            <button type="button" data-query="(index OR tree) AND databases">
+              (index OR tree) AND databases
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <details class="syntax">
+        <summary>Query syntax</summary>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Syntax</th>
+              <th scope="col">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cash flow</code></td>
+              <td>Either word (OR is the default operator); documents with both rank higher</td>
+            </tr>
+            <tr>
+              <td><code>cash AND flow</code></td>
+              <td>Both words</td>
+            </tr>
+            <tr>
+              <td><code>"cash flow"</code></td>
+              <td>The exact phrase</td>
+            </tr>
+            <tr>
+              <td><code>risk -option</code>, <code>risk NOT option</code></td>
+              <td>Exclude documents that match <code>option</code></td>
+            </tr>
+            <tr>
+              <td><code>(index OR tree) AND disk</code></td>
+              <td>Grouping; AND binds tighter than OR</td>
+            </tr>
+            <tr>
+              <td><code>title:heap</code>, <code>tags:(finance OR risk)</code></td>
+              <td>
+                Search only one field: <code>title</code>, <code>body</code> or <code>tags</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>hash*</code></td>
+              <td>Words starting with “hash”</td>
+            </tr>
+            <tr>
+              <td><code>volatlity~1</code>, <code>teh~2</code></td>
+              <td>Words within 1 or 2 typos (insert, delete, substitute or swap)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="hint">Operators must be upper case. Common words such as “the” are ignored.</p>
+      </details>
+
+      <div class="toolbar">
+        <p id="status" role="status" aria-live="polite"></p>
+        <label class="toggle"><input type="checkbox" id="explain" /> Explain scores</label>
+      </div>
+
+      <ol id="results" class="results"></ol>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> · MIT licensed · The
+        glossary was written for this demo.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
