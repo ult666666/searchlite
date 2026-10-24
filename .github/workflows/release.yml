@@ -5,7 +5,7 @@ name: Release
 # release. Run it by hand to (re)build the assets of an existing tag.
 on:
   push:
-    tags: ["v*"]
+    tags: ['v*']
   workflow_dispatch:
     inputs:
       tag:
