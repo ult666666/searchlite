@@ -60,8 +60,9 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.build.json --noEmit && tsc -p demo/tsconfig.json",
     "eval": "tsx scripts/eval.ts",
-    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run build && npm run build:demo",
-    "prepack": "npm run build"
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run build && npm run check:dist && npm run build:demo",
+    "prepack": "npm run build",
+    "check:dist": "node scripts/check-dist.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
