@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- A runnable local-document consumer using built public package exports: bounded, deterministic
+  UTF-8 Markdown/text indexing, persisted JSON snapshot search, plain safe snippets and score
+  explanations. Real CLI tests cover temporary corpora, roundtrips, input preservation,
+  overwrite refusal, filesystem/size boundaries and terminal-safe output.
+
 ## [0.1.0] - 2026-10-23
 
 ### Added
