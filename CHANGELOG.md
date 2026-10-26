@@ -8,6 +8,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- A bounded paired-build benchmark with complete/top10 ranking digest parity, fixed query
+  controls, raw per-query timings, trusted-code inputs and actual worker failure tests.
+- Candidate-aware AND/exclusion scoring that retains global IDF, addition/tie order and exact
+  public results while avoiding irrelevant normalization and negative-clause traces.
+
 - A runnable local-document consumer using built public package exports: bounded, deterministic
   UTF-8 Markdown/text indexing, persisted JSON snapshot search, plain safe snippets and score
   explanations. Real CLI tests cover temporary corpora, roundtrips, input preservation,

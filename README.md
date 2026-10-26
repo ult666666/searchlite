@@ -287,6 +287,8 @@ See the [fixed method and actual local receipt](docs/BENCHMARK.md). Repeated glo
 and a uniform query mix limit interpretation; these measurements do not establish production latency.
 `npm run --silent bench -- --smoke` exercises the workflow with smaller collections without a timing gate.
 
+For candidate-aware AND/exclusion execution, the [paired benchmark and exact-ranking evidence](docs/EXECUTION.md) compare trusted built modules with all controls/raw trials, including slower cases.
+
 Requires Node 20 or newer (CI runs Node 20, 22 and 24).
 
 ```bash
@@ -294,6 +296,7 @@ npm ci
 npm run lint            # ESLint (typescript-eslint strict + stylistic, type-aware)
 npm run format:check    # Prettier
 npm run typecheck       # tsc for the tests/scripts, the browser-safe library and the demo
+npm run test:filtering  # Actual paired benchmark/failure/deadline/output-bound checks
 npm run test:coverage   # Vitest; fails below 90% line/branch/function/statement coverage
 npm run build           # tsup: ESM + CJS + .d.ts in dist/
 npm run check:dist      # loads both builds through package.json "exports"
@@ -330,8 +333,9 @@ Limitations:
 
 - Everything lives in memory in a single thread; postings are not compressed, and the only
   persistence is a full JSON snapshot.
-- Execution is term-at-a-time over every posting of every clause, which suits collections of
-  thousands to tens of thousands of short documents, not millions.
+- Execution remains term-at-a-time with full occurrence tables. Candidate-aware AND/exclusions
+  avoid irrelevant scoring, but do not implement WAND/MaxScore or compression; synthetic
+  measurements do not establish million-document scale.
 - Analysis is English-oriented: no stemmers for other languages and no segmentation for languages
   written without spaces (a run of Chinese or Japanese characters is a single token).
 - Stemming and fuzzy matching interact: a typo can change how the stemmer treats a word, so
