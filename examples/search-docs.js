@@ -28,7 +28,8 @@ const EXCLUDED = new Set([
 const USAGE =
   'node examples/search-docs.js index DIRECTORY SNAPSHOT\n' +
   'node examples/search-docs.js search SNAPSHOT QUERY\n' +
-  'node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS\nBuild the package first with npm run build.';
+  'node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS\n' +
+  'node examples/search-docs.js compare BASELINE CANDIDATE JUDGMENTS\nBuild the package first with npm run build.';
 
 class DocsError extends Error {
   constructor(code, message, exitCode = 1) {
@@ -367,13 +368,7 @@ function safeJson(value) {
   );
 }
 
-function evaluateSnapshot(file, judgmentsFile) {
-  const { index, data: snapshotData } = restore(file);
-  const judgmentsData = readBounded(
-    path.resolve(judgmentsFile),
-    JUDGMENTS_BYTES,
-    'JUDGMENTS_LIMIT',
-  );
+function createEvaluationReport({ index, data: snapshotData }, judgmentsData) {
   const queries = loadJudgments(judgmentsData, index);
   const qrels = Object.fromEntries(
     queries.map((query) => [
@@ -454,6 +449,103 @@ function evaluateSnapshot(file, judgmentsFile) {
       'Reports contain query text and relative document IDs; keep private reports local unless intentionally shared. No provider/network call, source body export or file write.',
     ],
   };
+  return report;
+}
+function evaluateSnapshot(file, judgmentsFile) {
+  const loaded = restore(file);
+  const judgmentsData = readBounded(
+    path.resolve(judgmentsFile),
+    JUDGMENTS_BYTES,
+    'JUDGMENTS_LIMIT',
+  );
+  const report = createEvaluationReport(loaded, judgmentsData);
+  process.stdout.write(safeJson(report));
+  process.exitCode = report.status === 'pass' ? 0 : 3;
+}
+function collection(index) {
+  const records = index.toJSON().documents.map(({ id, stored }) => [id, stored.title, stored.body]);
+  records.sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0));
+  return JSON.stringify(records);
+}
+function compareSnapshots(baselineFile, candidateFile, judgmentsFile) {
+  const baseline = restore(baselineFile);
+  const candidate = restore(candidateFile);
+  const beforeCollection = collection(baseline.index);
+  if (beforeCollection !== collection(candidate.index))
+    refuse(
+      'INCOMPARABLE_COLLECTION',
+      'Both snapshots must contain identical document IDs and stored title/body text.',
+    );
+  const judgmentsData = readBounded(
+    path.resolve(judgmentsFile),
+    JUDGMENTS_BYTES,
+    'JUDGMENTS_LIMIT',
+  );
+  const before = createEvaluationReport(baseline, judgmentsData);
+  const after = createEvaluationReport(candidate, judgmentsData);
+  const side = ({ passed, metrics, ranking, missingRelevantAt10 }) => ({
+    passed,
+    metrics,
+    ranking,
+    missingRelevantAt10,
+  });
+  const queries = before.queries.map((query, i) => {
+    const candidateQuery = after.queries[i];
+    return {
+      id: query.id,
+      text: query.text,
+      relevance: query.relevance,
+      minimumNdcgAt10: query.minimumNdcgAt10,
+      baseline: side(query),
+      candidate: side(candidateQuery),
+      delta: Object.fromEntries(
+        Object.keys(query.metrics).map((key) => [
+          key,
+          candidateQuery.metrics[key] - query.metrics[key],
+        ]),
+      ),
+      passed: candidateQuery.passed && candidateQuery.metrics.ndcgAt10 >= query.metrics.ndcgAt10,
+    };
+  });
+  const regressedQueries = queries
+    .filter((query) => query.delta.ndcgAt10 < 0)
+    .map((query) => query.id);
+  const failedQueries = queries.filter((query) => !query.passed).map((query) => query.id);
+  const report = {
+    schema: 'searchlite.local-comparison/1',
+    status: failedQueries.length ? 'fail' : 'pass',
+    inputs: {
+      baselineSnapshotSha256: before.inputs.snapshotSha256,
+      candidateSnapshotSha256: after.inputs.snapshotSha256,
+      judgmentsSha256: before.inputs.judgmentsSha256,
+      collectionSha256: createHash('sha256').update(beforeCollection).digest('hex'),
+      documentCount: before.inputs.documentCount,
+      queryCount: before.inputs.queryCount,
+    },
+    baseline: {
+      configuration: before.configuration,
+      status: before.status,
+      failedQueries: before.failedQueries,
+    },
+    candidate: {
+      configuration: after.configuration,
+      status: after.status,
+      failedQueries: after.failedQueries,
+    },
+    cutoffs: before.cutoffs,
+    criteria:
+      'Every candidate query must meet its unrounded minimumNdcgAt10 and have unrounded nDCG@10 >= baseline. No tolerance or average override.',
+    queries,
+    regressedQueries,
+    failedMinimumQueries: after.failedQueries,
+    failedQueries,
+    limits: [
+      ...before.limits,
+      'Comparability checks identical supplied document IDs and stored title/body text; it does not authenticate postings, configurations, labels or source history.',
+      'Metric deltas are candidate minus baseline. Raw ranking scores belong to each query/configuration and are not compared across configurations.',
+      'Any nDCG@10 drop fails this deterministic gate; other metric deltas are visible but do not gate. This is not a significance test or a corpus-edit comparison.',
+    ],
+  };
   process.stdout.write(safeJson(report));
   process.exitCode = failedQueries.length ? 3 : 0;
 }
@@ -461,18 +553,20 @@ try {
   const args = process.argv.slice(2);
   if (args.length === 1 && args[0] === '--help') console.log(USAGE);
   else {
-    const [command, first, second] = args;
+    const [command, first, second, third] = args;
     if (
-      args.length !== 3 ||
+      args.length !== (command === 'compare' ? 4 : 3) ||
       !first ||
       !second ||
-      !['index', 'search', 'evaluate'].includes(command)
+      (command === 'compare' && !third) ||
+      !['index', 'search', 'evaluate', 'compare'].includes(command)
     ) {
       throw new DocsError('USAGE', USAGE, 2);
     }
     if (command === 'index') indexDocuments(first, second);
     else if (command === 'search') searchSnapshot(first, second);
-    else evaluateSnapshot(first, second);
+    else if (command === 'evaluate') evaluateSnapshot(first, second);
+    else compareSnapshots(first, second, third);
   }
 } catch (error) {
   const known = error instanceof DocsError;
