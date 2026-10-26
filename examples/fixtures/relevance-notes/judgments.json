@@ -1,0 +1,23 @@
+{
+  "schema": "searchlite.local-judgments/1",
+  "queries": [
+    {
+      "id": "invoice-retention",
+      "text": "\"invoice retention\"",
+      "minimumNdcgAt10": 1,
+      "relevance": [{ "documentId": "retention.md", "grade": 3 }]
+    },
+    {
+      "id": "webhook-retries",
+      "text": "\"webhook retries\"",
+      "minimumNdcgAt10": 1,
+      "relevance": [{ "documentId": "webhooks.md", "grade": 3 }]
+    },
+    {
+      "id": "recovery",
+      "text": "\"recovery rehearsals\"",
+      "minimumNdcgAt10": 1,
+      "relevance": [{ "documentId": "recovery.md", "grade": 3 }]
+    }
+  ]
+}

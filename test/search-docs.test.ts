@@ -13,9 +13,9 @@ import {
 } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 const REPO = fileURLToPath(new URL('..', import.meta.url));
 const CLI = join(REPO, 'examples/search-docs.js');
@@ -23,10 +23,6 @@ let temporary: string;
 let docs: string;
 let snapshot: string;
 
-beforeAll(() => {
-  // Exercise the same built exports a consumer loads, without requiring dist in git.
-  execFileSync('npm', ['run', 'build'], { cwd: REPO, stdio: 'pipe', timeout: 30_000 });
-}, 30_000);
 beforeEach(() => {
   temporary = realpathSync(mkdtempSync(join(tmpdir(), 'searchlite-docs-')));
   docs = join(temporary, 'notes');

@@ -2,7 +2,8 @@
 import * as fs from 'node:fs';
 import path from 'node:path';
 import { TextDecoder } from 'node:util';
-import { SearchIndex, formatExplanation } from 'searchlite';
+import { createHash } from 'node:crypto';
+import { SearchIndex, evaluate, formatExplanation } from 'searchlite';
 
 const FILE_BYTES = 128 * 1024;
 const CORPUS_BYTES = 1024 * 1024;
@@ -10,6 +11,7 @@ const FILE_COUNT = 128;
 const ENTRIES = 4096;
 const DEPTH = 16;
 const SNAPSHOT_BYTES = 16 * 1024 * 1024;
+const JUDGMENTS_BYTES = 256 * 1024;
 const EXCLUDED = new Set([
   'node_modules',
   'bower_components',
@@ -25,7 +27,8 @@ const EXCLUDED = new Set([
 ]);
 const USAGE =
   'node examples/search-docs.js index DIRECTORY SNAPSHOT\n' +
-  'node examples/search-docs.js search SNAPSHOT QUERY\nBuild the package first with npm run build.';
+  'node examples/search-docs.js search SNAPSHOT QUERY\n' +
+  'node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS\nBuild the package first with npm run build.';
 
 class DocsError extends Error {
   constructor(code, message, exitCode = 1) {
@@ -246,7 +249,7 @@ function restore(file) {
         refuse('INVALID_SNAPSHOT', 'Snapshot document text exceeds the corpus limits.');
       }
     }
-    return SearchIndex.fromJSON(raw);
+    return { index: SearchIndex.fromJSON(raw), data };
   } catch {
     refuse('INVALID_SNAPSHOT', 'Snapshot is malformed or incompatible with this example.');
   }
@@ -254,7 +257,7 @@ function restore(file) {
 function searchSnapshot(file, query) {
   if (!query.trim() || query.length > 1000)
     refuse('INVALID_QUERY', 'Use a nonempty query of at most 1000 characters.');
-  const index = restore(file);
+  const { index } = restore(file);
   let results;
   try {
     results = index.search(query, { limit: 5 });
@@ -279,16 +282,197 @@ function searchSnapshot(file, query) {
     console.log(formatExplanation(explanation));
   });
 }
+
+function exactKeys(value, keys) {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.keys(value).length === keys.length &&
+    keys.every((key) => Object.hasOwn(value, key))
+  );
+}
+function loadJudgments(data, index) {
+  let manifest;
+  try {
+    manifest = JSON.parse(decode(data, 'INVALID_JUDGMENTS'));
+  } catch {
+    refuse('INVALID_JUDGMENTS', 'Judgments must be valid UTF-8 JSON.');
+  }
+  const bad = () =>
+    refuse(
+      'INVALID_JUDGMENTS',
+      'Use the bounded local-judgments/1 schema, unique known IDs, grades 0–3 and explicit thresholds.',
+    );
+  if (
+    !exactKeys(manifest, ['schema', 'queries']) ||
+    manifest.schema !== 'searchlite.local-judgments/1' ||
+    !Array.isArray(manifest.queries) ||
+    manifest.queries.length < 1 ||
+    manifest.queries.length > 32
+  )
+    bad();
+  const ids = new Set();
+  for (const query of manifest.queries) {
+    if (
+      !exactKeys(query, ['id', 'text', 'relevance', 'minimumNdcgAt10']) ||
+      typeof query.id !== 'string' ||
+      !/^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/.test(query.id) ||
+      ids.has(query.id) ||
+      typeof query.text !== 'string' ||
+      !query.text.trim() ||
+      query.text.length > 1000 ||
+      query.text.includes('\0') ||
+      typeof query.minimumNdcgAt10 !== 'number' ||
+      !Number.isFinite(query.minimumNdcgAt10) ||
+      query.minimumNdcgAt10 < 0 ||
+      query.minimumNdcgAt10 > 1 ||
+      !Array.isArray(query.relevance) ||
+      query.relevance.length < 1 ||
+      query.relevance.length > 128
+    )
+      bad();
+    ids.add(query.id);
+    const documents = new Set();
+    let positive = false;
+    for (const judgment of query.relevance) {
+      if (
+        !exactKeys(judgment, ['documentId', 'grade']) ||
+        typeof judgment.documentId !== 'string' ||
+        !index.has(judgment.documentId) ||
+        documents.has(judgment.documentId) ||
+        !Number.isInteger(judgment.grade) ||
+        judgment.grade < 0 ||
+        judgment.grade > 3
+      )
+        bad();
+      documents.add(judgment.documentId);
+      if (judgment.grade > 0) positive = true;
+    }
+    if (!positive) bad();
+  }
+  return manifest.queries;
+}
+
+// JSON.stringify already escapes C0 controls inside strings. Escape the remaining terminal/
+// bidi/separator characters without altering JSON's structural whitespace or string semantics.
+function safeJson(value) {
+  return (
+    JSON.stringify(value, null, 2).replace(/[\p{Cf}\p{Zl}\p{Zp}\u007f-\u009f]/gu, (character) =>
+      character
+        .split('')
+        .map((unit) => `\\u${unit.charCodeAt(0).toString(16).padStart(4, '0')}`)
+        .join(''),
+    ) + '\n'
+  );
+}
+
+function evaluateSnapshot(file, judgmentsFile) {
+  const { index, data: snapshotData } = restore(file);
+  const judgmentsData = readBounded(
+    path.resolve(judgmentsFile),
+    JUDGMENTS_BYTES,
+    'JUDGMENTS_LIMIT',
+  );
+  const queries = loadJudgments(judgmentsData, index);
+  const qrels = Object.fromEntries(
+    queries.map((query) => [
+      query.id,
+      Object.fromEntries(query.relevance.map((judgment) => [judgment.documentId, judgment.grade])),
+    ]),
+  );
+  const rankings = new Map();
+  for (const query of queries) {
+    try {
+      rankings.set(query.id, index.search(query.text, { limit: 100 }));
+    } catch {
+      refuse('INVALID_QUERY', 'A labelled query has invalid syntax. See the searchlite grammar.');
+    }
+  }
+  const run = Object.fromEntries(
+    [...rankings].map(([id, results]) => [id, results.map((result) => result.id)]),
+  );
+  const at5 = evaluate(run, qrels, { k: 5 });
+  const at10 = evaluate(run, qrels, { k: 10 });
+  const results = queries.map((query) => {
+    const values = at10.perQuery[query.id];
+    const ranking = rankings.get(query.id).map((result, i) => ({
+      id: result.id,
+      rank: i + 1,
+      score: result.score,
+      grade: Object.hasOwn(qrels[query.id], result.id) ? qrels[query.id][result.id] : 0,
+    }));
+    return {
+      id: query.id,
+      text: query.text,
+      relevance: query.relevance,
+      minimumNdcgAt10: query.minimumNdcgAt10,
+      passed: values.ndcg >= query.minimumNdcgAt10,
+      metrics: {
+        precisionAt5: at5.perQuery[query.id].precision,
+        recallAt10: values.recall,
+        mrr: values.reciprocalRank,
+        map: values.averagePrecision,
+        ndcgAt10: values.ndcg,
+      },
+      ranking,
+      missingRelevantAt10: query.relevance
+        .filter(
+          (judgment) =>
+            judgment.grade > 0 &&
+            !ranking.slice(0, 10).some((result) => result.id === judgment.documentId),
+        )
+        .map((judgment) => judgment.documentId)
+        .sort(),
+    };
+  });
+  const failedQueries = results.filter((query) => !query.passed).map((query) => query.id);
+  const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
+  const report = {
+    schema: 'searchlite.local-evaluation/1',
+    status: failedQueries.length ? 'fail' : 'pass',
+    inputs: {
+      snapshotSha256: digest(snapshotData),
+      judgmentsSha256: digest(judgmentsData),
+      documentCount: index.size,
+      queryCount: queries.length,
+    },
+    configuration: index.toJSON().options,
+    cutoffs: {
+      precision: 5,
+      recall: 10,
+      ndcg: 10,
+      rankingDepth: 100,
+      mrrAndMap: 'full retrieved ranking',
+    },
+    criteria: 'Every query must have unrounded nDCG@10 >= its declared minimumNdcgAt10.',
+    queries: results,
+    failedQueries,
+    limits: [
+      'Caller-supplied labels and criteria describe this saved collection, not statistical significance or general relevance quality.',
+      'Hashes identify the exact used input bytes, not source authenticity or current source freshness. Original document folders are not read.',
+      'Reports contain query text and relative document IDs; keep private reports local unless intentionally shared. No provider/network call, source body export or file write.',
+    ],
+  };
+  process.stdout.write(safeJson(report));
+  process.exitCode = failedQueries.length ? 3 : 0;
+}
 try {
   const args = process.argv.slice(2);
   if (args.length === 1 && args[0] === '--help') console.log(USAGE);
   else {
     const [command, first, second] = args;
-    if (args.length !== 3 || !first || !second || !['index', 'search'].includes(command)) {
+    if (
+      args.length !== 3 ||
+      !first ||
+      !second ||
+      !['index', 'search', 'evaluate'].includes(command)
+    ) {
       throw new DocsError('USAGE', USAGE, 2);
     }
     if (command === 'index') indexDocuments(first, second);
-    else searchSnapshot(first, second);
+    else if (command === 'search') searchSnapshot(first, second);
+    else evaluateSnapshot(first, second);
   }
 } catch (error) {
   const known = error instanceof DocsError;
