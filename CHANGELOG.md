@@ -6,8 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-26
+
 ### Added
 
+- Offline-installable GitHub local-review bundle with exact public-source payload, byte
+  manifests, maintained builder and actual empty-cache install/CLI checks on Node20/22/24.
+- Browser relevance workbench with shared native comparison JSON, per-query regressions,
+  rankings, labels and downloadable inputs.
+- Local snapshot evaluation against explicit per-query labels/minima, exact used-byte hashes
+  and distinct valid unmet-criterion exits.
 - Same-collection local index comparison through built public exports, with shared labels,
   exact input hashes, per-query metric deltas and a minimum-plus-non-regression gate.
 - A bounded paired-build benchmark with complete/top10 ranking digest parity, fixed query

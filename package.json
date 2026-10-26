@@ -1,6 +1,6 @@
 {
   "name": "searchlite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A zero-dependency full-text search engine for TypeScript: BM25F ranking, a query language, phrase/prefix/fuzzy search, highlighting, hybrid retrieval and an evaluation harness.",
   "keywords": [
     "search",
@@ -63,12 +63,14 @@
     "eval": "tsx scripts/eval.ts",
     "eval:compare": "tsx scripts/eval-compare.ts",
     "bench": "tsx scripts/bench.ts",
-    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run test:filtering && npm run build && npm run check:dist && npm run build:demo",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run test:filtering && npm run test:package && npm run build && npm run check:dist && npm run build:demo",
     "prepack": "npm run build",
     "check:dist": "node scripts/check-dist.js",
     "search:docs": "node examples/search-docs.js",
     "bench:filtering": "node scripts/bench-filtering.js",
-    "test:filtering": "node --test test/filtering-benchmark.test.js"
+    "test:filtering": "node --test test/filtering-benchmark.test.js",
+    "package:local": "python3 scripts/package_local_review.py",
+    "test:package": "node --test test/local-package.test.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

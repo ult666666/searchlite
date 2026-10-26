@@ -12,6 +12,15 @@ browser and Node.
 data and finance terms in your browser, with highlighted snippets and per-result score
 explanations.
 
+## Download the local review example
+
+The [v0.2.0 GitHub release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) includes
+an offline-installable local-review ZIP and the built library tarball. The ZIP runs
+index/search/evaluate/compare with Node20+ and npm, including fictional notes and labels;
+no compiler, Python or other build tools are needed by the consumer.
+See [download, verification and release instructions](docs/RELEASING.md).
+This workflow publishes GitHub downloads and does not publish to the npm registry.
+
 ## Why
 
 Search libraries are easy to use and hard to explain. searchlite implements the standard
