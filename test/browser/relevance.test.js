@@ -134,6 +134,10 @@ test(
       assert.equal((await download()).bytes, first.bytes);
       assert.equal(await page.locator('script:not([src])').count(), 0);
       await page.getByRole('link', { name: 'Search demo', exact: true }).click();
+      // Static inputs can be actionable before the module hydrates and restores its URL query.
+      await page.waitForFunction(() =>
+        document.querySelector('#status').textContent.includes('60 glossary entries indexed'),
+      );
       await page.getByLabel('Search the glossary').fill('"binary heap"');
       await page.locator('#results .result').first().waitFor();
       assert.match(await page.locator('#results').innerText(), /Binary heap/);
