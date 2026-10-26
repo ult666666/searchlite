@@ -50,6 +50,42 @@ test(
       const page = await context.newPage();
       page.on('pageerror', (e) => errors.push(e.message));
       page.setDefaultTimeout(10_000);
+      const early = await context.newPage();
+      early.on('pageerror', (e) => errors.push(e.message));
+      early.setDefaultTimeout(10_000);
+      let releaseModules;
+      const modules = new Promise((resolve) => {
+        releaseModules = resolve;
+      });
+      await early.route('**/assets/*.js', async (route) => {
+        await modules;
+        await route.continue();
+      });
+      try {
+        await early.goto(origin + '/searchlite/?q=hash', { waitUntil: 'commit' });
+        await early.getByLabel('Search the glossary').fill('"binary heap"');
+        assert.equal(await early.locator('#status').innerText(), '');
+        releaseModules();
+        await early.waitForLoadState('load');
+        assert.equal(
+          await early.getByLabel('Search the glossary').inputValue(),
+          '"binary heap"',
+          'Typed input must survive module initialization, even with a different URL query',
+        );
+        assert.match(await early.locator('#results').innerText(), /Binary heap/);
+        assert.equal(new URL(early.url()).searchParams.get('q'), '"binary heap"');
+        await early.reload();
+        assert.equal(await early.getByLabel('Search the glossary').inputValue(), '"binary heap"');
+        await early.goto(origin + '/searchlite/?q=hash');
+        assert.equal(
+          await early.getByLabel('Search the glossary').inputValue(),
+          'hash',
+          'Without early typing, URL restoration still works',
+        );
+      } finally {
+        releaseModules();
+        await early.close();
+      }
       const response = await page.goto(origin + '/searchlite/relevance.html');
       assert.equal(response.status(), 200);
       await page.getByRole('heading', { name: 'Relevance workbench', exact: true }).waitFor();

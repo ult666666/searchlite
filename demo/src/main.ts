@@ -204,5 +204,10 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-input.value = new URLSearchParams(window.location.search).get('q') ?? '';
+// A visible static input may already contain the visitor's newer text before modules load.
+if (input.value === '') {
+  input.value = new URLSearchParams(window.location.search).get('q') ?? '';
+} else {
+  syncUrl();
+}
 runSearch();
