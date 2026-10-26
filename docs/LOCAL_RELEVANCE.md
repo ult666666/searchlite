@@ -10,6 +10,7 @@ From a source checkout, use Node20+ and a new temporary directory:
 npm ci
 npm run build
 searchlite_evaluation_dir=$(mktemp -d)
+searchlite_evaluation_dir=$(cd "$searchlite_evaluation_dir" && pwd -P)
 node examples/search-docs.js index examples/fixtures/relevance-notes "$searchlite_evaluation_dir/notes.json"
 node examples/search-docs.js evaluate "$searchlite_evaluation_dir/notes.json" examples/fixtures/relevance-notes/judgments.json
 ```
@@ -23,6 +24,8 @@ node examples/search-docs.js evaluate "$searchlite_evaluation_dir/notes.json" ex
 ```
 
 This deliberately searches for an absent phrase while requiring `retention.md`. The command prints a complete report with status`fail`, nDCG@10=0 and the failed query ID, then exits3. This is an expected negative control, not an observed production regression. The snapshot/manifests remain unchanged. Direct Node is canonical; an unsilenced npm script would add npm's argument banner to stdout.
+
+The `pwd -P` step resolves the newly created directory's physical path. On macOS, a temporary path can pass through the `/var` symlink; the consumer deliberately refuses linked ancestors. This keeps the example portable without relaxing that check. The example directory remains available for inspecting or rerunning its snapshot.
 
 ## Write labels for your own saved collection
 
