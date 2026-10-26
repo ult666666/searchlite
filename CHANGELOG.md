@@ -18,6 +18,13 @@ All notable changes to this project are documented here. The format follows
   explanations. Real CLI tests cover temporary corpora, roundtrips, input preservation,
   overwrite refusal, filesystem/size boundaries and terminal-safe output.
 
+### Fixed
+
+- Finite-vector cosine overflow/underflow and wrong nearest-neighbor ordering, with an ordinary
+  fast path and a scaled compensated fallback; independent Decimal conformance fixtures.
+- Sparse vectors accepted by skipped-hole validation: document/batch/replacement/query/snapshot
+  boundaries now reject missing components before state changes.
+
 ## [0.1.0] - 2026-10-23
 
 ### Added

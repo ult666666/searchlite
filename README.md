@@ -178,6 +178,8 @@ includes a complete fictional folder → snapshot → passing/unmet-criterion wa
 manifest schema, exact input hashes and exit codes. It uses the installed package's public metrics
 and performs no private upload or provider call. The browser workbench continues to use its fixed glossary.
 
+Finite vectors across large/tiny magnitudes use a safe cosine fallback; sparse and nonfinite vectors are refused before indexing. The [numerical boundary and independent reference](docs/VECTOR_NUMERICS.md) explain the ordinary fast path, high-precision cases and floating-point limits. Embeddings still come from the caller; vector search is exact and linear.
+
 ## Query syntax
 
 | Syntax                                 | Meaning                                                                   |

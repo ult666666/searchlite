@@ -1,12 +1,27 @@
 import { SearchliteError } from './errors';
 import { at } from './internal/at';
 
+interface CompensatedSum {
+  sum: number;
+  correction: number;
+}
+
+function accumulate(total: CompensatedSum, value: number): void {
+  const next = total.sum + value;
+  total.correction +=
+    Math.abs(total.sum) >= Math.abs(value) ? total.sum - next + value : value - next + total.sum;
+  total.sum = next;
+}
+
 /**
- * Cosine of the angle between two vectors: dot(a, b) / (|a| · |b|), from −1 to 1. It ignores
- * vector length, which is why it is the usual way to compare embeddings. Returns 0 when either
- * vector is all zeros, since the angle is then undefined.
+ * Cosine from −1 to 1, with zero for an all-zero vector (including two empty arrays).
+ * Finite array components are required. Unsafe raw arithmetic uses independently scaled,
+ * compensated sums; this is floating-point approximation, not correctly-rounded arithmetic.
  */
 export function cosineSimilarity(a: readonly number[], b: readonly number[]): number {
+  if (!Array.isArray(a) || !Array.isArray(b)) {
+    throw new SearchliteError('INVALID_ARGUMENT', 'Vectors must be arrays of finite numbers');
+  }
   if (a.length !== b.length) {
     throw new SearchliteError(
       'INVALID_ARGUMENT',
@@ -16,16 +31,59 @@ export function cosineSimilarity(a: readonly number[], b: readonly number[]): nu
   let dot = 0;
   let normA = 0;
   let normB = 0;
-  a.forEach((x, i) => {
-    const y = at(b, i);
+  let scaleA = 0;
+  let scaleB = 0;
+  for (let i = 0; i < a.length; i++) {
+    const x: unknown = a[i],
+      y: unknown = b[i];
+    if (
+      typeof x !== 'number' ||
+      typeof y !== 'number' ||
+      !Number.isFinite(x) ||
+      !Number.isFinite(y)
+    ) {
+      throw new SearchliteError('INVALID_ARGUMENT', 'Vectors must contain only finite numbers');
+    }
+    scaleA = Math.max(scaleA, Math.abs(x));
+    scaleB = Math.max(scaleB, Math.abs(y));
     dot += x * y;
     normA += x * x;
     normB += y * y;
-  });
-  if (normA === 0 || normB === 0) {
-    return 0;
   }
-  return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+  if (scaleA === 0 || scaleB === 0) return 0;
+  const denominator = Math.sqrt(normA) * Math.sqrt(normB);
+  const minimumNormal = 2 ** -1022;
+  const clamp = (value: number) => Math.max(-1, Math.min(1, value));
+  // Preserve ordinary arithmetic when raw sums carry normal finite information.
+  if (
+    Number.isFinite(dot) &&
+    Number.isFinite(normA) &&
+    Number.isFinite(normB) &&
+    Number.isFinite(denominator) &&
+    denominator > 0 &&
+    normA >= minimumNormal &&
+    normB >= minimumNormal &&
+    Math.abs(dot) >= minimumNormal
+  ) {
+    return clamp(dot / denominator);
+  }
+  // At least one component of each scaled vector has magnitude one, so these
+  // norms cannot underflow. Components/products are bounded, avoiding overflow.
+  const scaledDot = { sum: 0, correction: 0 },
+    squaredA = { sum: 0, correction: 0 },
+    squaredB = { sum: 0, correction: 0 };
+  for (let i = 0; i < a.length; i++) {
+    const x = at<number>(a, i) / scaleA,
+      y = at<number>(b, i) / scaleB;
+    accumulate(scaledDot, x * y);
+    accumulate(squaredA, x * x);
+    accumulate(squaredB, y * y);
+  }
+  return clamp(
+    (scaledDot.sum + scaledDot.correction) /
+      (Math.sqrt(squaredA.sum + squaredA.correction) *
+        Math.sqrt(squaredB.sum + squaredB.correction)),
+  );
 }
 
 export interface FusedResult {
