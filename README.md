@@ -233,6 +233,18 @@ trade-offs and how each part is tested.
 
 ## Evaluation
 
+[Open the relevance workbench](https://ult666666.github.io/searchlite/relevance.html) to compare
+the existing configurations query by query, inspect grades and missed relevant documents, and
+download the full reproducible inputs/rankings/metrics. The [workbench guide](docs/RELEVANCE_WORKBENCH.md)
+explains the fixed collection, metric cutoffs, toy-vector limits and native JSON command:
+
+```sh
+npm run --silent eval:compare -- --baseline=bm25f --candidate=no-stemming
+```
+
+The workbench uses the same engine and evaluation functions as the table below. It is an
+inspectable demonstration on the existing authored collection, not evidence of general quality.
+
 `npm run eval` indexes the glossary under several configurations, runs 22 queries and scores the
 rankings against graded relevance judgements. Real output:
 
@@ -273,6 +285,7 @@ npm run build           # tsup: ESM + CJS + .d.ts in dist/
 npm run check:dist      # loads both builds through package.json "exports"
 npm run build:demo      # Vite build of demo/ into demo/dist
 npm run eval            # evaluation table above
+npm run test:browser    # actual built comparison/download/search journey; install Chromium first
 npm run dev             # demo dev server at http://localhost:5173/searchlite/
 ```
 
