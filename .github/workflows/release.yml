@@ -15,6 +15,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -41,22 +45,51 @@ jobs:
       - run: npm run build
       - name: Pack the tarball
         run: |
-          mkdir -p release
-          npm pack --pack-destination release
+          if [ -f scripts/package_local_review.py ]; then
+            npm run package:local -- release
+          else
+            mkdir release
+            npm pack --offline --pack-destination release
+          fi
       - name: Smoke-test the tarball in a clean project
         run: |
           mkdir "$RUNNER_TEMP/smoke"
           cd "$RUNNER_TEMP/smoke"
           npm init -y > /dev/null
-          npm install "$GITHUB_WORKSPACE"/release/*.tgz
+          npm install --offline --ignore-scripts --no-audit --no-fund --cache "$RUNNER_TEMP/tarball-cache" "$GITHUB_WORKSPACE"/release/*.tgz
           node -e "require('searchlite')"
           node --input-type=module -e "import 'searchlite'"
+      - name: Smoke-test the portable workflow
+        run: |
+          version=$(node -p "require('./package.json').version")
+          archive="$GITHUB_WORKSPACE/release/searchlite-local-review-$version.zip"
+          if [ ! -f "$archive" ]; then exit 0; fi
+          python3 -m zipfile -e "$archive" "$RUNNER_TEMP/portable"
+          cd "$RUNNER_TEMP/portable/searchlite-local-review-$version"
+          npm install --offline --ignore-scripts --no-audit --no-fund --cache "$RUNNER_TEMP/portable-cache"
+          node examples/search-docs.js index examples/fixtures/relevance-notes notes.json
+          node examples/search-docs.js search notes.json '"invoice retention"'
+          node examples/search-docs.js evaluate notes.json examples/fixtures/relevance-notes/judgments.json
+          node examples/search-docs.js compare notes.json notes.json examples/fixtures/relevance-notes/judgments.json
+          status=0
+          node examples/search-docs.js compare notes.json notes.json examples/fixtures/relevance-notes/judgments-unmet.json || status=$?
+          test "$status" -eq 3
       - name: Write checksums
         working-directory: release
-        run: sha256sum -- * > SHA256SUMS.txt
+        run: |
+          if [ -f SHA256SUMS ]; then
+            cp SHA256SUMS SHA256SUMS.txt
+          else
+            python3 -c 'import hashlib,pathlib; files=sorted(pathlib.Path(".").glob("*.tgz")); pathlib.Path("SHA256SUMS.txt").write_text("".join(hashlib.sha256(p.read_bytes()).hexdigest()+"  "+p.name+"\n" for p in files))'
+          fi
       - name: Attach the assets to the release
         run: |
+          created=false
           if ! gh release view "$TAG" > /dev/null 2>&1; then
-            gh release create "$TAG" --verify-tag --title "$TAG" --generate-notes
+            gh release create "$TAG" --verify-tag --title "$TAG" --generate-notes --draft
+            created=true
           fi
           gh release upload "$TAG" release/* --clobber
+          if [ "$created" = true ]; then
+            gh release edit "$TAG" --draft=false
+          fi
