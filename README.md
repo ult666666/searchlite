@@ -279,6 +279,14 @@ embedding model would be needed to say anything about hybrid retrieval.
 
 ## Development
 
+### Reproduce scale measurements
+
+`npm run build && npm run --silent bench > benchmark.json` records raw build/search timing,
+process memory snapshots and machine/Node context at 1,000 and 10,000 synthetic documents.
+See the [fixed method and actual local receipt](docs/BENCHMARK.md). Repeated glossary vocabulary
+and a uniform query mix limit interpretation; these measurements do not establish production latency.
+`npm run --silent bench -- --smoke` exercises the workflow with smaller collections without a timing gate.
+
 Requires Node 20 or newer (CI runs Node 20, 22 and 24).
 
 ```bash
@@ -334,8 +342,6 @@ Limitations:
 
 Roadmap:
 
-- A micro-benchmark (`npm run bench`) with a documented method, machine and Node version; it was
-  left out of 0.1.0 to keep the scope to features that are fully tested.
 - Document-at-a-time execution with WAND/MaxScore skipping, and compressed postings.
 - More analyzers (Snowball stemmers, CJK bigrams) and pluggable tokenizers.
 - An approximate nearest-neighbour index (e.g. HNSW) for larger vector collections.

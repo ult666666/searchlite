@@ -1,0 +1,3435 @@
+{
+  "schema": "searchlite.microbenchmark/1",
+  "recordedAtUtc": "2026-10-26T03:52:15.673Z",
+  "profile": {
+    "id": "default",
+    "documentCounts": [1000, 10000],
+    "trials": 3,
+    "warmupCycles": 2,
+    "measurementCycles": 4
+  },
+  "machine": {
+    "platform": "darwin",
+    "release": "25.6.0",
+    "architecture": "arm64",
+    "cpuModel": "Apple M5 Pro",
+    "logicalCpus": 15,
+    "totalMemoryBytes": 25769803776,
+    "node": "v24.18.0",
+    "v8": "13.6.233.17-node.50"
+  },
+  "fixtureSha256": "ef7bdabe5ab3b679c404c7ac5ba1cdd867522a8b3c695c13472a82150cebb966",
+  "method": {
+    "documentGeneration": "round-robin copies of 60 glossary entries, unique ordinal-prefixed IDs, repeated vocabulary",
+    "queries": [
+      {
+        "id": "q01",
+        "text": "how do hash tables handle collisions"
+      },
+      {
+        "id": "q02",
+        "text": "ranking documents for a keyword query"
+      },
+      {
+        "id": "q03",
+        "text": "risk-adjusted return"
+      },
+      {
+        "id": "q04",
+        "text": "value today of future cash flows"
+      },
+      {
+        "id": "q05",
+        "text": "two threads updating shared data"
+      },
+      {
+        "id": "q06",
+        "text": "run tests automatically on every pull request"
+      },
+      {
+        "id": "q07",
+        "text": "fuzzy matching for typos"
+      },
+      {
+        "id": "q08",
+        "text": "model does well on training data but fails on new examples"
+      },
+      {
+        "id": "q09",
+        "text": "spread incoming requests across servers"
+      },
+      {
+        "id": "q10",
+        "text": "compare embedding vectors"
+      },
+      {
+        "id": "q11",
+        "text": "profit from price differences between markets"
+      },
+      {
+        "id": "q12",
+        "text": "stock valuation multiples"
+      },
+      {
+        "id": "q13",
+        "text": "sorted tree structure for fast lookups on disk"
+      },
+      {
+        "id": "q14",
+        "text": "priority queue"
+      },
+      {
+        "id": "q15",
+        "text": "minimize a loss function"
+      },
+      {
+        "id": "q16",
+        "text": "analytics over historical data"
+      },
+      {
+        "id": "q17",
+        "text": "randomized experiment comparing two versions"
+      },
+      {
+        "id": "q18",
+        "text": "safely retry a failed request"
+      },
+      {
+        "id": "q19",
+        "text": "bond prices and interest rates"
+      },
+      {
+        "id": "q20",
+        "text": "automatic memory management"
+      },
+      {
+        "id": "q21",
+        "text": "predict the probability of a yes or no outcome"
+      },
+      {
+        "id": "q22",
+        "text": "token bucket algorithm"
+      },
+      {
+        "id": "syntax-phrase",
+        "text": "\"binary heap\""
+      },
+      {
+        "id": "syntax-prefix",
+        "text": "title:hash*"
+      },
+      {
+        "id": "syntax-boolean",
+        "text": "(index OR tree) AND disk"
+      },
+      {
+        "id": "syntax-fuzzy",
+        "text": "volatlity~1"
+      }
+    ],
+    "resultLimit": 10,
+    "searchTiming": "public search(text) including parsing/analysis/planning/execution/results; setup/startup/generation/warmup excluded",
+    "percentiles": "nearest rank ceil(p*N)-1 over pooled measured searches at each size",
+    "memory": "whole worker process before/after index construction, bytes; not isolated index size or peak"
+  },
+  "sizes": [
+    {
+      "documentCount": 1000,
+      "trials": [
+        {
+          "processId": 17315,
+          "packageVersion": "0.1.0",
+          "documentCount": 1000,
+          "workloadSha256": "2c9c51277b93f2b177c80dda41b81a8d031fb1cc74b3dd5aa563ef8b68836d2a",
+          "buildMs": 32.75166699999999,
+          "beforeIndex": {
+            "rss": 53248000,
+            "heapTotal": 10321920,
+            "heapUsed": 6036704,
+            "external": 3072058,
+            "arrayBuffers": 546810
+          },
+          "afterIndex": {
+            "rss": 87064576,
+            "heapTotal": 29982720,
+            "heapUsed": 17819088,
+            "external": 2670921,
+            "arrayBuffers": 546810
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.13412499999999739,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.163415999999998,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.11383299999999963,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.17604200000000958,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.3343749999999943,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.1782089999999954,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.049583999999995854,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.25574999999999193,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.13316600000000278,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.08229199999999537,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.12712499999999238,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.07141599999999926,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.11216699999999946,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.055374999999997954,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.0988749999999925,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.2084159999999997,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.19054100000001029,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.09812499999999602,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.19720900000000086,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.05550000000000921,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06670799999999133,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.050332999999994854,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03333299999999895,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03712500000000318,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.08037500000000364,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.13254199999998661,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.08533399999998892,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10720799999999997,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.07945800000000247,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.23704200000000242,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.22837499999999977,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.1760409999999979,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.055291999999994346,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.2522499999999894,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.14620799999998724,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.09862499999999841,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.18475000000000819,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.09833299999999667,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.15570800000000418,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.056416999999996165,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.0989579999999961,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.21545799999999815,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.15466700000000344,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.08920799999999929,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.15508300000000474,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.05158299999999372,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06712500000000432,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.05299999999999727,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.033165999999994256,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03991600000000517,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07858400000000643,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.10500000000000398,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.0801659999999913,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.20199999999999818,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.07824999999999704,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.14187500000001307,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.21633399999998915,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.1722910000000013,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.04991699999999355,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.24962499999999466,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.2574589999999972,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.10620900000000688,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.16966600000000653,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.0733330000000052,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.13033299999999315,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.05454200000001208,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.07133299999999565,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.2189170000000047,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.1779590000000013,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.09708399999999529,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.17070800000000474,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.04912500000000364,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.0622499999999917,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.044832999999997014,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.039249999999995566,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.034624999999991246,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07995800000000486,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.18845799999999713,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.09174999999999045,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.11675000000001035,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.07479200000000219,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.13483300000000042,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.2348750000000024,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.16337500000000205,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.05504200000000026,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.26516700000000526,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.14274999999999238,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.08387499999999193,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.1974170000000015,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.0729170000000039,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.17304099999999778,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.06216699999998809,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.10224999999999795,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.18166700000000446,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.1785419999999931,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.08458299999999497,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.15491699999999753,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.05233299999999019,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06450000000000955,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.04641700000000526,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.10833300000000179,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03429200000000776,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.09425000000000239,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.0818750000000108,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        },
+        {
+          "processId": 17316,
+          "packageVersion": "0.1.0",
+          "documentCount": 1000,
+          "workloadSha256": "2c9c51277b93f2b177c80dda41b81a8d031fb1cc74b3dd5aa563ef8b68836d2a",
+          "buildMs": 29.153083999999993,
+          "beforeIndex": {
+            "rss": 53149696,
+            "heapTotal": 10321920,
+            "heapUsed": 6025304,
+            "external": 3072058,
+            "arrayBuffers": 546810
+          },
+          "afterIndex": {
+            "rss": 86687744,
+            "heapTotal": 30244864,
+            "heapUsed": 17869112,
+            "external": 2670921,
+            "arrayBuffers": 546810
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.12887500000000784,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.16183299999998724,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.10649999999999693,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.24362500000000864,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.21445900000000506,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.16095799999999372,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.0455830000000077,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.23854200000000958,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.12699999999999534,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.07762499999999761,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.11937500000000512,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.05912499999999454,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.10579099999999642,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.038167000000001394,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.0762500000000017,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.15541699999999992,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.16874999999998863,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.07483399999999563,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.1519580000000076,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.048582999999993604,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.062458000000006564,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.04416700000000162,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03154099999999005,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.036457999999996105,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07766600000000778,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.12845900000000654,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.07983400000000529,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10608299999999815,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.14637500000000614,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.1529999999999916,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.2065419999999989,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.15775000000000716,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.04354200000000219,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.26529100000000483,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.13954200000000583,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.07566699999999571,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.12108299999999872,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.07520900000000097,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.13391599999999926,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.04475000000000762,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.07437500000000341,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.1510420000000039,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.149249999999995,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.07795800000000952,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.14829200000001208,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.049666000000001986,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06570800000000077,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.051167000000006624,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03308300000000486,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03916699999999196,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.0778749999999917,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.11025000000000773,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.15204200000000867,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10670799999999758,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.07475000000000875,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.13245899999999722,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.20779199999999776,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.17479099999999903,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.05000000000001137,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.24387500000000273,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.13504199999999855,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.15237500000000637,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.1876670000000047,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.08262500000000728,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.14345799999999542,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.046708999999992784,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.0797500000000042,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.22987500000000693,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.17287500000000477,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.09945799999999849,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.17925000000001035,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.06058299999999406,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06204200000000526,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.04425000000000523,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03874999999999318,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03283299999999656,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.1453339999999912,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.09612500000000068,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.08616700000000321,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10975000000000534,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.08208299999999724,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.13366700000000264,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.22779199999999378,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.16020799999999724,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.05345799999999201,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.2663340000000005,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.14104199999999878,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.08133300000000077,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.1366249999999951,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.06212499999999466,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.11120800000000486,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.039917000000002645,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.09845799999999372,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.20166699999998627,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.16770799999999042,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.09020799999998985,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.16762500000000102,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.055666000000002214,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.15595900000000995,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.0634589999999946,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.02933300000000827,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03100000000000591,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.08337500000000375,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.09383400000000108,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        },
+        {
+          "processId": 17317,
+          "packageVersion": "0.1.0",
+          "documentCount": 1000,
+          "workloadSha256": "2c9c51277b93f2b177c80dda41b81a8d031fb1cc74b3dd5aa563ef8b68836d2a",
+          "buildMs": 29.173083000000005,
+          "beforeIndex": {
+            "rss": 53182464,
+            "heapTotal": 10321920,
+            "heapUsed": 5990072,
+            "external": 3072058,
+            "arrayBuffers": 546810
+          },
+          "afterIndex": {
+            "rss": 87097344,
+            "heapTotal": 30244864,
+            "heapUsed": 17801808,
+            "external": 2670921,
+            "arrayBuffers": 546810
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.12958299999999667,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.1610419999999948,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.0953750000000042,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.26458399999999926,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.2127919999999932,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.16575000000000273,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.046125000000003524,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.23666699999999707,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.14816700000000083,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.10599999999999454,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.1210840000000104,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.05924999999999159,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.10691599999999823,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.04733300000000895,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.09229100000000301,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.16333400000000609,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.14424999999999955,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.08133300000000077,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.15008399999999256,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.048709000000002334,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06312499999999943,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.044375000000002274,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03170799999999474,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03929200000000321,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07904100000000369,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.1352499999999992,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.08141700000000185,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10537499999999511,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.14612499999999784,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.1390829999999994,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.2260830000000027,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.15545799999999588,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.043083000000009974,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.22808300000001225,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.13616700000000037,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.07954200000000355,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.11829100000001347,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.06462499999999238,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.1043329999999969,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.04766699999998991,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.09537499999999,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.16875000000000284,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.1460830000000044,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.07804199999999639,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.14783400000000313,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.049374999999997726,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.0646250000000066,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.05104200000000958,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.031125000000002956,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.035291999999998325,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07716699999998866,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.10716700000000401,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.08424999999999727,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.18762500000001125,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.07970899999999403,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.13583400000000267,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.21095900000000256,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.1770000000000067,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.04929199999999412,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.24691600000001301,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.14904199999999435,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.15495900000000518,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.17895900000000609,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.08508299999999736,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.14066700000000765,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.046750000000002956,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.07516599999999585,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.21666700000000105,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.17258400000000051,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.09966599999999914,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.1823749999999933,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.06166600000000244,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.06141599999999414,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.04454100000000949,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.03925000000000978,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.03429200000000776,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.15862500000000068,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.09529100000000312,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.08583300000000804,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.10820800000000474,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.08387500000000614,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.12599999999999056,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 0.23125000000000284,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.15904199999999946,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.05329099999998732,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 0.2670000000000101,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.13520799999999156,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.08879199999999798,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.1322499999999991,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.06308299999999178,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.11083399999999699,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.07458300000000406,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.09154200000000401,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.18312500000000398,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.16533300000000395,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.08883299999999394,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.16850000000000875,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.05987499999999102,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.12812499999999716,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.0484170000000006,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.02637500000000159,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.026666999999989116,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.07858300000000895,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.08654199999999435,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        }
+      ],
+      "buildMedianMs": 29.173083000000005,
+      "latency": {
+        "count": 312,
+        "minMs": 0.02637500000000159,
+        "meanMs": 0.11560964743589758,
+        "p50Ms": 0.10224999999999795,
+        "p95Ms": 0.23666699999999707,
+        "maxMs": 0.3343749999999943
+      }
+    },
+    {
+      "documentCount": 10000,
+      "trials": [
+        {
+          "processId": 17318,
+          "packageVersion": "0.1.0",
+          "documentCount": 10000,
+          "workloadSha256": "08df12b5767ed2c54419abb927dd52a739c81f841f7d6de9e43e953e9f2f4d74",
+          "buildMs": 226.68270800000002,
+          "beforeIndex": {
+            "rss": 78807040,
+            "heapTotal": 27738112,
+            "heapUsed": 10957568,
+            "external": 14317561,
+            "arrayBuffers": 4160460
+          },
+          "afterIndex": {
+            "rss": 218284032,
+            "heapTotal": 197296128,
+            "heapUsed": 105400720,
+            "external": 6263949,
+            "arrayBuffers": 4160460
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.4764589999999771,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.648208000000011,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4911660000000211,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.8152919999999995,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.3622910000000275,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.2675419999999917,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.19708400000001802,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.5924589999999625,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8405830000000378,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4469169999999849,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7600830000000087,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.30262500000003456,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5687499999999659,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.17033299999997098,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.3690409999999815,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8895410000000084,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.8026249999999777,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3999579999999696,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9441659999999956,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.2115000000000009,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.27224999999998545,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.19304199999999128,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.10570899999999028,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.07645899999999983,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.5553750000000264,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.243583000000001,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.39825000000001864,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5641669999999976,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.42379199999999173,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7482499999999845,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.2658329999999864,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.9533749999999941,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.18083400000000438,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.5278749999999945,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.7938340000000039,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4287500000000364,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7477500000000532,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.28866600000003473,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5597080000000005,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.1586250000000291,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.49491700000004357,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8924590000000308,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7912499999999909,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3984169999999949,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9159170000000358,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.20170799999999645,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.26737500000001546,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.2051670000000172,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09979199999997945,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.09537499999999,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3745000000000118,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.21533400000004121,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.36858399999999847,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.546875,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4077500000000214,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7638330000000337,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.2875420000000304,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.966083000000026,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.20674999999999955,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.7137500000000045,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8328339999999912,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4343340000000353,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7315419999999904,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.290916999999979,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5404169999999908,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.15962500000000546,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.32162500000004,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8612919999999917,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7769999999999868,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.39795899999995754,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.8996250000000146,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.201958999999988,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.2681249999999977,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.18079199999999673,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09370799999999235,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.08637499999997544,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.36658299999999144,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.18137500000000273,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.3472500000000309,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.6791670000000067,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4167499999999791,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7250420000000304,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.3190829999999778,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.9432499999999777,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.2115000000000009,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.5773750000000177,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.7984580000000392,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4293749999999932,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7296249999999986,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.29154199999999264,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5570000000000164,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.15679199999999582,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.3223750000000223,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 1.0525420000000167,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7854999999999563,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3822499999999991,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.8822920000000067,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.19791699999996126,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.26158400000002757,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.1802500000000009,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09104200000001583,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.06420800000000781,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.36000000000001364,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.1848749999999768,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        },
+        {
+          "processId": 17319,
+          "packageVersion": "0.1.0",
+          "documentCount": 10000,
+          "workloadSha256": "08df12b5767ed2c54419abb927dd52a739c81f841f7d6de9e43e953e9f2f4d74",
+          "buildMs": 214.49537499999997,
+          "beforeIndex": {
+            "rss": 78692352,
+            "heapTotal": 28000256,
+            "heapUsed": 10956752,
+            "external": 14317561,
+            "arrayBuffers": 4160460
+          },
+          "afterIndex": {
+            "rss": 239042560,
+            "heapTotal": 197033984,
+            "heapUsed": 86404712,
+            "external": 6263949,
+            "arrayBuffers": 4160460
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.4350420000000099,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5992090000000303,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.46845799999999826,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.8540000000000418,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.4599999999999795,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.1070000000000277,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.20600000000001728,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.6492079999999874,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8403329999999869,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.44291700000002265,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.989832999999976,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.3260420000000295,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5837080000000014,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.17012499999998454,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.3808750000000032,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.9615419999999517,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.8159170000000131,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.4009580000000028,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9544579999999883,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.20562499999999773,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.2714170000000422,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.18654100000003382,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.10670799999996916,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.08195799999998599,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3840420000000222,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.2472909999999615,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.3927079999999705,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5464170000000195,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.41904199999999037,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7545829999999683,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.3413750000000277,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.142417000000023,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.19541699999996354,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.580083000000002,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8651669999999854,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4525000000000432,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7812089999999898,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.31349999999997635,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5832500000000209,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.17225000000001955,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.3501250000000482,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.9318340000000376,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.8199579999999855,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.38679100000001654,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9082500000000095,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.1990409999999656,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.27341599999999744,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.3497499999999718,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.11849999999998317,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.09204199999999219,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3789590000000089,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.20924999999999727,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.366375000000005,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5374999999999659,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4603749999999991,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7871660000000134,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.3192090000000007,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.0457079999999905,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.21112499999998136,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.6341249999999832,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8763749999999959,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.45741700000002083,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7797089999999685,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.30400000000003047,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.8320410000000038,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.1758750000000191,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.3492920000000481,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.9536659999999983,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.8121249999999804,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.408916999999974,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9307079999999814,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.232167000000004,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.2746670000000222,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.18720799999999826,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09720800000002328,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.08379200000001674,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.36787499999996953,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.21224999999998317,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.36470800000000736,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5564169999999535,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.40949999999998,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7373749999999859,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.3042500000000246,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.9686669999999822,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.3384999999999536,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.51724999999999,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8298330000000078,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4440000000000168,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7264999999999873,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.2807919999999626,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5316669999999704,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.15287499999999454,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.31295799999998053,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8552909999999656,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7760000000000105,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3837920000000281,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.8852909999999952,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.19491599999997788,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.25429100000002336,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.1797910000000229,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.08712500000001455,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.058625000000006366,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3516249999999559,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.20375000000001364,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        },
+        {
+          "processId": 17320,
+          "packageVersion": "0.1.0",
+          "documentCount": 10000,
+          "workloadSha256": "08df12b5767ed2c54419abb927dd52a739c81f841f7d6de9e43e953e9f2f4d74",
+          "buildMs": 202.53554200000002,
+          "beforeIndex": {
+            "rss": 78938112,
+            "heapTotal": 28000256,
+            "heapUsed": 10956216,
+            "external": 14317561,
+            "arrayBuffers": 4160460
+          },
+          "afterIndex": {
+            "rss": 218218496,
+            "heapTotal": 197296128,
+            "heapUsed": 105126648,
+            "external": 6263949,
+            "arrayBuffers": 4160460
+          },
+          "samples": [
+            {
+              "queryId": "q01",
+              "searchMs": 0.4180830000000242,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5634589999999662,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4349579999999946,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7842500000000427,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.2914589999999748,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.1925829999999564,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.20683299999996052,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.563333,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8180419999999913,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.42687499999999545,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7328750000000355,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.29525000000001,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5449169999999981,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.16004099999997834,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.36100000000004684,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8667499999999677,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7671659999999747,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3881250000000023,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9129580000000033,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.20108400000003712,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.26591600000000426,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.18541700000002947,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09987499999999727,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.07704200000000583,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.5342499999999859,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.2625409999999988,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.4003749999999968,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.542665999999997,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.4121250000000032,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7460839999999962,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.2595830000000205,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.9587919999999599,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.181083000000001,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.5012909999999806,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.7960419999999999,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.42525000000000546,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.714416999999969,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.2820830000000001,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5314170000000331,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.16045800000000554,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.4670419999999922,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8729590000000371,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7814169999999763,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.38333399999999074,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9596669999999676,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.19824999999997317,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.26616599999999835,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.2071669999999699,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.10300000000000864,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.09366700000003902,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3964159999999879,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.20249999999998636,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.37199999999995725,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.5500000000000114,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.42904199999998127,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7934170000000336,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.4227089999999976,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 1.0260829999999714,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.21137499999997544,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.7842089999999757,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.8390829999999596,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4434999999999718,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7649579999999787,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.2868750000000091,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5483750000000214,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.1576249999999959,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.325458000000026,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 0.8317920000000072,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.7725839999999948,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3734999999999786,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.9096249999999486,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.20658300000002328,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.2615420000000199,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.18404199999997672,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09375,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.077083000000016,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3670829999999796,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.20262500000001182,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q01",
+              "searchMs": 0.3609169999999722,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q02",
+              "searchMs": 0.6726669999999899,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q03",
+              "searchMs": 0.40608300000002373,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q04",
+              "searchMs": 0.7463750000000005,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q05",
+              "searchMs": 1.2942919999999845,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q06",
+              "searchMs": 0.9360839999999939,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q07",
+              "searchMs": 0.20437499999997044,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q08",
+              "searchMs": 1.4704160000000002,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q09",
+              "searchMs": 0.7951249999999845,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q10",
+              "searchMs": 0.4268329999999878,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q11",
+              "searchMs": 0.7377079999999978,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q12",
+              "searchMs": 0.2892909999999915,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q13",
+              "searchMs": 0.5223330000000033,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q14",
+              "searchMs": 0.1512920000000122,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q15",
+              "searchMs": 0.31545799999997826,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q16",
+              "searchMs": 1.01724999999999,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q17",
+              "searchMs": 0.781750000000045,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q18",
+              "searchMs": 0.3839590000000044,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q19",
+              "searchMs": 0.8949579999999742,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q20",
+              "searchMs": 0.19216699999998355,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q21",
+              "searchMs": 0.2571249999999736,
+              "resultCount": 10
+            },
+            {
+              "queryId": "q22",
+              "searchMs": 0.17804100000000744,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-phrase",
+              "searchMs": 0.09012500000000045,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-prefix",
+              "searchMs": 0.06304099999999835,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-boolean",
+              "searchMs": 0.3637910000000488,
+              "resultCount": 10
+            },
+            {
+              "queryId": "syntax-fuzzy",
+              "searchMs": 0.17879100000004655,
+              "resultCount": 10
+            }
+          ],
+          "checksum": 1560
+        }
+      ],
+      "buildMedianMs": 214.49537499999997,
+      "latency": {
+        "count": 312,
+        "minMs": 0.058625000000006366,
+        "meanMs": 0.5483412243589739,
+        "p50Ms": 0.41904199999999037,
+        "p95Ms": 1.3413750000000277,
+        "maxMs": 1.7842089999999757
+      }
+    }
+  ],
+  "limits": [
+    "Synthetic repeated vocabulary and a uniform query mix are not representative production traffic or a service SLA.",
+    "Finite warmup, JIT/GC, OS scheduling and other desktop activity affect these measurements; no CPU pinning or forced GC.",
+    "Pooled query timings are not independent population samples or a confidence interval; compare raw queries/trials on the same setup.",
+    "Memory snapshots include runtime, input and index and may reflect GC; no isolated allocation or peak-memory claim."
+  ]
+}
