@@ -172,6 +172,12 @@ authenticity guarantees. This is a bounded consumer example for folders you cont
 production filesystem search or protection against a hostile concurrent filesystem owner.
 No provider, embedding, browser or internet retrieval is involved.
 
+To check your saved local index against labelled questions, use
+`node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS`. The [local relevance guide](docs/LOCAL_RELEVANCE.md)
+includes a complete fictional folder → snapshot → passing/unmet-criterion walkthrough, the bounded
+manifest schema, exact input hashes and exit codes. It uses the installed package's public metrics
+and performs no private upload or provider call. The browser workbench continues to use its fixed glossary.
+
 ## Query syntax
 
 | Syntax                                 | Meaning                                                                   |
@@ -289,7 +295,8 @@ npm run test:browser    # actual built comparison/download/search journey; insta
 npm run dev             # demo dev server at http://localhost:5173/searchlite/
 ```
 
-`npm run check` runs everything CI runs except the evaluation. `.github/workflows/ci.yml` runs
+`npm run check` runs the library/package/demo checks. Evaluation (`npm run eval`) and the separately
+installed Chromium journey (`npm run test:browser`) are additional CI checks. `.github/workflows/ci.yml` runs
 these steps on every push and pull request; `.github/workflows/pages.yml` deploys the demo to
 GitHub Pages on pushes to `main` (enable Pages with the "GitHub Actions" source in the repository
 settings). Toolchain version choices are explained in

@@ -1,5 +1,7 @@
 # Inspect a relevance change before trusting an average
 
+For your own saved document collection, use the separate [local labelled-question evaluation](LOCAL_RELEVANCE.md) workflow. This page keeps its fixed public glossary and accepts no uploads.
+
 [Open the workbench](https://ult666666.github.io/searchlite/relevance.html). Select a baseline and candidate, then inspect the queries behind an aggregate metric. The workbench runs the actual searchlite engine locally over the existing authored glossary. It neither calls a provider nor imports private data.
 
 Try **BM25F** against **no stemming**. The collection mean nDCG@10 is about0.927 versus0.904, but an average alone hides individual changes. Inspect q01 to see its ranked answers and grades, then q22 to see a short three-result ranking whose P@5 is0.200: only one result is relevant and the denominator stays5. Swap the configurations to reverse the deltas, or select the same configuration on both sides to get zero deltas. These examples explain this collection; they do not establish which configuration is best for another task.

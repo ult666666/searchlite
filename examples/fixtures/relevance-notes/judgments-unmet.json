@@ -1,0 +1,11 @@
+{
+  "schema": "searchlite.local-judgments/1",
+  "queries": [
+    {
+      "id": "deliberately-unmet",
+      "text": "\"nonexistent policy phrase\"",
+      "minimumNdcgAt10": 1,
+      "relevance": [{ "documentId": "retention.md", "grade": 3 }]
+    }
+  ]
+}
