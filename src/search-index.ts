@@ -204,11 +204,12 @@ function analyzeTexts(analyzer: Analyzer, texts: readonly string[]): Token[] {
 }
 
 function validVector(value: unknown): value is number[] {
-  return (
-    Array.isArray(value) &&
-    value.length > 0 &&
-    value.every((item) => typeof item === 'number' && Number.isFinite(item))
-  );
+  if (!Array.isArray(value) || value.length === 0) return false;
+  // Iteration visits holes as undefined; Array.every would silently skip them.
+  for (const item of value) {
+    if (typeof item !== 'number' || !Number.isFinite(item)) return false;
+  }
+  return true;
 }
 
 function positiveLimit(name: string, value: number | undefined, fallback: number): number {
