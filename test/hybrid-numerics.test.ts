@@ -126,3 +126,55 @@ describe('actual hybrid ranking and atomic finite-vector boundaries', () => {
     expect(index.searchHybrid({ vector: [0, 0] })[0]?.semantic?.similarity).toBe(0);
   });
 });
+
+describe('independent high-precision reference and invariants', () => {
+  it('matches every Decimal reference with explicit absolute and selected relative tolerances', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const reference = JSON.parse(
+      await readFile(new URL('./fixtures/cosine-reference.json', import.meta.url), 'utf8'),
+    ) as {
+      schema: string;
+      precisionDigits: number;
+      cases: { id: string; left: number[]; right: number[]; expected: number; relative: boolean }[];
+    };
+    expect(reference.schema).toBe('searchlite.cosine-reference/1');
+    expect(reference.precisionDigits).toBe(3500);
+    expect(reference.cases).toHaveLength(96);
+    for (const example of reference.cases) {
+      const actual = cosineSimilarity(example.left, example.right);
+      expect(Number.isFinite(actual), example.id).toBe(true);
+      expect(actual, example.id).toBeGreaterThanOrEqual(-1);
+      expect(actual, example.id).toBeLessThanOrEqual(1);
+      expect(Math.abs(actual - example.expected), example.id).toBeLessThanOrEqual(
+        8 * Number.EPSILON,
+      );
+      expect(cosineSimilarity(example.right, example.left), example.id).toBe(actual);
+      expect(
+        Math.abs(
+          cosineSimilarity([...example.left].reverse(), [...example.right].reverse()) -
+            example.expected,
+        ),
+        example.id,
+      ).toBeLessThanOrEqual(8 * Number.EPSILON);
+      if (example.relative) {
+        expect(actual, example.id).toBeGreaterThan(0);
+        expect(Math.abs(actual - example.expected), example.id).toBeLessThanOrEqual(
+          Math.max(Number.MIN_VALUE * 8, Math.abs(example.expected) * 8 * Number.EPSILON),
+        );
+      }
+    }
+    expect(reference.cases.find((c) => c.id === 'ordinary')?.expected).toBe(0.96);
+    expect(reference.cases.find((c) => c.id === 'huge-parallel')?.expected).toBe(1);
+    expect(reference.cases.find((c) => c.id === 'huge-orthogonal')?.expected).toBe(0);
+  });
+
+  it('retains an analytic angle under independent positive scales', () => {
+    const scales = [1e-250, 1e-125, 1, 1e125, 1e250];
+    for (const left of scales)
+      for (const right of scales) {
+        expect(
+          cosineSimilarity([0.25 * left, -0.5 * left, left], [0.5 * right, right, -0.25 * right]),
+        ).toBeCloseTo(-10 / 21, 14);
+      }
+  });
+});
