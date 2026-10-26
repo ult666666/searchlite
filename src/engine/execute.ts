@@ -69,6 +69,10 @@ export interface ExecutionContext {
   k1: number;
   /** Score only this document. Statistics such as document frequency still use every document. */
   only?: number | undefined;
+  /** Restrict matches without narrowing global occurrence tables or document frequencies. */
+  candidates?: ReadonlyMap<number, unknown> | undefined;
+  /** False for exclusion membership: normalization and score traces are unnecessary. */
+  score?: boolean | undefined;
   /** Record a score breakdown for every hit. */
   trace: boolean;
   /**
@@ -103,7 +107,11 @@ export function executePlan(plan: Plan, context: ExecutionContext): Hits {
       let result: Hits | undefined;
       // Each child narrows the candidate set, so later children only combine with survivors.
       for (const child of plan.children) {
-        const hits = executePlan(child, context);
+        if (result?.size === 0) break;
+        const hits = executePlan(
+          child,
+          result === undefined ? context : { ...context, candidates: result },
+        );
         if (result === undefined) {
           result = hits;
           continue;
@@ -141,7 +149,12 @@ function combine(a: Hit, b: Hit): Hit {
 
 function exclude(hits: Hits, excluded: readonly Plan[], context: ExecutionContext): Hits {
   for (const plan of excluded) {
-    for (const document of executePlan(plan, context).keys()) {
+    if (hits.size === 0) break;
+    for (const document of executePlan(plan, {
+      ...context,
+      candidates: hits,
+      score: false,
+    }).keys()) {
       hits.delete(document);
     }
   }
@@ -156,6 +169,7 @@ function executeMatch(plan: MatchPlan, context: ExecutionContext): Hits {
   }
   const idf = inverseDocumentFrequency(context.documentCount, occurrences.size);
   if (context.only !== undefined) {
+    if (context.candidates && !context.candidates.has(context.only)) return hits;
     const frequencies = occurrences.get(context.only);
     if (frequencies) {
       hits.set(
@@ -165,8 +179,27 @@ function executeMatch(plan: MatchPlan, context: ExecutionContext): Hits {
     }
     return hits;
   }
-  for (const [document, frequencies] of occurrences) {
-    hits.set(document, scoreDocument(plan, document, frequencies, idf, occurrences.size, context));
+  // Keep full occurrences for global IDF and later explanations; only scoring is scoped.
+  const candidates = context.candidates;
+  if (!candidates) {
+    // Preserve the direct entry iteration for unrestricted clauses.
+    for (const [document, frequencies] of occurrences) {
+      hits.set(
+        document,
+        scoreDocument(plan, document, frequencies, idf, occurrences.size, context),
+      );
+    }
+    return hits;
+  }
+  const documents = candidates.size < occurrences.size ? candidates.keys() : occurrences.keys();
+  for (const document of documents) {
+    const frequencies = occurrences.get(document);
+    if (frequencies && candidates.has(document)) {
+      hits.set(
+        document,
+        scoreDocument(plan, document, frequencies, idf, occurrences.size, context),
+      );
+    }
   }
   return hits;
 }
@@ -180,6 +213,7 @@ function scoreDocument(
   documentFrequency: number,
   context: ExecutionContext,
 ): Hit {
+  if (context.score === false) return { score: 0, trace: undefined };
   const lengths = context.documents.get(document)?.lengths ?? [];
   let pseudoFrequency = 0;
   const fields: FieldExplanation[] = [];

@@ -248,9 +248,13 @@ AND adds its children, OR adds the children that matched, exclusions contribute 
 
 Execution is **term-at-a-time**: each `match` clause produces a map `docNumber → partial score`,
 AND intersects maps (adding scores), OR unions them, and excluded clauses delete documents last.
-This is simple and fast enough for in-memory collections of thousands to tens of thousands of
-documents; document-at-a-time with skip lists or WAND would be the next step for much larger
-indexes.
+AND passes its survivor map to later children, which retain full occurrence tables/global IDF
+but score only candidates. OR/alternatives retain sum/max rules within the candidate set.
+Exclusions use the same interpreter for membership with scoring/tracing disabled; empty
+intersections stop. Original addition/tie order, scorer and complete caches stay unchanged,
+and caller candidate maps are never mutated. Unrestricted clauses retain direct entry iteration.
+This still materializes occurrences; document-at-a-time skipping/WAND remains future work.
+See the [exact-result tests, measurements and limitations](EXECUTION.md).
 
 **Phrase matching** uses positional intersection: the candidate documents come from the rarest
 term's postings, and for each document the position lists are scanned with one cursor per term.
@@ -361,8 +365,8 @@ statistics before and after.
 
 - **Memory-resident and single-threaded.** Everything lives in JavaScript `Map`s; there is no
   compression of postings (no delta or variable-byte encoding) and no on-disk format besides JSON.
-- **Term-at-a-time execution** evaluates every posting of every clause. Large collections would
-  want document-at-a-time evaluation with skipping (WAND/MaxScore).
+- **Term-at-a-time execution** still materializes occurrence tables for evaluated clauses, while
+  AND/exclusions avoid irrelevant scoring. Document-at-a-time skipping (WAND/MaxScore) is future work.
 - **English-only analysis.** No CJK segmentation (a run of CJK characters is one token), no
   stemming for other languages; letters like "ø" that do not decompose are not folded to ASCII.
 - **Stemming interacts with fuzzy search.** A typo can change how Porter treats a word, so

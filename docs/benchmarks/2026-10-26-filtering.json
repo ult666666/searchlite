@@ -1,0 +1,3319 @@
+{
+  "schema": "searchlite.filtering-benchmark/1",
+  "observedAt": "2026-10-26T13:22:03.867Z",
+  "machine": {
+    "node": "v24.18.0",
+    "v8": "13.6.233.17-node.50",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": "Apple M5 Pro",
+    "logicalCpus": 15,
+    "totalMemoryBytes": 25769803776
+  },
+  "modules": {
+    "baseline": {
+      "bytes": 73497,
+      "sha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc"
+    },
+    "candidate": {
+      "bytes": 74351,
+      "sha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977"
+    }
+  },
+  "profile": {
+    "id": "default",
+    "documentCounts": [1000, 10000],
+    "trials": 3,
+    "warmupCycles": 2,
+    "measurementCycles": 4,
+    "limit": 10
+  },
+  "exactRankingParity": true,
+  "sizes": [
+    {
+      "documentCount": 1000,
+      "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+      "trials": [
+        {
+          "module": "baseline",
+          "ordinal": 0,
+          "processId": 46600,
+          "documentCount": 1000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 7.645333000000001,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.21724999999999994,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.31133299999999764,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.385583000000004,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.301124999999999,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.14883300000000332,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2432499999999962,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.37058299999999633,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.379374999999996,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.22399999999999665,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.24062500000000142,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4466669999999979,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.4807909999999964,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1810000000000045,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.27366599999999863,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.4622500000000045,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.3858330000000052,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.22045899999999818,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.23512500000000358,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4276660000000021,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.31904200000000316,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.16054199999999952,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2645830000000018,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.398457999999998,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.40529199999999577,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.23687499999999773,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2580420000000032,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.5119589999999974,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.33200000000000074,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1807500000000033,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.26012500000000216,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.385666999999998,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.374167000000007,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 0,
+          "processId": 46601,
+          "documentCount": 1000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 7.718541999999999,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.15100000000000335,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.3269999999999982,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.22187499999999716,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.19491699999999668,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.10445800000000105,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.1739999999999995,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.4089579999999984,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.43054099999999806,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.1824579999999969,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.27487500000000153,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.2202920000000006,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.27216700000000316,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1124590000000012,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.19545799999999502,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3049999999999997,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.6714169999999982,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.1748750000000001,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.24637500000000045,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.19887500000000102,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.1890420000000006,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09633299999999423,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.1756250000000037,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.35737499999999756,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4109580000000008,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.142832999999996,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2432499999999962,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.3219580000000022,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.18379099999999937,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09837499999999721,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.1826250000000016,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.30283399999999716,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4960830000000058,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 1,
+          "processId": 46602,
+          "documentCount": 1000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 7.574332999999996,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.1523339999999962,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.31883300000000503,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.21408300000000224,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.1927920000000043,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09445799999999593,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.1709590000000034,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3994169999999997,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.44470900000000313,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.18820800000000304,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.27529100000000284,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.22525000000000261,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.28708299999999554,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1186659999999975,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.20283300000000537,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3112080000000006,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.5537500000000009,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.21587499999999693,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.31954200000000554,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.22195800000000077,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.20404199999999406,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1023750000000021,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.1877500000000012,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.38829199999999986,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4271669999999972,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.15808299999999775,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2610829999999993,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.29162499999999625,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.19650000000000034,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09812500000000313,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.19266700000000014,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.31400000000000006,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.5094999999999956,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        },
+        {
+          "module": "baseline",
+          "ordinal": 1,
+          "processId": 46615,
+          "documentCount": 1000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 8.116459000000006,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.22162500000000307,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.27908299999999997,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.40424999999999756,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.3107919999999993,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.15879199999999827,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.25004200000000054,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3699579999999969,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.3872080000000011,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.22849999999999682,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2553750000000008,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4975000000000023,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.4625419999999991,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1909169999999989,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.28479200000000304,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.4803749999999951,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.40775000000000006,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.23258399999999568,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2512089999999958,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4242919999999941,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.3224159999999969,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.17583300000000435,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2596249999999998,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.39929199999999554,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4045419999999993,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.23750000000000426,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.26795799999999304,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.8008329999999972,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.40687499999999943,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.18704199999999105,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2856660000000062,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.39287500000000364,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.37783300000000963,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        },
+        {
+          "module": "baseline",
+          "ordinal": 2,
+          "processId": 46621,
+          "documentCount": 1000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 8.169625000000003,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.25337499999999835,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.36383299999999963,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4038749999999993,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.29879200000000594,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.15041700000000446,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2445420000000027,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3956659999999985,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.48229200000000105,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.2907499999999956,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2666670000000053,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.6587500000000048,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.8506250000000009,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.281917,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.46974999999999767,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.44999999999999574,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4520000000000053,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.36716600000000454,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2733340000000055,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.4517500000000041,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.34829100000000324,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.1968339999999955,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.2648330000000101,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.44454199999999844,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.4971670000000046,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.2841669999999965,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.31766700000000014,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.47562500000000796,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.3221669999999932,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.16712499999999864,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.25799999999999557,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.41254200000000196,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.39195800000000247,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 2,
+          "processId": 46628,
+          "documentCount": 1000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "d53d89aa81b4c1f142d9d7263c28e026af23e265cc6121928ad4aa6e8f69530d",
+          "buildMs": 7.581667000000003,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.14720799999999912,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.33458399999999955,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.23075000000000045,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.2085830000000044,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09712499999999835,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.17420800000000014,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.4049579999999935,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.42670900000000245,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.30554199999999554,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2666670000000053,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.21579200000000043,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.2824579999999983,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.12087499999999807,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.19366600000000034,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3376249999999956,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.6435420000000036,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.15604199999999935,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2415420000000026,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.1984160000000017,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.18737500000000296,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09595799999999599,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.17787500000000023,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.34595900000000057,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.508499999999998,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 0.1529159999999976,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 0.2578750000000056,
+              "resultCount": 10,
+              "sha256": "dc6463b423bf15fc05abfe3de2c47a2770870dda0d425c86aa49216cff58bdb1"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 0.3338340000000031,
+              "resultCount": 10,
+              "sha256": "960b41a2542704abb31f203bf9dfc12adb123e0135b61cf68c6512e71b3dad96"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 0.17600000000000193,
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.09779199999999832,
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.18325000000000102,
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 0.3033750000000026,
+              "resultCount": 10,
+              "sha256": "e4ea2d31bf4a256e2d0240695676dc69af05f78e5f9ac7d9a239d3ce66a1e107"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 0.475166999999999,
+              "resultCount": 10,
+              "sha256": "a38cb7cd578152cbcdc1c6c31117420d72cfeafa869c29d9725148399ef81a2d"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 11,
+              "sha256": "52fa6d7baea88d2983a90d6b3e7aa446d4015bac6c8d4a0896b7ba7e4511907f"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 11,
+              "sha256": "1d84d0e0d56e587efe9ddd58ee7541cb73cb463e613a0477d3ca026cf79ec624"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 8,
+              "sha256": "3f3a5084d1fc024074e34750fb8048e6936f0a1c09c165aaa696e4342430734b"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 6,
+              "sha256": "eb61832097bb2fbe2359b5559d5e1dbf639b8cb75d3e7dd45f9a3330ba6dd22a"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 9,
+              "sha256": "624024109965d846f302ee413e9e4966a138dbcf110e8733d8dc8df41389d8f2"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 989,
+              "sha256": "f69f7844391e753446bdd09ec9f6a1b52b0ec0db216c08378b5b50ba3c82efd1"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 1000,
+              "sha256": "191bdd279b052b052e0e40eab28802a521bd38b750ba078bf9c9ef7641dfcf40"
+            }
+          ]
+        }
+      ],
+      "queries": [
+        {
+          "id": "rare-first",
+          "text": "needle AND common",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.21724999999999994,
+            "meanMs": 0.2511875833333323,
+            "p50Ms": 0.23258399999999568,
+            "p95Ms": 0.36716600000000454,
+            "maxMs": 0.36716600000000454
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.142832999999996,
+            "meanMs": 0.17728116666666516,
+            "p50Ms": 0.15604199999999935,
+            "p95Ms": 0.30554199999999554,
+            "maxMs": 0.30554199999999554
+          }
+        },
+        {
+          "id": "common-first",
+          "text": "common AND needle",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.23512500000000358,
+            "meanMs": 0.2766875833333338,
+            "p50Ms": 0.2666670000000053,
+            "p95Ms": 0.36383299999999963,
+            "maxMs": 0.36383299999999963
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.2415420000000026,
+            "meanMs": 0.2805764166666685,
+            "p50Ms": 0.2666670000000053,
+            "p95Ms": 0.33458399999999955,
+            "maxMs": 0.33458399999999955
+          }
+        },
+        {
+          "id": "nested-or",
+          "text": "needle AND (common OR secondary)",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.385583000000004,
+            "meanMs": 0.4907291666666674,
+            "p50Ms": 0.4466669999999979,
+            "p95Ms": 0.8008329999999972,
+            "maxMs": 0.8008329999999972
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.1984160000000017,
+            "meanMs": 0.24122566666666737,
+            "p50Ms": 0.22187499999999716,
+            "p95Ms": 0.3338340000000031,
+            "maxMs": 0.3338340000000031
+          }
+        },
+        {
+          "id": "exclusion",
+          "text": "needle AND common NOT excluded",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.29879200000000594,
+            "meanMs": 0.39628816666666644,
+            "p50Ms": 0.3224159999999969,
+            "p95Ms": 0.8506250000000009,
+            "maxMs": 0.8506250000000009
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.17600000000000193,
+            "meanMs": 0.21456250000000013,
+            "p50Ms": 0.19491699999999668,
+            "p95Ms": 0.28708299999999554,
+            "maxMs": 0.28708299999999554
+          }
+        },
+        {
+          "id": "prefix",
+          "text": "needle AND title:stor*",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.14883300000000332,
+            "meanMs": 0.18166683333333347,
+            "p50Ms": 0.17583300000000435,
+            "p95Ms": 0.281917,
+            "maxMs": 0.281917
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.09445799999999593,
+            "meanMs": 0.10308324999999859,
+            "p50Ms": 0.09812500000000313,
+            "p95Ms": 0.12087499999999807,
+            "maxMs": 0.12087499999999807
+          }
+        },
+        {
+          "id": "phrase",
+          "text": "needle AND \"shared phrase\"",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.2432499999999962,
+            "meanMs": 0.27990616666666784,
+            "p50Ms": 0.26012500000000216,
+            "p95Ms": 0.46974999999999767,
+            "maxMs": 0.46974999999999767
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.1709590000000034,
+            "meanMs": 0.18424300000000096,
+            "p50Ms": 0.1826250000000016,
+            "p95Ms": 0.20283300000000537,
+            "maxMs": 0.20283300000000537
+          }
+        },
+        {
+          "id": "broad-negative",
+          "text": "common NOT needle",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.3699579999999969,
+            "meanMs": 0.4135173333333319,
+            "p50Ms": 0.398457999999998,
+            "p95Ms": 0.4803749999999951,
+            "maxMs": 0.4803749999999951
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.30283399999999716,
+            "meanMs": 0.3482500833333321,
+            "p50Ms": 0.3376249999999956,
+            "p95Ms": 0.4089579999999984,
+            "maxMs": 0.4089579999999984
+          }
+        },
+        {
+          "id": "broad-or",
+          "text": "common OR secondary",
+          "baseline": {
+            "count": 12,
+            "minMs": 0.374167000000007,
+            "meanMs": 0.4121180833333356,
+            "p50Ms": 0.39195800000000247,
+            "p95Ms": 0.4971670000000046,
+            "maxMs": 0.4971670000000046
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.4109580000000008,
+            "meanMs": 0.4998369166666669,
+            "p50Ms": 0.475166999999999,
+            "p95Ms": 0.6714169999999982,
+            "maxMs": 0.6714169999999982
+          }
+        }
+      ]
+    },
+    {
+      "documentCount": 10000,
+      "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+      "trials": [
+        {
+          "module": "baseline",
+          "ordinal": 0,
+          "processId": 46629,
+          "documentCount": 10000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 45.353875,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.9253329999999949,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.2437920000000133,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.6440410000000156,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.351583000000005,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.393749999999983,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.9882920000000013,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.3061250000000086,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.394500000000022,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.7319999999999993,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.7842090000000042,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 4.378083000000004,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.100750000000005,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.1942080000000033,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.474000000000018,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.804124999999999,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.739707999999979,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 2.7663750000000107,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.8260840000000087,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 2.6037080000000117,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.3021249999999895,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.5060410000000104,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 2.206040999999999,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 4.4480000000000075,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.281791999999996,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.7329580000000249,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.1714589999999987,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.384584000000018,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.561083999999994,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 2.3488330000000133,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.5920839999999998,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.334333000000015,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.372250000000008,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 0,
+          "processId": 46630,
+          "documentCount": 10000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 45.60708300000001,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.4881670000000042,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.1229590000000087,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.5301249999999982,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.3255410000000154,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.7249999999999943,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.2348749999999882,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.542709000000002,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.912875000000014,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.1990829999999733,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.0109999999999957,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.5493749999999977,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.695291999999995,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.724915999999979,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.10829099999998,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.667667000000023,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.2132919999999956,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.0469170000000076,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.8642499999999984,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.5883330000000058,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.3403749999999945,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.666041999999976,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.0134999999999934,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.336749999999995,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.1998749999999916,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.014125000000007,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.8238330000000076,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.501374999999996,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.1596659999999872,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.5897500000000093,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.9512919999999951,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.5121660000000077,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 2.923334000000011,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 1,
+          "processId": 46632,
+          "documentCount": 10000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 45.699667,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.6904169999999965,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.2977920000000154,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.558917000000008,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.3270420000000058,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.7979579999999942,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.2862080000000162,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.500458000000009,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.527792000000005,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.108542,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.103084000000024,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.3610410000000002,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.750583000000006,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.7205420000000231,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.0700410000000034,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.4737089999999853,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.3173749999999984,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.079291999999981,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.9386250000000018,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.756416999999999,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.2280000000000086,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.649957999999998,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 0.9955839999999796,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.506541999999996,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.6894579999999735,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.096082999999993,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.936583000000013,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.7882089999999948,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.2765420000000063,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.7128749999999968,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.094083000000012,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.739791000000025,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.0025409999999795,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        },
+        {
+          "module": "baseline",
+          "ordinal": 1,
+          "processId": 46633,
+          "documentCount": 10000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 45.40004199999999,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.7804589999999791,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.944749999999999,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.3806670000000167,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.5709579999999903,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.5210409999999968,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.7739159999999856,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 3.466875000000016,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.976541999999995,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 3.073666000000003,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.2574169999999754,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.330541000000011,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.9005839999999807,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.547583000000003,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 2.2450000000000045,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 3.2503329999999835,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 4.186791999999997,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 2.073541999999975,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.6057500000000005,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.204250000000002,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.9098749999999995,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.49675000000002,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.6933749999999748,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 5.245666999999997,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 5.848457999999994,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 3.5969580000000008,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.9279579999999896,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 5.451416999999992,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 3.843541999999985,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.9951250000000016,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 3.180833999999976,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 3.8255840000000205,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 5.589749999999981,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        },
+        {
+          "module": "baseline",
+          "ordinal": 2,
+          "processId": 46634,
+          "documentCount": 10000,
+          "moduleSha256": "0b4f21e645921eb1997be4c69abe1d6ea89e1e49bcde089efbcc92f03dd441dc",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 46.62925,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.799209000000019,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.9246250000000202,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 3.2700829999999996,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.199957999999981,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.2876249999999914,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.9966249999999945,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.502666000000005,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.51808299999999,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.6934579999999926,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.7531250000000114,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 4.559832999999998,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.207667000000015,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.2060840000000042,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.5644169999999917,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.8863750000000152,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.856000000000023,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 2.7844160000000215,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.7394999999999925,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 2.5712919999999997,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.234874999999988,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.433209000000005,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.8772919999999829,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 3.691750000000013,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.1332920000000115,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.7817909999999983,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.9326670000000092,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 2.875624999999985,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 2.3545409999999833,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 1.848415999999986,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.5253749999999968,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.4062079999999924,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 2.994082999999989,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        },
+        {
+          "module": "candidate",
+          "ordinal": 2,
+          "processId": 46635,
+          "documentCount": 10000,
+          "moduleSha256": "2380b03376309ca42c2c8e97bd97a665711d932c2ca16a06cc4ae1a607fba977",
+          "workloadSha256": "6539c849b161c98a6e4758d3195259f92e90a870d86522fa618546c8798a6893",
+          "buildMs": 46.072041999999996,
+          "samples": [
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.1892080000000078,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.1582500000000095,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 2.061791999999997,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.3564999999999827,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.7795409999999947,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.1426659999999913,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.6277919999999995,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.739834000000002,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.203000000000003,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.5674169999999776,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.422708,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.2904589999999985,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.6653750000000116,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.062958000000009,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.9558330000000126,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.0141669999999863,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.0695829999999944,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 2.359791999999999,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.3267910000000143,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.2576660000000004,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.6783749999999884,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.0382909999999868,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.552042,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.2192500000000166,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            },
+            {
+              "queryId": "rare-first",
+              "searchMs": 1.4697920000000124,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "common-first",
+              "searchMs": 1.8707079999999792,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "nested-or",
+              "searchMs": 1.3511670000000038,
+              "resultCount": 10,
+              "sha256": "6beb3b0bdddf5a9c01f121534174dcf663c309d912182e1f6a7cb144022f063a"
+            },
+            {
+              "queryId": "exclusion",
+              "searchMs": 1.2203340000000082,
+              "resultCount": 10,
+              "sha256": "c03e29a0c443bc531675afd6ed1287081aea2e500ffd46b44155077645acab84"
+            },
+            {
+              "queryId": "prefix",
+              "searchMs": 0.6751669999999876,
+              "resultCount": 10,
+              "sha256": "a4f6c5047429657fda31ca4ed50d0ba48f588e1ad9d51807f02e44bd0f1ec0dd"
+            },
+            {
+              "queryId": "phrase",
+              "searchMs": 1.2592499999999802,
+              "resultCount": 10,
+              "sha256": "11d1e25466faff0c89d875e1368b86cfeaaee8e0389743531cf1fe70cc5fc071"
+            },
+            {
+              "queryId": "broad-negative",
+              "searchMs": 2.6887920000000065,
+              "resultCount": 10,
+              "sha256": "9198cbc38761542575957256d6362a6912f859fc7780b9f4fcbdc135fc9365bd"
+            },
+            {
+              "queryId": "broad-or",
+              "searchMs": 3.283832999999987,
+              "resultCount": 10,
+              "sha256": "52f47a863c75a5068263c6b44eabf59c1e4693a9dc4acc9346efa6eece321591"
+            }
+          ],
+          "rankings": [
+            {
+              "queryId": "rare-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "common-first",
+              "resultCount": 104,
+              "sha256": "33064c10207295c8c3822fd5f50c0b4ec33106d7372876d913bc4d9168527633"
+            },
+            {
+              "queryId": "nested-or",
+              "resultCount": 104,
+              "sha256": "a7ca95f97bf7b4a2bd98ede8c61b99e9e2f2e1b0d3f67d79f27997a3d668a029"
+            },
+            {
+              "queryId": "exclusion",
+              "resultCount": 83,
+              "sha256": "e1246bac7b83dcfcbe70d93f3e883480a066a88a3b71996c7d8bc3578e2c60e8"
+            },
+            {
+              "queryId": "prefix",
+              "resultCount": 52,
+              "sha256": "4d208daf874de76ed26dbbf8334dc563ec65c4d16799dffc4a2ebbb4bbf26767"
+            },
+            {
+              "queryId": "phrase",
+              "resultCount": 78,
+              "sha256": "e5737770e3a8511ccec333242466def2c0cac352b9a7135ee641c7d944824776"
+            },
+            {
+              "queryId": "broad-negative",
+              "resultCount": 9896,
+              "sha256": "d3381932ec3fc13bfdbe94cab7a002154f0d9cba721d86370b32ef80bfe50582"
+            },
+            {
+              "queryId": "broad-or",
+              "resultCount": 10000,
+              "sha256": "1236257d0d5b4df345bf9266f8cbd0ab813d26f6f89c08d61817083484b857fc"
+            }
+          ]
+        }
+      ],
+      "queries": [
+        {
+          "id": "rare-first",
+          "text": "needle AND common",
+          "baseline": {
+            "count": 12,
+            "minMs": 1.6934579999999926,
+            "meanMs": 2.2283470833333348,
+            "p50Ms": 1.799209000000019,
+            "p95Ms": 3.5969580000000008,
+            "maxMs": 3.5969580000000008
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 1.014125000000007,
+            "meanMs": 1.2211840833333316,
+            "p50Ms": 1.108542,
+            "p95Ms": 1.6904169999999965,
+            "maxMs": 1.6904169999999965
+          }
+        },
+        {
+          "id": "common-first",
+          "text": "common AND needle",
+          "baseline": {
+            "count": 12,
+            "minMs": 1.7394999999999925,
+            "meanMs": 2.0926113333333354,
+            "p50Ms": 1.9326670000000092,
+            "p95Ms": 2.9279579999999896,
+            "maxMs": 2.9279579999999896
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 1.8238330000000076,
+            "meanMs": 2.0878577500000026,
+            "p50Ms": 2.0109999999999957,
+            "p95Ms": 2.5674169999999776,
+            "maxMs": 2.5674169999999776
+          }
+        },
+        {
+          "id": "nested-or",
+          "text": "needle AND (common OR secondary)",
+          "baseline": {
+            "count": 12,
+            "minMs": 2.5712919999999997,
+            "meanMs": 3.554510333333338,
+            "p50Ms": 3.330541000000011,
+            "p95Ms": 5.451416999999992,
+            "maxMs": 5.451416999999992
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 1.3267910000000143,
+            "meanMs": 1.5663541666666678,
+            "p50Ms": 1.5301249999999982,
+            "p95Ms": 2.061791999999997,
+            "maxMs": 2.061791999999997
+          }
+        },
+        {
+          "id": "exclusion",
+          "text": "needle AND common NOT excluded",
+          "baseline": {
+            "count": 12,
+            "minMs": 2.100750000000005,
+            "meanMs": 2.5447951666666597,
+            "p50Ms": 2.351583000000005,
+            "p95Ms": 3.843541999999985,
+            "maxMs": 3.843541999999985
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 1.1596659999999872,
+            "meanMs": 1.352333333333334,
+            "p50Ms": 1.2904589999999985,
+            "p95Ms": 1.750583000000006,
+            "maxMs": 1.750583000000006
+          }
+        },
+        {
+          "id": "prefix",
+          "text": "needle AND title:stor*",
+          "baseline": {
+            "count": 12,
+            "minMs": 1.1942080000000033,
+            "meanMs": 1.5648887500000015,
+            "p50Ms": 1.49675000000002,
+            "p95Ms": 2.3488330000000133,
+            "maxMs": 2.3488330000000133
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.5897500000000093,
+            "meanMs": 0.6987915833333295,
+            "p50Ms": 0.6783749999999884,
+            "p95Ms": 0.7979579999999942,
+            "maxMs": 0.7979579999999942
+          }
+        },
+        {
+          "id": "phrase",
+          "text": "needle AND \"shared phrase\"",
+          "baseline": {
+            "count": 12,
+            "minMs": 1.474000000000018,
+            "meanMs": 1.9264375833333272,
+            "p50Ms": 1.7739159999999856,
+            "p95Ms": 3.180833999999976,
+            "maxMs": 3.180833999999976
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 0.9512919999999951,
+            "meanMs": 1.1047532499999946,
+            "p50Ms": 1.0700410000000034,
+            "p95Ms": 1.2862080000000162,
+            "maxMs": 1.2862080000000162
+          }
+        },
+        {
+          "id": "broad-negative",
+          "text": "common NOT needle",
+          "baseline": {
+            "count": 12,
+            "minMs": 2.3061250000000086,
+            "meanMs": 3.264003416666673,
+            "p50Ms": 2.8863750000000152,
+            "p95Ms": 5.245666999999997,
+            "maxMs": 5.245666999999997
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 2.336749999999995,
+            "meanMs": 2.5920209166666717,
+            "p50Ms": 2.542709000000002,
+            "p95Ms": 2.9558330000000126,
+            "maxMs": 2.9558330000000126
+          }
+        },
+        {
+          "id": "broad-or",
+          "text": "common OR secondary",
+          "baseline": {
+            "count": 12,
+            "minMs": 2.994082999999989,
+            "meanMs": 3.9076041666666654,
+            "p50Ms": 3.51808299999999,
+            "p95Ms": 5.848457999999994,
+            "maxMs": 5.848457999999994
+          },
+          "candidate": {
+            "count": 12,
+            "minMs": 2.923334000000011,
+            "meanMs": 3.33696883333333,
+            "p50Ms": 3.2192500000000166,
+            "p95Ms": 3.912875000000014,
+            "maxMs": 3.912875000000014
+          }
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Fixed synthetic skew; not production traffic, model quality or a general speed guarantee.",
+    "Search samples include public parse/plan/execute/result construction; result hashing, full rankings, build, startup and warmup are outside search timing.",
+    "Whole ranking digests cover IDs, exact scores, fields and matches; shared API consistency is not independent formula certification.",
+    "No CPU pinning, forced GC, retries, best-run selection or latency gate. Scheduling/JIT/GC affect timings.",
+    "Only explicitly selected trusted bundled ESM code may be used; modules execute with ordinary Node permissions.",
+    "Module hashes are observed reproducibility checks, not source authenticity or protection against a hostile operating-system owner."
+  ]
+}
