@@ -31,6 +31,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run test:coverage
       - run: npm run test:filtering
+      - run: npm run test:package
       - run: npm run build
       - run: npm run check:dist
       - run: npm run build:demo

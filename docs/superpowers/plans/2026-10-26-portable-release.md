@@ -19,6 +19,7 @@ Outputexisting/brokenlinks/missingparent mustnot mutatefiles. Archive mustcontai
 
 Files: create scripts/package_local_review.py and test/local-package.test.js; package.json package-lock.json .github/workflows/ci.yml.
 Interfaces: npm pack existingprepack yieldsfreshversionedtgz; sourceCLI/guides/fixtures→exactZIPpayload; test/nativeCI verifies installedpackage+consumer.
+
 - [ ] Write nativeprocess tests first, runnode --test; Expected: missingbuilder RED.
 - [ ] Implement minimalbuilder andversion0.2 metadata, explicitCLI/usefulREADME/manifest; wiretest:package/npmcheck/NodeCI; format. Run actualnative tests; Expected: allgreenincludingempty-cache offline fourcommands/control/refusal.
 - [ ] Run npmruncheck andbrowser/eval; Expected: existing266/6native plusnewpackagechecks green. Commit; finaltaskcommand npmrun test:package.
@@ -27,5 +28,6 @@ Interfaces: npm pack existingprepack yieldsfreshversionedtgz; sourceCLI/guides/f
 
 Files: docs/RELEASING.md,README.md,CHANGELOG.md.
 Interfaces: exactbuilder/consumer outputs→releaserecipe and three newGitHubassets; sourceversion0.2→immutabletag.
+
 - [ ] Documentreproduciblebuilder/newdest/offlinequickstart/limits; moveactualUnreleased featuresto0.2.0date andtruthfulsourceconsumercoverage. Format; actualrecipealreadyexercised bynativeprocess tests. Commit; finalcommandnpmrunformat:check.
 - [ ] One independentwholebranchreview, exactgreenmerge, freshmergedsourcebundle/build/publicassets; publishnew0.2release withthreeactualassets, then download/byteverify/extract/offlineinstall/CLIproof beforecompletion. Retainprevioussource/checkpoints/releases.
