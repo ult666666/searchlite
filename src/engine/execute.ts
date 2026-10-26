@@ -181,11 +181,20 @@ function executeMatch(plan: MatchPlan, context: ExecutionContext): Hits {
   }
   // Keep full occurrences for global IDF and later explanations; only scoring is scoped.
   const candidates = context.candidates;
-  const documents =
-    candidates && candidates.size < occurrences.size ? candidates.keys() : occurrences.keys();
+  if (!candidates) {
+    // Preserve the direct entry iteration for unrestricted clauses.
+    for (const [document, frequencies] of occurrences) {
+      hits.set(
+        document,
+        scoreDocument(plan, document, frequencies, idf, occurrences.size, context),
+      );
+    }
+    return hits;
+  }
+  const documents = candidates.size < occurrences.size ? candidates.keys() : occurrences.keys();
   for (const document of documents) {
     const frequencies = occurrences.get(document);
-    if (frequencies && (!candidates || candidates.has(document))) {
+    if (frequencies && candidates.has(document)) {
       hits.set(
         document,
         scoreDocument(plan, document, frequencies, idf, occurrences.size, context),
