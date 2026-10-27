@@ -149,10 +149,17 @@ test(
   async (t) => {
     const { page, requests } = await pageFor(t);
     const input = fixture(true, true);
+    const positiveMean = JSON.parse(input.judgments);
+    positiveMean.queries.push({ ...positiveMean.queries[1], id: 'body-task-second' });
+    input.judgments = encode(positiveMean);
     await select(page, input, '<img src=x onerror=alert(1)>.json');
     await run(page);
     assert.equal(await page.locator('#verdict').innerText(), 'Comparison failed');
-    assert.equal(await report(page), await native(input));
+    const actual = await report(page);
+    assert.equal(actual, await native(input));
+    const compared = JSON.parse(actual);
+    assert(compared.queries.reduce((sum, query) => sum + query.delta.ndcgAt10, 0) > 0);
+    assert.deepEqual(compared.regressedQueries, ['title-task']);
     assert.match(await page.locator('#baseline-selection').innerText(), /<img src=x/);
     assert.equal(await page.locator('#results img').count(), 0);
     assert.equal(await page.locator('input img').count(), 0);
