@@ -387,3 +387,34 @@ test(
     assert.equal(await page.evaluate(() => window.__terminated), 2);
   },
 );
+
+test(
+  'long valid query text and IDs remain usable at narrow widths',
+  { timeout: 60000 },
+  async (t) => {
+    const { page } = await pageFor(t);
+    const inputs = fixture(false);
+    inputs.judgments = encode({
+      schema: 'searchlite.local-judgments/1',
+      queries: [
+        {
+          id: 'q'.repeat(64),
+          text: 'x'.repeat(1000),
+          minimumNdcgAt10: 0,
+          relevance: [{ documentId: 'a.md', grade: 3 }],
+        },
+      ],
+    });
+    await select(page, inputs);
+    await run(page);
+    assert.equal(await report(page), await native(inputs));
+    for (const width of [320, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 1000 });
+      assert.equal(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+        true,
+        `valid long query overflow at${width}`,
+      );
+    }
+  },
+);

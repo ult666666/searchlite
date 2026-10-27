@@ -58,7 +58,7 @@ npm run test:browser
 npm run check
 ```
 
-The six local-workbench browser stories use real worker comparisons and actual File inputs, compare downloaded reports to native stdout, exercise both synthetic controls offline, reject malformed/oversized/incomparable inputs and late query errors, and check stale reads, late worker replies, deadline termination, literal markup/control strings, unchanged storage/URLs, keyboard operation and 320–1440 pixel layouts. The existing glossary/search browser workflow remains part of the same command. The deadline path uses a controlled stalled worker and browser clock; successful paths use the real worker and engine.
+The seven local-workbench browser stories use real worker comparisons and actual File inputs, compare downloaded reports to native stdout, exercise both synthetic controls offline, reject malformed/oversized/incomparable inputs and late query errors, and check stale reads, late worker replies, deadline termination, literal markup/control strings, unchanged storage/URLs, keyboard operation, accepted long query/ID wrapping and 320–1440 pixel layouts. The existing glossary/search browser workflow remains part of the same command. The deadline path uses a controlled stalled worker and browser clock; successful paths use the real worker and engine.
 
 To explicitly verify the public deployment against your matching checkout, the new suite accepts only this public origin:
 

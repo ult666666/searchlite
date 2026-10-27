@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createHash } from 'node:crypto';
-import { SearchIndex, evaluate } from 'searchlite';
+import { SearchIndex, evaluate } from '../src/index';
 import { createLocalReviewer, serializeLocalReport } from '../examples/local-review-core.js';
 
 const encode = (value: unknown) => new TextEncoder().encode(JSON.stringify(value) + '\n');
