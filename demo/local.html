@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; worker-src blob:; style-src 'self'; img-src data:; connect-src 'none'; base-uri 'none'; object-src 'none'; form-action 'none'"
+    />
+    <meta
+      name="description"
+      content="Compare two saved search indexes against your own labels, locally in your browser. Inspect per-query regressions and export the same report as the native CLI."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Local file workbench · searchlite</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#local-controls">Skip to local comparison</a>
+    <header class="site-header">
+      <nav aria-label="Project">
+        <a href="./">Search demo</a> · <a href="./relevance.html">Glossary workbench</a> ·
+        <a href="https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md"
+          >Method and reproduction</a
+        >
+      </nav>
+      <p class="eyebrow">searchlite / your saved collection</p>
+      <h1>Local file workbench</h1>
+      <p class="tagline">
+        Compare two real saved indexes against the same labels. Inspect every query and download the
+        exact native comparison report.
+      </p>
+      <p class="scope-note">
+        <strong>Your files stay in browser memory.</strong> No upload, account, analytics or
+        provider call. Clear removes the selected inputs and rendered results. Reports contain query
+        text and document IDs; share them deliberately.
+      </p>
+    </header>
+    <main>
+      <noscript
+        ><p>
+          JavaScript is required for local comparison. Use the linked guide for the equivalent Node
+          command.
+        </p></noscript
+      >
+      <section id="local-controls" aria-label="Local comparison inputs" tabindex="-1">
+        <h2>Select saved files</h2>
+        <p>
+          Use title/body snapshots from <code>search-docs.js</code> and a
+          <code>searchlite.local-judgments/1</code> labels file. Both indexes must contain identical
+          stored document IDs and title/body text.
+        </p>
+        <div class="local-inputs">
+          <label
+            >Baseline index<input
+              type="file"
+              id="baseline-file"
+              aria-label="Baseline index"
+              aria-describedby="baseline-selection"
+              accept=".json,application/json"
+            /><span id="baseline-selection" class="hint">None selected.</span></label
+          >
+          <label
+            >Candidate index<input
+              type="file"
+              id="candidate-file"
+              aria-label="Candidate index"
+              aria-describedby="candidate-selection"
+              accept=".json,application/json"
+            /><span id="candidate-selection" class="hint">None selected.</span></label
+          >
+          <label
+            >Judgments file<input
+              type="file"
+              id="judgments-file"
+              aria-label="Judgments file"
+              aria-describedby="judgments-selection"
+              accept=".json,application/json"
+            /><span id="judgments-selection" class="hint">None selected.</span></label
+          >
+        </div>
+        <p class="hint">
+          Up to 16 MiB per index, 128 documents and 1 MiB of body text; labels up to 256 KiB and 32
+          queries. Comparison runs in a worker with a 15-second deadline. The already-loaded page
+          works offline.
+        </p>
+        <div class="local-actions">
+          <button id="compare-local" type="button" disabled>Compare saved indexes</button
+          ><button id="clear-local" type="button">Clear local files</button>
+        </div>
+        <p id="local-status" role="status" aria-live="polite">
+          Choose three files or load a synthetic example.
+        </p>
+      </section>
+      <section aria-label="Synthetic example">
+        <h2>Try a complete example</h2>
+        <p>
+          Two fictional notes put “quartz” in different fields. Reweighting title and body improves
+          one query and regresses another; the individual drop still fails even when both minimums
+          pass.
+        </p>
+        <div class="local-actions">
+          <label
+            >Example control<select id="example-control" aria-label="Example control">
+              <option value="changed">Weight regression</option>
+              <option value="unchanged">Unchanged</option>
+            </select></label
+          ><button type="button" id="load-example" disabled>Load synthetic example</button>
+        </div>
+        <p id="sample-downloads"></p>
+      </section>
+      <section id="results" aria-label="Local comparison results" hidden></section>
+      <section aria-label="Comparison contract">
+        <h2>What the result means</h2>
+        <p>
+          Every candidate query must meet its declared minimum and have unrounded nDCG@10 at least
+          as high as its baseline. A mean improvement cannot override a query regression. Rankings
+          use the actual supplied indexes, with the same engine and rules as the native CLI.
+        </p>
+        <p>
+          This is a deterministic gate for supplied labels, not a significance test or proof of
+          general retrieval quality. Matching stored text and SHA-256 hashes do not authenticate
+          postings, configurations, labels or sources. The result does not establish current source
+          freshness. Clear drops application references; it does not promise secure memory erasure.
+        </p>
+      </section>
+    </main>
+    <script type="module" src="/src/local.ts"></script>
+  </body>
+</html>
