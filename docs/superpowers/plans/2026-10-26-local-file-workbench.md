@@ -39,11 +39,15 @@
 - [ ] Implement accessible input controls, per-query actual rankings/metrics, exact JSON download, synthetic control/input downloads, Clear lifecycle and end-to-end deadline. Existing demo design reused; no persistence/newbackend.
 - [ ] Run new real Chromium suite plus existing browser workflow; build/type/lint/format, commit. Final command `npm run test:browser` with both suites included.
 
-### Task 3: Source-backed docs and verified shipping
+### Task 3: Source-backed docs and reproducible checks
 
 **Files:** README.md, docs/LOCAL_FILE_WORKBENCH.md, docs/LOCAL_COMPARISON.md, docs/RELEASING.md, CHANGELOG.md and integration assertion updates that reflect the new helper.
 **Interfaces:** Publiclocal.html and exact CLI schema; public docs distinguish currentmain browser work from immutable0.2download.
 
 - [ ] Document full reproducible synthetic/browser/private-file flow, bounds/gate/limits, worker deadline/Clear and input privacy. Update obsolete QuickStart0.1install link to existing0.2; oldrelease staysintact.
-- [ ] Full check/browser/eval and actual package/pipeline proof; fresh whole-branch independentreview then exactgreenmerge. Verify public actualassets/worker/offline/nativeparity. Integrate portfolio route only after currentmainreconciliation, independently reviewed/green.
-- [ ] Save sourceZIP/fullGitbundle/emptyGitrecovery/publicCIreceipts/newsealedcheckpoint and final actualaccounting. Preserveoldercheckpoints. Final taskcommand `npm run check`.
+- [ ] Full check/browser/eval and actual package/pipeline proof; commit the documented local implementation.
+- [ ] Final local taskcommand `npm run check`.
+
+## Integration gates after local tasks
+
+Fresh whole-branch independent review, exact green merge, actual public asset/worker/offline/native parity. Integrate the portfolio route only after current-main reconciliation and an independent reviewed/green change. Save a new source ZIP/full Git bundle/empty-repository recovery/public CI receipts/sealed checkpoint and actual accounting. Preserve older checkpoints. These post-review gates must pass before claiming delivery.

@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Local-file browser workbench: two actual saved indexes and shared labels, exact native comparison
+  JSON, per-query inspection, synthetic input downloads, offline-after-load execution and owned
+  worker cancellation/deadlines. Files remain in memory without storage, URLs or upload.
+- Shared private example evaluation/comparison core, preserving legacy CLI bytes/exits and included
+  explicitly in future source-built portable bundles. Existing v0.2.0/tag assets remain unchanged.
+
 ## [0.2.0] - 2026-10-26
 
 ### Added

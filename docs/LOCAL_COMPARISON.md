@@ -1,5 +1,7 @@
 # Compare configurations on your own saved documents
 
+The [local file workbench](https://ult666666.github.io/searchlite/local.html) can run this same comparison from selected files in browser memory, with exact native JSON and synthetic input downloads. See its [workflow and privacy guide](https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md).
+
 The glossary [relevance workbench](https://ult666666.github.io/searchlite/relevance.html) compares fixed examples. The local source consumer can now compare two actual saved title/body indexes against the same labels:
 
 ```sh

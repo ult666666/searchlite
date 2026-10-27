@@ -14,14 +14,19 @@ const root = fileURLToPath(new URL('../..', import.meta.url));
 let server, browser, origin, directory;
 before(async () => {
   directory = await realpath(await mkdtemp(path.join(tmpdir(), 'searchlite-local-browser-')));
-  server = await preview({
-    root: path.join(root, 'demo'),
-    configFile: path.join(root, 'demo/vite.config.ts'),
-    preview: { host: '127.0.0.1', port: 0, strictPort: true, open: false },
-  });
-  const address = server.httpServer.address();
-  assert(address && typeof address !== 'string');
-  origin = `http://127.0.0.1:${address.port}`;
+  if (process.env.SEARCHLITE_BROWSER_ORIGIN) {
+    assert.equal(process.env.SEARCHLITE_BROWSER_ORIGIN, 'https://ult666666.github.io');
+    origin = process.env.SEARCHLITE_BROWSER_ORIGIN;
+  } else {
+    server = await preview({
+      root: path.join(root, 'demo'),
+      configFile: path.join(root, 'demo/vite.config.ts'),
+      preview: { host: '127.0.0.1', port: 0, strictPort: true, open: false },
+    });
+    const address = server.httpServer.address();
+    assert(address && typeof address !== 'string');
+    origin = `http://127.0.0.1:${address.port}`;
+  }
   browser = await chromium.launch();
 });
 after(async () => {
