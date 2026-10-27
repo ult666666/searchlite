@@ -17,7 +17,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 COPIED = (
     'LICENSE', 'docs/LOCAL_COMPARISON.md', 'docs/LOCAL_RELEVANCE.md',
-    'examples/search-docs.js',
+    'examples/search-docs.js', 'examples/local-review-core.js',
     'examples/fixtures/relevance-notes/recovery.md',
     'examples/fixtures/relevance-notes/retention.md',
     'examples/fixtures/relevance-notes/webhooks.md',

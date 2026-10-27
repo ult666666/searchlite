@@ -1,0 +1,59 @@
+.local-inputs,
+.local-rankings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1.25rem;
+}
+.local-inputs label,
+.local-actions label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.local-inputs input {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.local-inputs .hint,
+#local-status,
+#results h3,
+#results li,
+#results p {
+  overflow-wrap: anywhere;
+}
+.local-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+  margin-block: 1rem;
+}
+.local-actions button {
+  min-height: 2.75rem;
+}
+.input-hashes {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+.input-hashes dd {
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+}
+#results {
+  border-top: 2px solid var(--accent);
+  padding-top: 1rem;
+}
+#results select {
+  max-width: 100%;
+}
+#sample-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.local-rankings ol {
+  padding-left: 1.5rem;
+}

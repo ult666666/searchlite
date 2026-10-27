@@ -11,6 +11,7 @@ export default defineConfig({
       input: {
         search: resolve(import.meta.dirname, 'index.html'),
         relevance: resolve(import.meta.dirname, 'relevance.html'),
+        local: resolve(import.meta.dirname, 'local.html'),
       },
     },
   },

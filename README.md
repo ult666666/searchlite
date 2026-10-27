@@ -12,6 +12,14 @@ browser and Node.
 data and finance terms in your browser, with highlighted snippets and per-result score
 explanations.
 
+## Compare your own saved indexes in the browser
+
+Open the [local file workbench](https://ult666666.github.io/searchlite/local.html), select two
+saved title/body indexes and a labels file, then inspect per-query minimums, regressions and
+actual rankings. Files stay in browser memory; the already-loaded page works offline. Download
+the exact native comparison JSON or try the complete synthetic pass/fail controls.
+See [inputs, privacy, limits and reproduction](docs/LOCAL_FILE_WORKBENCH.md).
+
 ## Download the local review example
 
 The [v0.2.0 GitHub release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) includes
@@ -56,7 +64,7 @@ any result, and the evaluation harness measures whether a change actually helps.
 searchlite is not published to npm. Install it from the GitHub release (Node 20+; ESM and CommonJS):
 
 ```bash
-npm install https://github.com/ult666666/searchlite/releases/download/v0.1.0/searchlite-0.1.0.tgz
+npm install https://github.com/ult666666/searchlite/releases/download/v0.2.0/searchlite-0.2.0.tgz
 ```
 
 Each release also attaches a SHA-256 checksum. Or build it from source:
