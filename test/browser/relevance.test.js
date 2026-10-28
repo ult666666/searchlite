@@ -7,6 +7,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { preview } from 'vite';
+import { assertSameReport } from './report-parity.js';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const nativeReport = (baseline = 'bm25f', candidate = 'no-stemming') =>
@@ -102,7 +103,7 @@ test(
         return { bytes: await readFile(filename, 'utf8'), filename: result.suggestedFilename() };
       };
       const first = await download();
-      assert.equal(first.bytes, nativeReport());
+      assertSameReport(first.bytes, nativeReport());
       assert.equal(first.filename, 'searchlite-bm25f-vs-no-stemming.json');
       const retained = await page.evaluate(async () => {
         window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }));
@@ -124,14 +125,14 @@ test(
         'Inspecting another query must not replace aggregate data',
       );
       await page.getByRole('button', { name: 'Swap configurations', exact: true }).click();
-      assert.equal((await download()).bytes, nativeReport('no-stemming', 'bm25f'));
+      assertSameReport((await download()).bytes, nativeReport('no-stemming', 'bm25f'));
       await page.getByLabel('Candidate configuration').selectOption('no-stemming');
       const identical = JSON.parse((await download()).bytes);
       assert.deepEqual(Object.values(identical.meanDelta), [0, 0, 0, 0, 0]);
       await page.getByLabel('Candidate configuration').selectOption('toy-hybrid');
       assert.match(await page.locator('#candidate-ranking').innerText(), /RRF score/);
       assert.match(await page.locator('#methodology').innerText(), /spelling overlap, not meaning/);
-      assert.equal((await download()).bytes, nativeReport('no-stemming', 'toy-hybrid'));
+      assertSameReport((await download()).bytes, nativeReport('no-stemming', 'toy-hybrid'));
       await page.reload();
       assert.equal(await page.getByLabel('Candidate configuration').inputValue(), 'toy-hybrid');
       assert.equal(await page.getByLabel('Inspect query').inputValue(), 'q22');

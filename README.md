@@ -1,6 +1,6 @@
 # searchlite
 
-A zero-dependency full-text search engine for TypeScript — BM25F ranking, a real query language,
+A zero-dependency full-text search engine for TypeScript: BM25F ranking, a real query language,
 phrase/prefix/fuzzy search, highlighting, hybrid retrieval and an evaluation harness. Runs in the
 browser and Node.
 
@@ -8,32 +8,15 @@ browser and Node.
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript: strict](https://img.shields.io/badge/TypeScript-strict-3178c6.svg)](tsconfig.json)
 
-**Live demo:** <https://ult666666.github.io/searchlite/> — search a 60-entry glossary of software,
-data and finance terms in your browser, with highlighted snippets and per-result score
+**[Try the live demo](https://ult666666.github.io/searchlite/):** search a 60-entry glossary of
+software, data and finance terms in your browser, with highlighted snippets and per-result score
 explanations.
-
-## Compare your own saved indexes in the browser
-
-Open the [local file workbench](https://ult666666.github.io/searchlite/local.html), select two
-saved title/body indexes and a labels file, then inspect per-query minimums, regressions and
-actual rankings. Files stay in browser memory; the already-loaded page works offline. Download
-the exact native comparison JSON or try the complete synthetic pass/fail controls.
-See [inputs, privacy, limits and reproduction](docs/LOCAL_FILE_WORKBENCH.md).
-
-## Download the local review example
-
-The [v0.2.0 GitHub release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) includes
-an offline-installable local-review ZIP and the built library tarball. The ZIP runs
-index/search/evaluate/compare with Node20+ and npm, including fictional notes and labels;
-no compiler, Python or other build tools are needed by the consumer.
-See [download, verification and release instructions](docs/RELEASING.md).
-This workflow publishes GitHub downloads and does not publish to the npm registry.
 
 ## Why
 
 Search libraries are easy to use and hard to explain. searchlite implements the standard
-information-retrieval building blocks from their papers — the Porter stemmer, BM25F, positional
-phrase matching, Reciprocal Rank Fusion, nDCG — in readable TypeScript with no dependencies, so
+information-retrieval building blocks from their papers (the Porter stemmer, BM25F, positional
+phrase matching, Reciprocal Rank Fusion, nDCG) in readable TypeScript with no dependencies, so
 every ranking decision can be traced back to a formula. `explain()` shows that formula applied to
 any result, and the evaluation harness measures whether a change actually helps.
 
@@ -55,7 +38,9 @@ any result, and the evaluation harness measures whether a change actually helps.
 - **Highlighting** of the best-matching window with `<mark>`, HTML-escaped so documents cannot
   inject markup, and **explain()** with a per-clause, per-field score breakdown.
 - **Hybrid retrieval:** fuse BM25F with cosine similarity over your own embeddings using
-  Reciprocal Rank Fusion.
+  Reciprocal Rank Fusion. Finite vectors of very large or very small magnitude use a safe cosine
+  fallback; sparse and nonfinite vectors are refused before indexing
+  ([numerical boundary and independent reference](docs/VECTOR_NUMERICS.md)).
 - **Evaluation:** precision@k, recall@k, MRR, MAP and graded nDCG@k, plus an ablation script.
 - **Snapshots:** versioned `toJSON()` / `SearchIndex.fromJSON()`.
 
@@ -150,59 +135,37 @@ node examples/search-docs.js index /absolute/path/to/notes /existing/folder/note
 node examples/search-docs.js search /existing/folder/notes.json 'title:deployment OR rollback'
 ```
 
-`index` creates one document per nonempty UTF-8 `.md` or `.txt` file (extensions are
-case-insensitive). IDs are root-relative paths with forward slashes; titles are filenames
-without extensions, boosted by 3; bodies contain the complete literal text. Markdown/code is
-searchable text. Directory entries are walked in sorted code-unit order, giving deterministic
-IDs and tie order. The output is the existing `SearchIndex.toJSON()` format.
+`index` saves one document per `.md` or `.txt` file as a `SearchIndex.toJSON()` snapshot.
+`search` restores that snapshot and prints up to five matches, each with a snippet and its BM25F
+explanation. It never rereads the original files, and existing output files are never
+overwritten. The [local search guide](docs/LOCAL_SEARCH.md) lists the size limits, skipped
+folders, refusals and exit codes.
 
-`search` restores the saved title/body index with `SearchIndex.fromJSON()` and prints at most
-five matches: ID, score, a plain snippet and `formatExplanation()`'s BM25F breakdown. It reads
-no original document, so the snapshot remains searchable after those files move or change.
-Reindex into a new snapshot to refresh it. Snippets use the first 180 Unicode characters with
-whitespace collapsed; control and bidirectional formatting characters are escaped throughout
-results, explanations and diagnostics. Source markup remains plain terminal text.
+The same snapshots work with two more commands:
 
-| Bound                                                             | Limit                   |
-| ----------------------------------------------------------------- | ----------------------- |
-| Each eligible file                                                | 128 KiB                 |
-| All eligible file bytes, including whitespace-only files          | 1 MiB                   |
-| Eligible `.md`/`.txt` files                                       | 128                     |
-| Visited entries, including skipped entries in visited directories | 4,096                   |
-| Directory levels below the selected root                          | 16                      |
-| Snapshot file                                                     | 16 MiB                  |
-| Query                                                             | 1,000 UTF-16 code units |
+- `node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS` checks a saved index against
+  labelled questions with per-query minimums. The [local relevance guide](docs/LOCAL_RELEVANCE.md)
+  walks through a complete fictional example.
+- `node examples/search-docs.js compare BASELINE CANDIDATE JUDGMENTS` runs two indexes of the
+  same documents against shared labels, shows per-query rankings and deltas, and fails any nDCG
+  drop, even when the average or the declared minimum still passes. See the [local comparison guide](docs/LOCAL_COMPARISON.md).
 
-Hidden entries and symlinks are skipped. These dependency/generated directory names are skipped
-case-insensitively: `node_modules`, `bower_components`, `vendor`, `dist`, `build`, `coverage`,
-`out`, `output`, `target`, `generated`, `__pycache__`. A selected root inside an excluded path,
-linked roots/ancestors/snapshots, nonregular or multiply-linked inputs, invalid UTF-8, NUL text,
-and unreadable included inputs are refused. Unsupported extensions and whitespace-only files
-are ignored. Failed source scans create no snapshot.
+## Compare saved indexes in the browser
 
-Snapshot parents must already exist. **Existing output files are never overwritten**, including
-when the requested output collides with a source document; indexing preserves input bytes.
-Search is read-only and leaves malformed snapshots untouched. Exit 0 means success (including
-no matches), 1 an input/read/query/snapshot failure, and 2 invalid command arguments. Snapshots
-contain the original document text and are historical local data, without freshness or
-authenticity guarantees. This is a bounded consumer example for folders you control, not
-production filesystem search or protection against a hostile concurrent filesystem owner.
-No provider, embedding, browser or internet retrieval is involved.
+Open the [local file workbench](https://ult666666.github.io/searchlite/local.html), select two
+saved title/body indexes and a labels file, then inspect per-query minimums, regressions and
+rankings. Files stay in browser memory, and the loaded page keeps working offline. Download the
+comparison JSON or load the synthetic pass and fail examples. The JSON matches the native
+`compare` report, except that BM25F scores and nDCG values can differ in their last digits
+between JavaScript engines. See [inputs, privacy, limits and reproduction](docs/LOCAL_FILE_WORKBENCH.md).
 
-To check your saved local index against labelled questions, use
-`node examples/search-docs.js evaluate SNAPSHOT JUDGMENTS`. The [local relevance guide](docs/LOCAL_RELEVANCE.md)
-includes a complete fictional folder → snapshot → passing/unmet-criterion walkthrough, the bounded
-manifest schema, exact input hashes and exit codes. It uses the installed package's public metrics
-and performs no private upload or provider call. The browser workbench continues to use its fixed glossary.
+## Download the local review example
 
-To review a configuration change on the same saved documents, use
-`node examples/search-docs.js compare BASELINE CANDIDATE JUDGMENTS`.
-The [local comparison guide](docs/LOCAL_COMPARISON.md) runs two real indexes against shared labels,
-shows per-query rankings and deltas, and fails any nDCG drop even when the average or declared
-minimum still passes. It checks identical stored collections and records exact used-byte hashes;
-matching text and hashes do not authenticate the snapshots.
-
-Finite vectors across large/tiny magnitudes use a safe cosine fallback; sparse and nonfinite vectors are refused before indexing. The [numerical boundary and independent reference](docs/VECTOR_NUMERICS.md) explain the ordinary fast path, high-precision cases and floating-point limits. Embeddings still come from the caller; vector search is exact and linear.
+The [v0.2.0 GitHub release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) includes
+an offline-installable local-review ZIP and the built library tarball. The ZIP runs
+index/search/evaluate/compare with Node 20+ and npm, including fictional notes and labels;
+no compiler, Python or other build tools are needed by the consumer.
+See [download, verification and release instructions](docs/RELEASING.md).
 
 ## Query syntax
 
@@ -313,7 +276,9 @@ See the [fixed method and actual local receipt](docs/BENCHMARK.md). Repeated glo
 and a uniform query mix limit interpretation; these measurements do not establish production latency.
 `npm run --silent bench -- --smoke` exercises the workflow with smaller collections without a timing gate.
 
-For candidate-aware AND/exclusion execution, the [paired benchmark and exact-ranking evidence](docs/EXECUTION.md) compare trusted built modules with all controls/raw trials, including slower cases.
+[docs/EXECUTION.md](docs/EXECUTION.md) measures candidate-aware AND/exclusion execution against a
+baseline build of the earlier engine. Both builds must return identical rankings, and every raw
+trial is kept, including the slower cases.
 
 Requires Node 20 or newer (CI runs Node 20, 22 and 24).
 
@@ -344,13 +309,15 @@ src/
   analysis/    tokenizer, normalization, stopwords, Porter stemmer, per-field analyzer
   query/       lexer, recursive-descent parser, AST types
   structures/  trie, edit distance, top-k heap
-  engine/      field index, query compilation, execution, BM25, highlighting
-  search-index.ts, hybrid.ts, evaluation.ts, format.ts, options.ts, errors.ts
-test/          unit and property tests (Vitest)
+  engine/      field index, query planning, execution, BM25, highlighting
+  internal/    shared helpers
+  index.ts, search-index.ts, hybrid.ts, evaluation.ts, format.ts, options.ts, errors.ts
+test/          unit, property and process tests; browser/ holds the Chromium journeys
 corpus/        glossary documents and judged queries
-scripts/       eval.ts, check-dist.js
-demo/          Vite web demo
-docs/          DESIGN.md
+examples/      quick start, local search CLI, relevance comparison, benchmark workloads
+scripts/       evaluation, comparison, benchmarks, dist check, local-review bundle builder
+demo/          Vite web demo: search, relevance workbench, local file workbench
+docs/          design notes, workflow guides and benchmark receipts
 ```
 
 ## Limitations and roadmap
@@ -369,6 +336,8 @@ Limitations:
 - Vector search is exact (a linear scan with cosine similarity), and embeddings must be supplied
   by the caller.
 - The evaluation collection is small and labelled by one person (see above).
+- `examples/search-docs.js` is a bounded example for folders you control, not production
+  filesystem search.
 
 Roadmap:
 

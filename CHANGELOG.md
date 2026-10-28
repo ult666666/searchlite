@@ -8,18 +8,28 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
-- Local-file browser workbench: two actual saved indexes and shared labels, exact native comparison
+- Local-file browser workbench: two actual saved indexes and shared labels, native-format comparison
   JSON, per-query inspection, synthetic input downloads, offline-after-load execution and owned
   worker cancellation/deadlines. Files remain in memory without storage, URLs or upload.
 - Shared private example evaluation/comparison core, preserving legacy CLI bytes/exits and included
   explicitly in future source-built portable bundles. Existing v0.2.0/tag assets remain unchanged.
+
+### Changed
+
+- Browser tests compare downloaded reports with native output by text and by number (within
+  1e-12) instead of byte for byte. JavaScript engines can round `Math.log` and `Math.log2`
+  differently in the last place, so BM25F scores and nDCG values may differ in their final
+  digits. The browser tests now run on Playwright 1.63.0 (Chromium 153), where some
+  BM25F scores differ from Node's in the last digit.
+- The README leads with the library and its live demo; the local-search limits moved to
+  `docs/LOCAL_SEARCH.md`.
 
 ## [0.2.0] - 2026-10-26
 
 ### Added
 
 - Offline-installable GitHub local-review bundle with exact public-source payload, byte
-  manifests, maintained builder and actual empty-cache install/CLI checks on Node20/22/24.
+  manifests, maintained builder and actual empty-cache install/CLI checks on Node 20/22/24.
 - Browser relevance workbench with shared native comparison JSON, per-query regressions,
   rankings, labels and downloadable inputs.
 - Local snapshot evaluation against explicit per-query labels/minima, exact used-byte hashes

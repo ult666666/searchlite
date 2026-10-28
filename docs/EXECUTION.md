@@ -33,13 +33,13 @@ Each performance.now sample surrounds the full public search call, including par
 
 Each worker has a 30-second SIGKILL deadline, 8 MiB input/2 MiB output bound. Module bytes/SHA256 are observed before/after; workload hashes, PIDs, raw timings/counts, build times and per-query summaries are preserved. This detects ordinary rebuilds/mismatches, not hostile-OS changes or authenticity. Means weight samples equally; p50/p95 use nearest rank. Shared-process/JIT/GC samples are not independent population samples or confidence intervals.
 
-## Actual local receipt — October26,2026
+## Actual local receipt, October 26, 2026
 
 The [final report](benchmarks/2026-10-26-filtering.json) retains 12 fresh workers, 384 timed searches and 96 complete rankings, all with exact digest parity. Baseline source 9b7fd56; final engine source 06ae05e. This receipt pins that exact historical library bundle. Later numerical changes have separate module digests and do not turn this into a timing claim for evergreen main.
 
-Machine: Apple M5 Pro, 15 logical CPUs, 24 GiB RAM, darwin 25.6.0 arm64, Node v24.18.0, V813.6.233.17-node.50. UTC: 2026-10-26T13:22:03.867Z.
+Machine: Apple M5 Pro, 15 logical CPUs, 24 GiB RAM, darwin 25.6.0 arm64, Node v24.18.0, V8 13.6.233.17-node.50. UTC: 2026-10-26T13:22:03.867Z.
 
-Mean search milliseconds,12 samples/module/query/size; full precision/p50/p95 in report:
+Mean search milliseconds, 12 samples/module/query/size; full precision/p50/p95 in report:
 
 | Query          | 1k baseline | 1k candidate | 10k baseline | 10k candidate |
 | -------------- | ----------: | -----------: | -----------: | ------------: |
