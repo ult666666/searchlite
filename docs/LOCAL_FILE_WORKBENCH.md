@@ -16,9 +16,9 @@ This page is delivered from current `main` through GitHub Pages. The existing v0
 node examples/search-docs.js compare /path/to/synthetic-baseline.json /path/to/synthetic-candidate.json /path/to/synthetic-judgments.json
 ```
 
-The weight-change control deliberately exits3 with a complete report. The report bytes agree with the browser download on identical inputs and supported runtime. For a complete terminal-generated fixture without browser steps, use the [native walkthrough](LOCAL_COMPARISON.md#run-a-complete-synthetic-comparison).
+The weight-change control deliberately exits 3 with a complete report. On identical inputs, the native report matches the browser download apart from the last digits of BM25F scores and nDCG values. JavaScript engines may round `Math.log` (used by BM25F scores) and `Math.log2` (used by nDCG) differently in the last place; Chromium 153, for example, rounds some of these scores differently from Node 22 and 24. For a complete terminal-generated fixture without browser steps, use the [native walkthrough](LOCAL_COMPARISON.md#run-a-complete-synthetic-comparison).
 
-4. Choose **Unchanged**, then load the example again. The candidate is rebuilt with the same options as baseline. The comparison passes with zero deltas. Its downloaded inputs can be passed to the same command, which exits0.
+4. Choose **Unchanged**, then load the example again. The candidate is rebuilt with the same options as baseline. The comparison passes with zero deltas. Its downloaded inputs can be passed to the same command, which exits 0.
 5. **Clear local files** removes selected files, rendered reports and download links. You can then choose your own three files. Every input change invalidates the previous result and requires a fresh comparison.
 
 Use the full source checkout (`npm ci`, `npm run build`) or matching release bundle when running the CLI. Copying only the current `search-docs.js` omits its shared helper.
@@ -58,7 +58,7 @@ npm run test:browser
 npm run check
 ```
 
-The seven local-workbench browser stories use real worker comparisons and actual File inputs, compare downloaded reports to native stdout, exercise both synthetic controls offline, reject malformed/oversized/incomparable inputs and late query errors, and check stale reads, late worker replies, deadline termination, literal markup/control strings, unchanged storage/URLs, keyboard operation, accepted long query/ID wrapping and 320–1440 pixel layouts. The existing glossary/search browser workflow remains part of the same command. The deadline path uses a controlled stalled worker and browser clock; successful paths use the real worker and engine.
+The seven local-workbench browser stories use real worker comparisons and actual File inputs, compare downloaded reports to native stdout (identical text apart from numbers, identical integers, other numbers within 1e-12 × max(1, |value|)), exercise both synthetic controls offline, reject malformed/oversized/incomparable inputs and late query errors, and check stale reads, late worker replies, deadline termination, literal markup/control strings, unchanged storage/URLs, keyboard operation, accepted long query/ID wrapping and 320–1440 pixel layouts. The existing glossary/search browser workflow remains part of the same command. The deadline path uses a controlled stalled worker and browser clock; successful paths use the real worker and engine.
 
 To explicitly verify the public deployment against your matching checkout, the new suite accepts only this public origin:
 

@@ -9,6 +9,7 @@ import { after, before, test } from 'node:test';
 import { chromium } from 'playwright';
 import { preview } from 'vite';
 import { SearchIndex } from 'searchlite';
+import { assertSameReport } from './report-parity.js';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
 let server, browser, origin, directory;
@@ -144,7 +145,7 @@ async function report(page) {
 }
 
 test(
-  'local files produce exact native reports and literal safe query inspection',
+  'local files produce native-equivalent reports and literal safe query inspection',
   { timeout: 60000 },
   async (t) => {
     const { page, requests } = await pageFor(t);
@@ -156,7 +157,7 @@ test(
     await run(page);
     assert.equal(await page.locator('#verdict').innerText(), 'Comparison failed');
     const actual = await report(page);
-    assert.equal(actual, await native(input));
+    assertSameReport(actual, await native(input));
     const compared = JSON.parse(actual);
     assert(compared.queries.reduce((sum, query) => sum + query.delta.ndcgAt10, 0) > 0);
     assert.deepEqual(compared.regressedQueries, ['title-task']);
@@ -189,12 +190,12 @@ test(
     await select(page, unchanged);
     await run(page);
     assert.equal(await page.locator('#verdict').innerText(), 'Comparison passed');
-    assert.equal(await report(page), await native(unchanged));
+    assertSameReport(await report(page), await native(unchanged));
     assert.equal(requests.length, changedRequests);
     await page.evaluate(() =>
       window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true })),
     );
-    assert.equal(await report(page), await native(unchanged));
+    assertSameReport(await report(page), await native(unchanged));
     assert.equal(new URL(page.url()).search, '');
     assert.deepEqual(
       await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } })),
@@ -218,7 +219,7 @@ test(
       await page.getByRole('link', { name: 'Download synthetic ' + name, exact: true }).click();
       inputs[name] = await readFile(await (await event).path());
     }
-    assert.equal(await report(page), await native(inputs));
+    assertSameReport(await report(page), await native(inputs));
     await page.getByLabel('Example control', { exact: true }).selectOption('unchanged');
     await page.getByRole('button', { name: 'Load synthetic example', exact: true }).click();
     await page.getByText('Comparison passed', { exact: true }).waitFor();
@@ -407,7 +408,7 @@ test(
     });
     await select(page, inputs);
     await run(page);
-    assert.equal(await report(page), await native(inputs));
+    assertSameReport(await report(page), await native(inputs));
     for (const width of [320, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
       assert.equal(

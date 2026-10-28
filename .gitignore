@@ -21,3 +21,6 @@ npm-debug.log*
 .idea/
 .vscode/
 *.swp
+
+# Local planning notes
+docs/superpowers/

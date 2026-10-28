@@ -1,6 +1,6 @@
 # Compare configurations on your own saved documents
 
-The [local file workbench](https://ult666666.github.io/searchlite/local.html) can run this same comparison from selected files in browser memory, with exact native JSON and synthetic input downloads. See its [workflow and privacy guide](https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md).
+The [local file workbench](https://ult666666.github.io/searchlite/local.html) can run this same comparison from selected files in browser memory and download its JSON report and synthetic inputs. The browser report matches this command's output apart from the last digits of BM25F scores and nDCG values, which JavaScript engines can round differently. See its [workflow and privacy guide](https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md).
 
 The glossary [relevance workbench](https://ult666666.github.io/searchlite/relevance.html) compares fixed examples. The local source consumer can now compare two actual saved title/body indexes against the same labels:
 
@@ -12,7 +12,7 @@ It uses the public built library and the same bounded reader, judgment contract 
 
 ## Run a complete synthetic comparison
 
-Use Node20+, install the development dependencies and build the library. Start with a fresh physical temporary directory; `pwd -P` resolves macOS temporary-path aliases without relaxing the reader's symlink refusal.
+Use Node 20+, install the development dependencies and build the library. Start with a fresh physical temporary directory; `pwd -P` resolves macOS temporary-path aliases without relaxing the reader's symlink refusal.
 
 ```sh
 npm ci
@@ -51,13 +51,13 @@ JS
 node examples/search-docs.js compare "$searchlite_compare_dir/baseline.json" "$searchlite_compare_dir/baseline.json" "$searchlite_compare_dir/judgments.json"
 ```
 
-The unchanged comparison passes, exits0 and has zero metric deltas. Now compare the actual field-weight change:
+The unchanged comparison passes, exits 0 and has zero metric deltas. Now compare the actual field-weight change:
 
 ```sh
 node examples/search-docs.js compare "$searchlite_compare_dir/baseline.json" "$searchlite_compare_dir/candidate.json" "$searchlite_compare_dir/judgments.json"
 ```
 
-This deliberately exits3 with a complete report and `failedQueries: ["title-task"]`. The title task's relevant item moves from rank1 to rank2: nDCG@10 goes from1 to approximately0.630930 and MRR from1 to0.5. The body task improves by the same amount. Both candidate queries meet their declared0.5 minimum, and the mean is unchanged, yet the title-task drop still fails the comparison. This is a fictional negative control illustrating the gate, not a production regression or a claim that one field weighting is universally better.
+This deliberately exits 3 with a complete report and `failedQueries: ["title-task"]`. The title task's relevant item moves from rank 1 to rank 2: nDCG@10 goes from 1 to approximately 0.630930 and MRR from 1 to 0.5. The body task improves by the same amount. Both candidate queries meet their declared 0.5 minimum, and the mean is unchanged, yet the title-task drop still fails the comparison. This is a fictional negative control illustrating the gate, not a production regression or a claim that one field weighting is universally better.
 
 The unchanged comparison can be rerun byte-for-byte on the same inputs/runtime. Neither snapshots nor labels are modified. Shell redirection is your choice; use a new private output destination if saving a report.
 
@@ -67,7 +67,7 @@ Both snapshots must contain exactly the same IDs and stored title/body strings. 
 
 Every query uses the same supplied labels and existing required `minimumNdcgAt10`. A query passes only if the candidate's **unrounded nDCG@10 meets that minimum and is at least its baseline nDCG@10**. Any drop fails, with no rounding tolerance or average override. An improved candidate that meets its minimum can pass even when the baseline failed that minimum. This is a deterministic engineering gate, not a statistical significance test or an automatic choice of acceptance criteria. Label questions and choose criteria deliberately.
 
-Metric deltas are candidate minus baseline. P@5, R@10, MRR and MAP remain visible but do not decide the comparison gate. Raw BM25F ranking scores belong to their own query/configuration and are not subtracted or treated as cross-configuration relevance values. The existing cutoffs remain top5 precision, top10 recall/nDCG and a maximum100 retrieved results for full-ranking MRR/MAP.
+Metric deltas are candidate minus baseline. P@5, R@10, MRR and MAP remain visible but do not decide the comparison gate. Raw BM25F ranking scores belong to their own query/configuration and are not subtracted or treated as cross-configuration relevance values. The existing cutoffs remain top 5 precision, top 10 recall/nDCG and a maximum of 100 retrieved results for full-ranking MRR/MAP.
 
 ## Report, privacy and errors
 
@@ -87,7 +87,7 @@ Reports omit source bodies and absolute filesystem paths but retain potentially 
 | 1    | Unreadable, unsafe, malformed, incompatible or incomparable input; invalid query | Empty; bounded diagnostic on stderr |
 | 2    | Wrong command arguments                                                          | Empty; usage on stderr              |
 
-Both snapshots must independently satisfy the existing16MiB,128-document, bounded title/body contract. Labels retain the256KiB,1–32-query,1–128-judgment-per-query contract. Linked paths/ancestors, multiply linked/nonregular files, invalid UTF-8, malformed snapshots, unknown document IDs and invalid query syntax are refused. Reads own exact byte buffers and check file identity, under the existing scope for files you control; this is not a sandbox against a hostile concurrent filesystem owner. No partial success is printed if either side or a late query fails.
+Both snapshots must independently satisfy the existing 16 MiB, 128-document, bounded title/body contract. Labels retain the 256 KiB, 1–32-query, 1–128-judgment-per-query contract. Linked paths/ancestors, multiply linked/nonregular files, invalid UTF-8, malformed snapshots, unknown document IDs and invalid query syntax are refused. Reads own exact byte buffers and check file identity, under the existing scope for files you control; this is not a sandbox against a hostile concurrent filesystem owner. No partial success is printed if either side or a late query fails.
 
 ## Verify the implementation
 
