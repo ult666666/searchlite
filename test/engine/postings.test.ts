@@ -203,6 +203,41 @@ describe('compressed postings lists', () => {
     }
   });
 
+  it('reclaims the arena regions of terms that no longer occur anywhere', () => {
+    const field = new FieldIndex(
+      'body',
+      1,
+      0.75,
+      new Analyzer({ stemming: false, stopwords: false }),
+    );
+    // Every byte the arena handed out is either in a live list's region or counted as garbage.
+    const accounted = (): void => {
+      let live = 0;
+      for (const list of field.postings.values()) {
+        if (list.own === undefined) live += list.capacity;
+      }
+      expect(field.arena.used - field.arena.garbage).toBe(live);
+    };
+    // Ten live documents at a time, each with one word of its own, as when edited notes are
+    // removed and indexed again: 20,000 words come and go.
+    for (let d = 0; d < 20_000; d++) {
+      field.addDocument(
+        d,
+        new Map([
+          [`w${d.toString(36)}`, [0]],
+          ['shared', [1]],
+        ]),
+        2,
+      );
+      if (d >= 10) field.removeDocument(d - 10, [`w${(d - 10).toString(36)}`, 'shared'], 2);
+      if (d % 997 === 0) accounted();
+    }
+    accounted();
+    expect(field.postings.size).toBe(11);
+    // Without reclaiming them, the deleted lists' regions would fill about 480 KB.
+    expect(field.arena.used).toBeLessThan(200 * 1024);
+  });
+
   it('counts the documents of a union without double counting', () => {
     const next = random(99);
     for (let trial = 0; trial < 30; trial++) {

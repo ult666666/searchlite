@@ -330,6 +330,11 @@ describe('serialization', () => {
       [title([['t', payload(1, 0)]]), /Malformed posting for term "t"/],
       [title([['t', payload(1, 2, 3, 0)]]), /Malformed posting for term "t"/],
       [title([['t', payload(1, 1, 0x80, 0x00)]]), /Malformed posting for term "t"/],
+      // A frequency spelled with 200 empty continuation bytes is not a number at all.
+      [
+        title([['t', payload(1, ...new Array<number>(200).fill(0x80), 0x01, 0)]]),
+        /Malformed posting for term "t"/,
+      ],
       [title([['t', [[99, [0]]]]], 1), /Malformed posting for term "t"/],
       [title([['t', [[0, []]]]], 1), /Malformed posting for term "t"/],
       [title([['t', [[0, [2, 1]]]]], 1), /Malformed posting for term "t"/],

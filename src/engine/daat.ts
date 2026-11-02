@@ -529,7 +529,8 @@ class PhraseScorer implements Scorer {
       const pseudoFrequency = best.reduce((sum, value) => sum + value, 0);
       this.#chunkBounds.push(this.#weightIdf * saturate(pseudoFrequency, this.#k1));
     }
-    this.maxScore = Math.max(0, ...this.#chunkBounds);
+    // A loop, not Math.max(...bounds): spreading a long array overflows the call stack.
+    this.maxScore = this.#chunkBounds.reduce((best, bound) => Math.max(best, bound), 0);
   }
 
   /** boost · frequency / B for one target, as `scoreDocument` computes it; 0 if absent. */
@@ -625,7 +626,11 @@ class MaxScorer extends UnionScorer {
 
   constructor(children: readonly Scorer[]) {
     super(children);
-    this.maxScore = Math.max(...children.map((child) => child.maxScore));
+    // A prefix can expand to more terms than a call can take arguments, so no spread here.
+    this.maxScore = children.reduce(
+      (best, child) => Math.max(best, child.maxScore),
+      Number.NEGATIVE_INFINITY,
+    );
   }
 
   score(): number {
@@ -696,7 +701,10 @@ class ConjunctionScorer implements Scorer {
   constructor(children: readonly Scorer[]) {
     this.#children = children;
     this.#byCost = [...children].sort((a, b) => a.cost - b.cost);
-    this.cost = Math.min(...children.map((child) => child.cost));
+    this.cost = children.reduce(
+      (least, child) => Math.min(least, child.cost),
+      Number.POSITIVE_INFINITY,
+    );
     this.maxScore = children.reduce((sum, child) => sum + child.maxScore, 0);
   }
 

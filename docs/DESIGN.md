@@ -137,10 +137,11 @@ Schütze, 2008, section 5.3):
   O(frontier) on every append, so it never needs a rebuild when the average length changes.
 - **Storage.** A `Uint8Array` costs about 200 bytes of headers, more than most rare terms'
   postings, so small lists share one growable buffer per field (`PostingsArena`). A list that
-  outgrows its region moves to a larger one at the end; when abandoned regions exceed half the
-  buffer (and 64 KiB) the arena is compacted, which keeps the copying amortized linear. Lists past
-  4 KiB move to a buffer of their own, where the header cost no longer matters. Skip entries and
-  impacts share one exactly sized number array per list.
+  outgrows its region moves to a larger one at the end, and the region of a term that no longer
+  occurs anywhere is abandoned too; when abandoned regions exceed half the buffer (and 64 KiB) the
+  arena is compacted, which keeps the copying amortized linear. Lists past 4 KiB move to a buffer
+  of their own, where the header cost no longer matters. Skip entries and impacts share one exactly
+  sized number array per list.
 - **Mutations.** New documents get increasing numbers, so `add` appends to the last block. `remove`
   and the re-insertion done by `replace` (which reuses the old number) rewrite only the block that
   holds the document, splitting it if it grows past 256 documents.
@@ -334,10 +335,13 @@ just close. A document is dropped only when a bound shows it cannot enter the to
 mathematically at least the score, but they are computed with different rounding (sums in a
 different order, and `(k1 + 1)·f / (k1 + f)` is not monotone to the last bit), so every comparison
 uses `bound · (1 + 1e-9) + 1e-300 > θ`. That margin is many orders of magnitude above the few units
-in the last place that rounding can introduce, so a competitive document is never pruned. Documents
-are visited in ascending order, and a later document with a score equal to θ already loses the tie
-to every document kept, so insertion order still breaks ties. Parameters that make a bound
-infinite or NaN (an enormous `k1` or boost) fall back to exhaustive term-at-a-time scoring.
+in the last place that rounding can introduce, so a competitive document is never pruned. A test
+builds a case where the margin decides the result: two documents add the same three clause scores
+in different orders, one unit in the last place apart, and without the margin the later, higher
+one is skipped. Documents are visited in ascending order, and a later document with a score equal
+to θ already loses the tie to every document kept, so insertion order still breaks ties.
+Parameters that make a bound infinite or NaN (an enormous `k1` or boost) fall back to exhaustive
+term-at-a-time scoring.
 
 **Filters and exclusions** are checked only for documents that would otherwise enter the top k, in
 ascending order. A rejected document never enters the heap, so it never raises θ; applying a
@@ -479,6 +483,11 @@ before and after.
 - **MaxScore, not WAND.** Block-max WAND (Ding and Suel, 2011) can skip more on long disjunctions
   of similar terms. Pruning only helps once k results are found, so `limit: Infinity` scores every
   match, and with `k1 = 0` (all clause scores tied) the safety margin prevents most skipping.
+- **Wide expansions.** A prefix or fuzzy word is a union of its expansions, and the union's
+  `advance` and `score` visit every expansion for each document, so its cost grows with documents
+  times expansions. The default `maxExpansions` of 64 keeps this small; a much larger limit can be
+  slower than term-at-a-time execution, which costs only the total postings length. A heap-ordered
+  union would remove the factor.
 - **Block rewrites.** `remove` and `replace` rewrite a block and move later bytes in its list, so
   they cost O(list bytes) rather than O(1); the shared arena trades up to about half its size in
   abandoned regions for fewer object headers.
