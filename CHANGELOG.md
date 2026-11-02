@@ -8,6 +8,28 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- Document-at-a-time top-k evaluation. A top-level OR runs MaxScore (Turtle and Flood, 1995) in
+  windows that end at block boundaries, with block-max upper bounds from per-block impacts (Ding
+  and Suel, 2011); single clauses, AND, prefix and fuzzy queries skip whole blocks the same way.
+  Results equal exhaustive scoring exactly: the same documents, order and scores bit for bit. A
+  relative margin of 1e-9 on every bound keeps floating-point rounding from pruning a document
+  that belongs in the top k, and absurd parameters that make a bound infinite fall back to
+  exhaustive scoring.
+- Compressed postings: sorted blocks of 128 documents, delta and variable-byte coded, with skip
+  entries and a Pareto frontier of (frequency, length) impacts per block. Small lists share one
+  byte arena per field; lists past 4 KiB get their own buffer.
+- `search(query, { filter })` drops documents by id and stored fields before they enter the top
+  k, without changing scores or IDF.
+- Snapshot version 2 stores postings as base64 varints. Version 1 snapshots still load, so
+  `SearchIndex.fromJSON(old).toJSON()` migrates one; a fixture written by 0.2.0 must give
+  identical results.
+- `npm run bench:pruning` measures two builds side by side (top-10 latency, index heap, postings
+  heap from a V8 heap snapshot, snapshot size) and reports only if their rankings match;
+  `npm run test:pruning` runs its smoke profile in CI.
+- Property tests that compare pruned top k with exhaustive scoring over random corpora, queries,
+  options, filters and mutations, model-based postings tests, and codec tests against the
+  Protocol Buffers and RFC 4648 examples.
+
 - Local-file browser workbench: two actual saved indexes and shared labels, native-format comparison
   JSON, per-query inspection, synthetic input downloads, offline-after-load execution and owned
   worker cancellation/deadlines. Files remain in memory without storage, URLs or upload.
@@ -16,6 +38,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 
+- `IndexSnapshot.postings` is now `[term, base64][]` per field (the old shape is exported as
+  `IndexSnapshotV1`) and `SNAPSHOT_VERSION` is 2. Version 1 snapshots with empty, unsorted or
+  repeated positions, which searchlite never wrote, are now rejected.
+- `explain`, `highlight` and the matched terms of each result look single documents up in the
+  postings instead of building occurrence tables for term clauses.
 - Browser tests compare downloaded reports with native output by text and by number (within
   1e-12) instead of byte for byte. JavaScript engines can round `Math.log` and `Math.log2`
   differently in the last place, so BM25F scores and nDCG values may differ in their final

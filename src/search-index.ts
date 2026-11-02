@@ -1,4 +1,5 @@
 import { Analyzer, type Token } from './analysis/analyzer';
+import { topDocuments } from './engine/daat';
 import {
   executePlan,
   type ClauseExplanation,
@@ -9,6 +10,7 @@ import {
 import { FieldIndex } from './engine/field-index';
 import { buildSnippet, markTokens, type HighlightOptions } from './engine/highlight';
 import { compileQuery, type Plan } from './engine/plan';
+import { decodePostingsPayload, encodePostingsPayload } from './engine/postings-codec';
 import { SearchliteError } from './errors';
 import { cosineSimilarity, reciprocalRankFusion } from './hybrid';
 import { at } from './internal/at';
@@ -37,6 +39,13 @@ export interface SearchOptions {
   defaultOperator?: DefaultOperator;
   /** Maximum dictionary terms one prefix or fuzzy word expands to, per field. Default 64. */
   maxExpansions?: number;
+  /**
+   * Keeps only documents for which this returns true, given the document's id and a copy of its
+   * stored fields. Filtering removes results without changing any score or IDF. `search` calls it
+   * only for documents that would otherwise enter the results, in no particular order, so it
+   * should be deterministic. `explain` and `highlight` ignore it.
+   */
+  filter?: (id: string, fields: Record<string, unknown>) => boolean;
 }
 
 export interface SearchResult {
@@ -101,8 +110,11 @@ export interface IndexStats {
   fields: Record<string, FieldStats>;
 }
 
-/** Bumped whenever the snapshot layout changes, so old snapshots fail loudly. */
-export const SNAPSHOT_VERSION = 1;
+/**
+ * Version written by {@link SearchIndex.toJSON}. It is bumped whenever the snapshot layout
+ * changes; {@link SearchIndex.fromJSON} also reads every earlier version and rejects later ones.
+ */
+export const SNAPSHOT_VERSION = 2;
 
 /** Serialized form produced by {@link SearchIndex.toJSON}. Plain JSON data. */
 export interface IndexSnapshot {
@@ -111,6 +123,17 @@ export interface IndexSnapshot {
   options: ResolvedIndexOptions;
   /** Documents in internal order. Postings refer to them by position in this array. */
   documents: SnapshotDocument[];
+  /**
+   * Per field: [term, payload] pairs. The payload is base64 of variable-byte integers; for each
+   * document holding the term, in slot order: the gap from the previous slot (from -1 for the
+   * first), the frequency, the first position and the gaps between later positions.
+   */
+  postings: Record<string, [string, string][]>;
+}
+
+/** The version 1 layout (searchlite 0.2.0 and earlier), which {@link SearchIndex.fromJSON} still reads. */
+export interface IndexSnapshotV1 extends Omit<IndexSnapshot, 'postings'> {
+  version: 1;
   /** Per field: [term, [[document slot, positions], ...]] pairs. */
   postings: Record<string, [string, [number, number[]][]][]>;
 }
@@ -147,6 +170,7 @@ interface QuerySettings {
   defaultFields: number[];
   defaultOperator: DefaultOperator;
   maxExpansions: number;
+  filter: SearchOptions['filter'];
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -352,9 +376,11 @@ export class SearchIndex {
    * Runs a query and returns the best matches, highest score first. Ties are broken by
    * insertion order.
    *
-   * Matching documents are scored with BM25F and the top `limit` are selected with a binary
-   * heap. For each returned document the matched terms are worked out by re-scoring it with
-   * tracing on, which reuses the per-clause data already computed for the query.
+   * Matching documents are scored with BM25F, document at a time, and the top `limit` are kept
+   * in a binary heap. MaxScore and block-max upper bounds skip documents that provably cannot
+   * enter the top `limit`; the results are exactly those of scoring every match. For each
+   * returned document the matched terms are worked out by re-scoring it with tracing on, which
+   * reuses the per-clause statistics already computed for the query.
    *
    * @param query - A query string (see {@link parseQuery}) or an already-parsed query tree.
    * @throws {QuerySyntaxError} if the query string is malformed or names an unknown field.
@@ -366,15 +392,14 @@ export class SearchIndex {
       return [];
     }
     const context = this.#context();
-    const top = new TopK<[number, number]>(
-      settings.limit,
-      ([documentA, scoreA], [documentB, scoreB]) =>
-        scoreA > scoreB || (scoreA === scoreB && documentA < documentB),
-    );
-    for (const [document, hit] of executePlan(plan, context)) {
-      top.push([document, hit.score]);
-    }
-    return top.sorted().map(([document, score]) => {
+    const filter = settings.filter;
+    const accept =
+      filter &&
+      ((document: number): boolean => {
+        const record = this.#record(document);
+        return filter(record.id, { ...record.stored });
+      });
+    return topDocuments(plan, context, settings.limit, accept).map(([document, score]) => {
       const record = this.#record(document);
       const match = this.#matchedTerms(this.#traced(plan, context, document)?.trace);
       return {
@@ -528,12 +553,9 @@ export class SearchIndex {
     });
     const postings: IndexSnapshot['postings'] = {};
     for (const field of this.#fields) {
-      postings[field.name] = [...field.postings].map(([term, entries]) => [
+      postings[field.name] = [...field.postings].map(([term, list]) => [
         term,
-        [...entries].map(([number, positions]): [number, number[]] => [
-          slots.get(number) ?? -1,
-          [...positions],
-        ]),
+        encodePostingsPayload(list, slots),
       ]);
     }
     return {
@@ -547,15 +569,17 @@ export class SearchIndex {
 
   /**
    * Rebuilds an index from {@link toJSON} output (after `JSON.parse` if it was stored as text).
+   * Version 1 snapshots, written by searchlite 0.2.0 and earlier, are read too; `toJSON` on the
+   * restored index writes the current version, which is how a stored snapshot is migrated.
    * @throws {SearchliteError} `INVALID_SNAPSHOT` if the data is not a compatible snapshot.
    */
   static fromJSON(snapshot: unknown): SearchIndex {
     if (!isRecord(snapshot) || snapshot.format !== 'searchlite') {
       throw snapshotError('Not a searchlite index snapshot');
     }
-    if (snapshot.version !== SNAPSHOT_VERSION) {
+    if (snapshot.version !== 1 && snapshot.version !== SNAPSHOT_VERSION) {
       throw snapshotError(
-        `Unsupported snapshot version ${String(snapshot.version)}; this version of searchlite reads version ${SNAPSHOT_VERSION}`,
+        `Unsupported snapshot version ${String(snapshot.version)}; this version of searchlite reads versions 1 to ${SNAPSHOT_VERSION}`,
       );
     }
     const { options, documents, postings } = snapshot;
@@ -579,11 +603,11 @@ export class SearchIndex {
     if (!Array.isArray(documents) || !isRecord(postings)) {
       throw snapshotError('Snapshot documents or postings are missing');
     }
-    index.#restore(documents, postings);
+    index.#restore(documents, postings, snapshot.version);
     return index;
   }
 
-  #restore(documents: unknown[], postings: Record<string, unknown>): void {
+  #restore(documents: unknown[], postings: Record<string, unknown>, version: number): void {
     const fieldCount = this.#fields.length;
     // positionsByTerm for each document slot and field, filled from the postings lists.
     const perDocument = documents.map(() => this.#fields.map(() => new Map<string, number[]>()));
@@ -593,19 +617,43 @@ export class SearchIndex {
         throw snapshotError(`Snapshot has no postings for field "${field.name}"`);
       }
       for (const entry of list as unknown[]) {
-        if (!Array.isArray(entry) || typeof entry[0] !== 'string' || !Array.isArray(entry[1])) {
+        const payload: unknown = Array.isArray(entry) ? entry[1] : undefined;
+        if (
+          !Array.isArray(entry) ||
+          typeof entry[0] !== 'string' ||
+          !(version === 1 ? Array.isArray(payload) : typeof payload === 'string')
+        ) {
           throw snapshotError(`Malformed postings entry in field "${field.name}"`);
         }
         const term = entry[0];
-        for (const posting of entry[1] as unknown[]) {
-          const [slot, positions] = Array.isArray(posting) ? (posting as unknown[]) : [];
+        const malformed = () =>
+          snapshotError(`Malformed posting for term "${term}" in field "${field.name}"`);
+        let decoded: [unknown, unknown][];
+        try {
+          decoded =
+            version === 1
+              ? (payload as unknown[]).map((posting) =>
+                  Array.isArray(posting) ? [posting[0], posting[1]] : [undefined, undefined],
+                )
+              : decodePostingsPayload(payload as string, documents.length);
+        } catch {
+          throw malformed();
+        }
+        for (const [slot, positions] of decoded) {
           const target = typeof slot === 'number' ? perDocument[slot]?.[f] : undefined;
+          // Postings store positions as increasing gaps, so they must be sorted and distinct.
           if (
             !target ||
             !Array.isArray(positions) ||
-            !positions.every((p) => Number.isInteger(p) && (p as number) >= 0)
+            positions.length === 0 ||
+            !positions.every(
+              (p, i) =>
+                Number.isSafeInteger(p) &&
+                (p as number) >= 0 &&
+                (i === 0 || (p as number) > (positions[i - 1] as number)),
+            )
           ) {
-            throw snapshotError(`Malformed posting for term "${term}" in field "${field.name}"`);
+            throw malformed();
           }
           target.set(term, positions as number[]);
         }
@@ -765,11 +813,15 @@ export class SearchIndex {
     if (defaultOperator !== 'AND' && defaultOperator !== 'OR') {
       throw argumentError(`defaultOperator must be "AND" or "OR", got ${String(defaultOperator)}`);
     }
+    if (options.filter !== undefined && typeof options.filter !== 'function') {
+      throw argumentError('filter must be a function');
+    }
     return {
       limit: positiveLimit('limit', options.limit, defaultLimit),
       defaultFields,
       defaultOperator,
       maxExpansions: positiveLimit('maxExpansions', options.maxExpansions, 64),
+      filter: options.filter,
     };
   }
 
@@ -800,6 +852,7 @@ export class SearchIndex {
       k1: this.#options.k1,
       trace: false,
       cache: new Map(),
+      documentFrequencies: new Map(),
     };
   }
 

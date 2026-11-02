@@ -303,20 +303,39 @@ describe('serialization', () => {
       documents,
       postings,
     });
+    const title = (entries: unknown, version = SNAPSHOT_VERSION): unknown => ({
+      ...good,
+      version,
+      postings: { ...(good.postings as object), title: entries },
+    });
+    // Payload bytes: slot gap, frequency, first position, position gaps (see postings-codec.ts).
+    const payload = (...bytes: number[]): string => Buffer.from(bytes).toString('base64');
     const cases: [unknown, RegExp][] = [
       [null, /Not a searchlite index snapshot/],
       [{ format: 'other' }, /Not a searchlite index snapshot/],
-      [{ ...good, version: 99 }, /Unsupported snapshot version 99/],
+      [{ ...good, version: 99 }, /Unsupported snapshot version 99; .* reads versions 1 to 2/],
+      [{ ...good, version: 0 }, /Unsupported snapshot version 0/],
       [{ ...good, options: null }, /options are missing or malformed/],
       [{ ...good, options: { fields: [{ boost: 1 }] } }, /field options are malformed/],
       [{ ...good, options: { fields: [{ name: 'x', boost: -1 }] } }, /options are invalid/],
       [{ ...good, postings: null }, /documents or postings are missing/],
       [{ ...good, postings: {} }, /no postings for field "title"/],
-      [{ ...good, postings: { title: [['t', 'x']] } }, /Malformed postings entry/],
-      [
-        { ...good, postings: { ...(good.postings as object), title: [['t', [[99, [0]]]]] } },
-        /Malformed posting for term "t"/,
-      ],
+      [title([['t', [[0, [0]]]]]), /Malformed postings entry/],
+      [title([['t', 'AQEA']], 1), /Malformed postings entry/],
+      [title([['t', 'x']]), /Malformed posting for term "t"/],
+      [title([['t', '!!!!']]), /Malformed posting for term "t"/],
+      [title([['t', payload(1, 1)]]), /Malformed posting for term "t"/],
+      [title([['t', payload(0, 1, 0)]]), /Malformed posting for term "t"/],
+      [title([['t', payload(99, 1, 0)]]), /Malformed posting for term "t"/],
+      [title([['t', payload(1, 0)]]), /Malformed posting for term "t"/],
+      [title([['t', payload(1, 2, 3, 0)]]), /Malformed posting for term "t"/],
+      [title([['t', payload(1, 1, 0x80, 0x00)]]), /Malformed posting for term "t"/],
+      [title([['t', [[99, [0]]]]], 1), /Malformed posting for term "t"/],
+      [title([['t', [[0, []]]]], 1), /Malformed posting for term "t"/],
+      [title([['t', [[0, [2, 1]]]]], 1), /Malformed posting for term "t"/],
+      [title([['t', [[0, [1, 1]]]]], 1), /Malformed posting for term "t"/],
+      [title([['t', [[0, [-1]]]]], 1), /Malformed posting for term "t"/],
+      [title([['t', ['x']]], 1), /Malformed posting for term "t"/],
       [withDocuments([{ id: 1 }], emptyPostings), /Malformed document at position 0/],
       [
         withDocuments([...(good.documents as unknown[]), ...(good.documents as unknown[])]),

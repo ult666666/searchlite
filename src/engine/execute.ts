@@ -2,6 +2,7 @@ import { at } from '../internal/at';
 import { inverseDocumentFrequency, lengthNormalization, saturate } from './bm25';
 import type { FieldIndex } from './field-index';
 import type { MatchPlan, MatchTarget, Plan } from './plan';
+import { NO_MORE_DOCUMENTS, PostingsCursor, unionSize, type PostingsList } from './postings';
 
 /** How one field contributed to a clause's score. */
 export interface FieldExplanation {
@@ -80,6 +81,11 @@ export interface ExecutionContext {
    * cached and reused when the same plan is executed again to explain individual results.
    */
   cache: Map<MatchPlan, Occurrences>;
+  /**
+   * Document frequency per clause, for clauses whose occurrence table was never built: the
+   * document-at-a-time search computes it once, and explaining a result reuses it.
+   */
+  documentFrequencies?: Map<MatchPlan, number> | undefined;
 }
 
 /**
@@ -162,23 +168,15 @@ function exclude(hits: Hits, excluded: readonly Plan[], context: ExecutionContex
 }
 
 function executeMatch(plan: MatchPlan, context: ExecutionContext): Hits {
+  if (context.only !== undefined) {
+    return executeMatchOne(plan, context.only, context);
+  }
   const occurrences = occurrencesOf(plan, context);
   const hits: Hits = new Map();
   if (occurrences.size === 0) {
     return hits;
   }
   const idf = inverseDocumentFrequency(context.documentCount, occurrences.size);
-  if (context.only !== undefined) {
-    if (context.candidates && !context.candidates.has(context.only)) return hits;
-    const frequencies = occurrences.get(context.only);
-    if (frequencies) {
-      hits.set(
-        context.only,
-        scoreDocument(plan, context.only, frequencies, idf, occurrences.size, context),
-      );
-    }
-    return hits;
-  }
   // Keep full occurrences for global IDF and later explanations; only scoring is scoped.
   const candidates = context.candidates;
   if (!candidates) {
@@ -202,6 +200,76 @@ function executeMatch(plan: MatchPlan, context: ExecutionContext): Hits {
     }
   }
   return hits;
+}
+
+/**
+ * Scores one document for one clause. Unless an occurrence table is already cached, a term
+ * clause looks the document up in each target's postings and takes its document frequency from
+ * `documentFrequency`, so explaining a few results never decodes whole postings lists.
+ */
+function executeMatchOne(plan: MatchPlan, document: number, context: ExecutionContext): Hits {
+  const hits: Hits = new Map();
+  if (context.candidates && !context.candidates.has(document)) return hits;
+  const cached = context.cache.get(plan) ?? (isPhrase(plan) ? occurrencesOf(plan, context) : null);
+  const frequencies = cached ? cached.get(document) : frequenciesAt(plan, document, context);
+  if (frequencies) {
+    const documentFrequency = cached ? cached.size : documentFrequencyOf(plan, context);
+    const idf = inverseDocumentFrequency(context.documentCount, documentFrequency);
+    hits.set(document, scoreDocument(plan, document, frequencies, idf, documentFrequency, context));
+  }
+  return hits;
+}
+
+/** Whether some target of the clause is a phrase, which needs positional matching. */
+export function isPhrase(plan: MatchPlan): boolean {
+  return plan.targets.some((target) => target.terms.length > 1);
+}
+
+/** The postings list of a single-term target, if the term occurs in the field. */
+export function postingsOf(
+  target: MatchTarget,
+  context: ExecutionContext,
+): PostingsList | undefined {
+  return target.terms.length === 1
+    ? at(context.fields, target.field).postings.get(at(target.terms, 0))
+    : undefined;
+}
+
+/** Frequencies of a term clause's targets in one document, or undefined if none occurs. */
+function frequenciesAt(
+  plan: MatchPlan,
+  document: number,
+  context: ExecutionContext,
+): number[] | undefined {
+  const frequencies = plan.targets.map(
+    (target) => postingsOf(target, context)?.frequency(document) ?? 0,
+  );
+  return frequencies.some((frequency) => frequency > 0) ? frequencies : undefined;
+}
+
+/**
+ * Number of documents in which a clause matches at least one of its fields. For a term clause
+ * this is the size of the union of its postings lists, which is counted without building an
+ * occurrence table and remembered in `context.documentFrequencies`.
+ */
+export function documentFrequencyOf(plan: MatchPlan, context: ExecutionContext): number {
+  const cached = context.cache.get(plan);
+  if (cached) {
+    return cached.size;
+  }
+  if (isPhrase(plan)) {
+    return occurrencesOf(plan, context).size;
+  }
+  const known = context.documentFrequencies?.get(plan);
+  if (known !== undefined) {
+    return known;
+  }
+  const lists = plan.targets
+    .map((target) => postingsOf(target, context))
+    .filter((list) => list !== undefined);
+  const size = unionSize(lists);
+  context.documentFrequencies?.set(plan, size);
+  return size;
 }
 
 /** BM25F for one clause and one document. */
@@ -258,7 +326,7 @@ function scoreDocument(
   return { score, trace: [{ plan, frequencies, explanation }] };
 }
 
-function occurrencesOf(plan: MatchPlan, context: ExecutionContext): Occurrences {
+export function occurrencesOf(plan: MatchPlan, context: ExecutionContext): Occurrences {
   const cached = context.cache.get(plan);
   if (cached) {
     return cached;
@@ -287,21 +355,36 @@ function countTarget(field: FieldIndex, target: MatchTarget): Map<number, number
   if (lists.length < target.terms.length) {
     return counts; // some term never occurs in this field
   }
+  const cursors = lists.map((list) => new PostingsCursor(list));
+  if (cursors.length === 1) {
+    const cursor = at(cursors, 0);
+    for (let document = cursor.advance(0); document !== NO_MORE_DOCUMENTS;) {
+      counts.set(document, cursor.frequency);
+      document = cursor.advance(document + 1);
+    }
+    return counts;
+  }
   // Drive the intersection from the rarest term: only its documents can contain the phrase.
-  const [rarest] = [...lists].sort((a, b) => a.size - b.size);
-  for (const document of rarest?.keys() ?? []) {
-    const positions = lists
-      .map((postings) => postings.get(document))
-      .filter((list) => list !== undefined);
-    if (positions.length === lists.length) {
-      const count =
-        positions.length === 1
-          ? at(positions, 0).length
-          : countPhraseMatches(positions, target.offsets);
+  const rarest = cursors.reduce((best, cursor) =>
+    cursor.list.count < best.list.count ? cursor : best,
+  );
+  const positions = cursors.map((): number[] => []);
+  for (let document = rarest.advance(0); document !== NO_MORE_DOCUMENTS;) {
+    let all = true;
+    for (const cursor of cursors) {
+      if (cursor.advance(document) !== document) {
+        all = false;
+        break;
+      }
+    }
+    if (all) {
+      for (let i = 0; i < cursors.length; i++) at(cursors, i).positions(at(positions, i));
+      const count = countPhraseMatches(positions, target.offsets);
       if (count > 0) {
         counts.set(document, count);
       }
     }
+    document = rarest.advance(document + 1);
   }
   return counts;
 }

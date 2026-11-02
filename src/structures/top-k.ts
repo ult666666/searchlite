@@ -26,6 +26,20 @@ export class TopK<T> {
     return this.#heap.length;
   }
 
+  /** Whether {@link push} would keep `item`. */
+  accepts(item: T): boolean {
+    const heap = this.#heap;
+    return heap.length < this.#capacity || (heap.length > 0 && this.#isBetter(item, at(heap, 0)));
+  }
+
+  /**
+   * The worst item kept once `capacity` items are held, which any new item has to beat;
+   * undefined while there is still room.
+   */
+  get threshold(): T | undefined {
+    return this.#heap.length >= this.#capacity ? this.#heap[0] : undefined;
+  }
+
   /** Offers an item; it is kept only if it is among the best `capacity` items so far. */
   push(item: T): void {
     const heap = this.#heap;
