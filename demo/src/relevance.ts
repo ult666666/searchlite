@@ -53,18 +53,24 @@ if (
   !known(requestedCandidate) ||
   !report.queries.some((q) => q.id === requestedQuery)
 ) {
-  notice.textContent = 'Unknown comparison selections; defaults used for unsupported values.';
+  notice.textContent = 'Unknown selections in the link were replaced with the defaults.';
 }
 for (const query of report.queries) {
   const option = document.createElement('option');
   option.value = query.id;
-  option.textContent = `${query.id} — ${query.text}`;
+  option.textContent = `${query.id}: ${query.text}`;
   querySelect.append(option);
 }
 querySelect.value = report.queries.some((q) => q.id === requestedQuery) ? requestedQuery : 'q01';
 let downloadUrl: string | undefined;
 
-function tableHead(table: HTMLTableElement, caption: string, columns: string[]): void {
+/** Column headings; names in `numeric` are right-aligned like their values. */
+function tableHead(
+  table: HTMLTableElement,
+  caption: string,
+  columns: string[],
+  numeric: string[] = [],
+): void {
   table.replaceChildren();
   table.createCaption().textContent = caption;
   const row = table.createTHead().insertRow();
@@ -72,8 +78,16 @@ function tableHead(table: HTMLTableElement, caption: string, columns: string[]):
     const th = document.createElement('th');
     th.scope = 'col';
     th.textContent = text;
+    if (numeric.includes(text)) th.className = 'num';
     row.append(th);
   }
+}
+
+function numberCell(row: HTMLTableRowElement, text: string): HTMLTableCellElement {
+  const cell = row.insertCell();
+  cell.className = 'num';
+  cell.textContent = text;
+  return cell;
 }
 
 function metricTable(
@@ -84,7 +98,12 @@ function metricTable(
   delta: ComparisonMetrics,
 ): void {
   const table = element(selector, HTMLTableElement);
-  tableHead(table, caption, ['Metric', 'Baseline', 'Candidate', 'Δ']);
+  tableHead(
+    table,
+    caption,
+    ['Metric', 'Baseline', 'Candidate', 'Δ'],
+    ['Baseline', 'Candidate', 'Δ'],
+  );
   const body = table.createTBody();
   for (const [key, label] of metricLabels) {
     const row = body.insertRow();
@@ -93,7 +112,7 @@ function metricTable(
     name.textContent = label;
     row.append(name);
     for (const text of [number(before[key]), number(after[key]), change(delta[key])])
-      row.insertCell().textContent = text;
+      numberCell(row, text);
   }
 }
 
@@ -107,9 +126,9 @@ function syncUrl(): void {
 
 function rankings(side: 'baseline' | 'candidate', values: ComparedQuerySide): void {
   element(`#${side}-title`, HTMLHeadingElement).textContent =
-    `${side === 'baseline' ? 'Baseline' : 'Candidate'} — ${report[side].name}`;
+    `${side === 'baseline' ? 'Baseline' : 'Candidate'}: ${report[side].name}`;
   element(`#${side}-score-kind`, HTMLParagraphElement).textContent =
-    `Top 10 · ${report[side].scoreKind} scores (within this query/configuration only)`;
+    `Top 10 by ${report[side].scoreKind} score`;
   const list = element(`#${side}-ranking`, HTMLOListElement);
   list.replaceChildren();
   for (const result of values.ranking.slice(0, 10)) {
@@ -132,12 +151,12 @@ function rankings(side: 'baseline' | 'candidate', values: ComparedQuerySide): vo
 function inspectQuery(): void {
   const selected = report.queries.find((query) => query.id === querySelect.value);
   if (!selected) throw new Error('Missing fixed evaluation query');
-  element('#query-title', HTMLHeadingElement).textContent = `${selected.id} — ${selected.text}`;
+  element('#query-title', HTMLHeadingElement).textContent = `${selected.id}: ${selected.text}`;
   element('#query-state', HTMLParagraphElement).textContent =
     `nDCG@10 ${status(selected.delta.ndcgAt10)} (${change(selected.delta.ndcgAt10)}); ${Object.keys(selected.judgements).length} relevant ${Object.keys(selected.judgements).length === 1 ? 'judgment' : 'judgments'}.`;
   metricTable(
     '#query-metrics',
-    'Selected query — full precision in JSON',
+    'Selected query',
     selected.baseline.metrics,
     selected.candidate.metrics,
     selected.delta,
@@ -150,27 +169,30 @@ function inspectQuery(): void {
 function renderComparison(): void {
   metricTable(
     '#summary',
-    'Mean over all 22 queries — full precision in JSON',
+    'Mean over all 22 queries',
     report.baseline.metrics,
     report.candidate.metrics,
     report.meanDelta,
   );
   const overview = element('#query-overview', HTMLTableElement);
-  tableHead(overview, 'Per-query nDCG@10 — candidate minus baseline', [
-    'Query',
-    'Baseline',
-    'Candidate',
-    'Δ',
-    'Inspect',
-  ]);
+  tableHead(
+    overview,
+    'nDCG@10 by query',
+    ['Query', 'Baseline', 'Candidate', 'Δ', 'Inspect'],
+    ['Baseline', 'Candidate'],
+  );
   const body = overview.createTBody();
   for (const query of report.queries) {
     const row = body.insertRow();
-    row.insertCell().textContent = `${query.id} — ${query.text}`;
-    row.insertCell().textContent = number(query.baseline.metrics.ndcgAt10);
-    row.insertCell().textContent = number(query.candidate.metrics.ndcgAt10);
+    row.insertCell().textContent = `${query.id}: ${query.text}`;
+    numberCell(row, number(query.baseline.metrics.ndcgAt10));
+    numberCell(row, number(query.candidate.metrics.ndcgAt10));
     const delta = row.insertCell();
-    delta.textContent = `${change(query.delta.ndcgAt10)} ${status(query.delta.ndcgAt10)}`;
+    // The signed value sits in a fixed-width, right-aligned slot so the numbers line up.
+    const value = document.createElement('span');
+    value.className = 'delta-value';
+    value.textContent = change(query.delta.ndcgAt10);
+    delta.append(value, ` ${status(query.delta.ndcgAt10)}`);
     delta.className = `delta-${status(query.delta.ndcgAt10)}`;
     const button = document.createElement('button');
     button.type = 'button';

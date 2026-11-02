@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="searchlite demo: BM25F full-text search with a query language, running in the browser."
+      content="Search a glossary with searchlite, a TypeScript full-text search engine with BM25F ranking and a query language, in your browser."
     />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
@@ -13,12 +13,15 @@
   </head>
   <body>
     <header class="site-header">
+      <nav aria-label="searchlite pages" class="site-nav">
+        <a href="./" aria-current="page">Search demo</a>
+        <a href="./relevance.html">Relevance workbench</a>
+        <a href="./local.html">Local file workbench</a>
+      </nav>
       <h1>searchlite</h1>
-      <p><a href="./relevance.html">Compare relevance configurations</a></p>
-      <a href="./local.html">Local file workbench</a>
       <p class="tagline">
-        A zero-dependency full-text search engine for TypeScript. This page indexes a 60-entry
-        glossary of software, data and finance terms and searches it entirely in your browser.
+        A full-text search engine for TypeScript with no dependencies. This page searches a 60-entry
+        glossary of software, data and finance terms in your browser.
       </p>
     </header>
 
@@ -35,8 +38,8 @@
           placeholder='Try "binary heap" or volatlity~1'
         />
         <p id="query-help" class="hint">
-          Results update as you type, and the word you are typing is matched as a prefix. Press
-          <kbd>/</kbd> to jump to the search box.
+          Results update as you type, and the last word matches as a prefix. Press <kbd>/</kbd> to
+          return here.
         </p>
       </form>
 
@@ -119,8 +122,8 @@
 
     <footer class="site-footer">
       <p>
-        <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> · MIT licensed · The
-        glossary was written for this demo.
+        searchlite · <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> · MIT
+        License
       </p>
     </footer>
 

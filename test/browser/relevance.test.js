@@ -184,9 +184,7 @@ test(
       await page.getByRole('heading', { name: 'Relevance workbench', exact: true }).waitFor();
       assert.equal((await download()).bytes, first.bytes);
       await page.getByRole('link', { name: 'Search demo', exact: true }).click();
-      await page
-        .getByRole('link', { name: 'Compare relevance configurations', exact: true })
-        .click();
+      await page.getByRole('link', { name: 'Relevance workbench', exact: true }).click();
       await page.getByRole('heading', { name: 'Relevance workbench', exact: true }).waitFor();
       assert.deepEqual(external, []);
       assert.deepEqual(errors, []);

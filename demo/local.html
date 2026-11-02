@@ -9,7 +9,7 @@
     />
     <meta
       name="description"
-      content="Compare two saved search indexes against your own labels, locally in your browser. Inspect per-query regressions and export the same report as the native CLI."
+      content="Compare two saved searchlite indexes against your own relevance labels in the browser, and download the same report as the command-line tool."
     />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
@@ -18,37 +18,29 @@
   <body>
     <a class="skip-link" href="#local-controls">Skip to local comparison</a>
     <header class="site-header">
-      <nav aria-label="Project">
-        <a href="./">Search demo</a> · <a href="./relevance.html">Glossary workbench</a> ·
-        <a href="https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md"
-          >Method and reproduction</a
-        >
+      <nav aria-label="searchlite pages" class="site-nav">
+        <a href="./">Search demo</a>
+        <a href="./relevance.html">Relevance workbench</a>
+        <a href="./local.html" aria-current="page">Local file workbench</a>
       </nav>
-      <p class="eyebrow">searchlite / your saved collection</p>
       <h1>Local file workbench</h1>
       <p class="tagline">
-        Compare two real saved indexes against the same labels. Inspect every query and download the
-        comparison report in the native command's format.
-      </p>
-      <p class="scope-note">
-        <strong>Your files stay in browser memory.</strong> No upload, account, analytics or
-        provider call. Clear removes the selected inputs and rendered results. Reports contain query
-        text and document IDs; share them deliberately.
+        Compare two saved indexes against your own relevance labels, query by query. The report
+        matches the one from <code>search-docs.js compare</code>. Your files stay in this tab and
+        are never uploaded.
       </p>
     </header>
     <main>
       <noscript
         ><p>
-          JavaScript is required for local comparison. Use the linked guide for the equivalent Node
-          command.
+          This page needs JavaScript. The guide linked below has the equivalent Node command.
         </p></noscript
       >
       <section id="local-controls" aria-label="Local comparison inputs" tabindex="-1">
         <h2>Select saved files</h2>
         <p>
-          Use title/body snapshots from <code>search-docs.js</code> and a
-          <code>searchlite.local-judgments/1</code> labels file. Both indexes must contain identical
-          stored document IDs and title/body text.
+          Use two title/body snapshots made by <code>search-docs.js</code> from the same documents,
+          and a <code>searchlite.local-judgments/1</code> labels file.
         </p>
         <div class="local-inputs">
           <label
@@ -80,9 +72,7 @@
           >
         </div>
         <p class="hint">
-          Up to 16 MiB per index, 128 documents and 1 MiB of body text; labels up to 256 KiB and 32
-          queries. Comparison runs in a worker with a 15-second deadline. The already-loaded page
-          works offline.
+          Up to 16 MiB and 128 documents per index, and 32 queries in the labels file.
         </p>
         <div class="local-actions">
           <button id="compare-local" type="button" disabled>Compare saved indexes</button
@@ -93,11 +83,11 @@
         </p>
       </section>
       <section aria-label="Synthetic example">
-        <h2>Try a complete example</h2>
+        <h2>Try an example</h2>
         <p>
-          Two fictional notes put “quartz” in different fields. Reweighting title and body improves
-          one query and regresses another; the individual drop still fails even when both minimums
-          pass.
+          Two fictional notes mention “quartz” in different fields. Reweighting the title and body
+          improves one query and makes the other worse, so the comparison fails even though both
+          queries meet their minimums.
         </p>
         <div class="local-actions">
           <label
@@ -110,21 +100,24 @@
         <p id="sample-downloads"></p>
       </section>
       <section id="results" aria-label="Local comparison results" hidden></section>
-      <section aria-label="Comparison contract">
+      <section aria-label="Comparison rule">
         <h2>What the result means</h2>
         <p>
-          Every candidate query must meet its declared minimum and have unrounded nDCG@10 at least
-          as high as its baseline. A mean improvement cannot override a query regression. Rankings
-          use the actual supplied indexes, with the same engine and rules as the native CLI.
-        </p>
-        <p>
-          This is a deterministic gate for supplied labels, not a significance test or proof of
-          general retrieval quality. Matching stored text and SHA-256 hashes do not authenticate
-          postings, configurations, labels or sources. The result does not establish current source
-          freshness. Clear drops application references; it does not promise secure memory erasure.
+          A comparison passes when every query meets its declared minimum and its candidate nDCG@10
+          is at least the baseline's, before rounding. A better average cannot make up for one worse
+          query. The gate checks your labels; it is not a significance test.
         </p>
       </section>
     </main>
+    <footer class="site-footer">
+      <p>
+        searchlite · <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> ·
+        <a href="https://github.com/ult666666/searchlite/blob/main/docs/LOCAL_FILE_WORKBENCH.md"
+          >Guide to this page</a
+        >
+        · MIT License
+      </p>
+    </footer>
     <script type="module" src="/src/local.ts"></script>
   </body>
 </html>

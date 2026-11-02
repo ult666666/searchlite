@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Inspect searchlite ranking changes across a small judged collection, compare query metrics and export reproducible inputs and results."
+      content="Compare two searchlite ranking configurations on a small judged collection, query by query, and download the inputs and results."
     />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
@@ -14,29 +14,22 @@
   <body>
     <a class="skip-link" href="#comparison-controls">Skip to comparison</a>
     <header class="site-header">
-      <nav aria-label="Project">
-        <a href="./">Search demo</a> · <a href="./local.html">Local file workbench</a> ·
-        <a href="https://github.com/ult666666/searchlite/blob/main/docs/RELEVANCE_WORKBENCH.md"
-          >Method and reproduction</a
-        >
+      <nav aria-label="searchlite pages" class="site-nav">
+        <a href="./">Search demo</a>
+        <a href="./relevance.html" aria-current="page">Relevance workbench</a>
+        <a href="./local.html">Local file workbench</a>
       </nav>
-      <p class="eyebrow">searchlite / evaluation</p>
       <h1>Relevance workbench</h1>
       <p class="tagline">
-        See which queries improve or regress when the retrieval configuration changes. Every ranking
-        and metric is computed locally using the same engine as the search demo.
-      </p>
-      <p class="scope-note">
-        <strong>A small demonstration, not a benchmark.</strong> 60 authored glossary documents, 22
-        queries and 51 graded judgments by one author. These fixed configurations cannot establish
-        general performance or statistical significance.
+        Compare two ranking configurations on the glossary and see which queries get better or
+        worse. The collection is small: 60 documents, 22 queries and 51 graded judgments, all
+        written by one person.
       </p>
     </header>
     <main>
       <noscript
         ><p>
-          This workbench needs JavaScript to compute comparisons locally. The method and
-          reproduction guide includes the equivalent native command.
+          This page needs JavaScript. The guide linked below has the equivalent command.
         </p></noscript
       >
       <section aria-label="Comparison controls" id="comparison-controls" tabindex="-1">
@@ -46,14 +39,7 @@
           <label>Candidate configuration<select id="candidate"></select></label>
         </div>
         <p id="selection-notice" role="status" aria-live="polite"></p>
-        <p class="hint">
-          Δ is candidate minus baseline. Positive is better on this collection. Raw BM25F and RRF
-          scores have different units; compare their ranks and relevance metrics instead.
-        </p>
-        <p class="hint">
-          On narrow screens, scroll tables horizontally. Keyboard users can focus a table region and
-          use the arrow keys.
-        </p>
+        <p class="hint">Δ is candidate minus baseline, so a positive Δ is an improvement.</p>
         <div
           class="table-scroll"
           role="region"
@@ -63,11 +49,8 @@
           <table id="summary"></table>
         </div>
         <p>
-          <a id="download" download>Download comparison JSON</a
-          ><span class="hint">
-            — full inputs, configuration options, all 22 rankings, grades and unrounded metrics; no
-            upload or account.</span
-          >
+          <a id="download" download>Download comparison JSON</a>
+          <span class="hint">(inputs, options, all 22 rankings, grades and unrounded metrics)</span>
         </p>
       </section>
 
@@ -98,8 +81,7 @@
       <section aria-labelledby="overview-heading">
         <h2 id="overview-heading">All 22 queries</h2>
         <p class="hint">
-          Averages can hide individual regressions. Inspect the underlying ranks, including relevant
-          documents missing from the top 10.
+          An average can hide a regression on a single query, so every query is listed here.
         </p>
         <div class="table-scroll" role="region" aria-label="Query changes" tabindex="0">
           <table id="query-overview"></table>
@@ -110,41 +92,41 @@
         <h2 id="method-heading">How to read this</h2>
         <ul>
           <li>
-            P@5 divides relevant hits by 5, including empty slots. R@10 and nDCG@10 use the top 10.
-            MRR and MAP use the full retrieved ranking, up to 100 results. Gain is the relevance
-            grade, with log₂(rank + 1) discount.
+            P@5 divides relevant hits by 5, counting empty slots. R@10 and nDCG@10 use the top 10.
+            MRR and MAP use the whole ranking, up to 100 results. nDCG uses the grade as the gain,
+            discounted by log₂(rank + 1).
           </li>
           <li>
-            Grades: 3 directly answers, 2 substantially relevant, 1 partly relevant, 0 not relevant
-            under this collection’s judgments. Unlisted documents receive grade 0. These are one
-            author’s labels.
+            Grades: 3 answers the query directly, 2 is substantially relevant, 1 is partly relevant
+            and 0 is not relevant. Documents without a judgment count as grade 0.
           </li>
           <li>
-            Configurations were fixed before evaluation. A difference can come from a single query;
-            this page makes no significance or general-quality claim.
+            The configurations were fixed before the evaluation was run. With 22 queries, one query
+            can account for a whole difference, so treat small changes as noise.
           </li>
           <li>
-            <strong>Toy hybrid vectors capture spelling overlap, not meaning.</strong> They are
-            hashed character trigrams, not semantic embeddings. No model, provider or internet
-            retrieval is called.
+            The toy hybrid vectors are hashed character trigrams. They capture spelling overlap, not
+            meaning, and no model or external service is called.
           </li>
           <li>
-            Queries run as written, without the main demo’s last-word prefix completion. BM25F
-            scores are comparable only within the same query and configuration; RRF scores have
-            different units.
+            Queries run as written, without the search demo’s prefix match on the last word. BM25F
+            scores compare only within one query and configuration, and RRF scores use a different
+            scale.
           </li>
           <li>
-            The JSON download records the full synthetic inputs and results for reproduction. It is
-            not authenticated provenance. This page neither imports private data nor saves browser
-            storage.
+            The JSON download records the inputs and results so a run can be reproduced. The page
+            stores nothing in the browser.
           </li>
         </ul>
       </section>
     </main>
     <footer class="site-footer">
       <p>
-        <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> · MIT licensed ·
-        Authored demonstration collection.
+        searchlite · <a href="https://github.com/ult666666/searchlite">Source on GitHub</a> ·
+        <a href="https://github.com/ult666666/searchlite/blob/main/docs/RELEVANCE_WORKBENCH.md"
+          >Guide to this page</a
+        >
+        · MIT License
       </p>
     </footer>
     <script type="module" src="/src/relevance.ts"></script>

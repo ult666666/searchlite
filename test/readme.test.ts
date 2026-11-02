@@ -32,6 +32,17 @@ function blockAfter(marker: string, language: string): string {
   return readme.slice(open, readme.indexOf('```', open));
 }
 
+/** The lines of the first Markdown table after `marker` in the README. */
+function tableAfter(marker: string): string {
+  const start = readme.indexOf(marker);
+  expect(start, marker).toBeGreaterThanOrEqual(0);
+  const lines = readme.slice(start).split('\n');
+  const first = lines.findIndex((line) => line.startsWith('|'));
+  expect(first, marker).toBeGreaterThan(0);
+  const end = lines.findIndex((line, index) => index > first && !line.startsWith('|'));
+  return lines.slice(first, end === -1 ? undefined : end).join('\n');
+}
+
 describe('README', { timeout: 60_000 }, () => {
   it('shows the quick start code and the output that code prints', () => {
     const example = readFileSync(join(root, 'examples/quick-start.ts'), 'utf8');
@@ -57,11 +68,10 @@ describe('README', { timeout: 60_000 }, () => {
             .join('|'),
         );
     const printed = runScript('scripts/eval.ts');
-    const section = readme.slice(readme.indexOf('`npm run eval` indexes the glossary'));
     expect(printed.startsWith(blockAfter('`npm run eval` indexes the glossary', 'text'))).toBe(
       true,
     );
-    const documented = rows(section.slice(0, section.indexOf('**Read this as')));
+    const documented = rows(tableAfter('`npm run eval` indexes the glossary'));
     expect(documented).toHaveLength(7);
     expect(rows(printed)).toEqual(documented);
   });
