@@ -18,6 +18,21 @@ concurrent writers, language detection, or approximate-nearest-neighbour vector 
 
 ## 2. Module map
 
+The pipeline at a glance:
+
+```mermaid
+flowchart LR
+  D[Document] --> A["Analyzer per field<br/>tokenize · NFKD · stopwords · Porter"]
+  A --> I["Compressed positional postings<br/>delta + varint blocks, skips, impacts"]
+  A --> T[Term trie per field]
+  Q[Query string] --> P[Recursive-descent parser] --> AST[Typed AST]
+  AST --> C["Compile: analyze leaves,<br/>expand prefix / fuzzy words"]
+  T --> C
+  C --> E["Execute document-at-a-time:<br/>BM25F, MaxScore, block-max bounds"]
+  I --> E
+  E --> K[Top-k binary heap] --> R[Results, highlight, explain]
+```
+
 | Module                                        | Responsibility                                                        |
 | --------------------------------------------- | --------------------------------------------------------------------- |
 | `analysis/tokenizer.ts`                       | Split text into words with positions and source offsets               |
@@ -498,6 +513,13 @@ before and after.
 - **Exact vector search** is a linear scan; fine for thousands of vectors, not millions.
 - **No incremental snapshot**: `toJSON` serializes the whole index.
 
+Roadmap:
+
+- Block-max WAND for long disjunctions, and an on-disk index format.
+- More analyzers (Snowball stemmers, CJK bigrams) and pluggable tokenizers.
+- An approximate nearest-neighbour index (for example HNSW) for larger vector collections.
+- Publishing to npm.
+
 ## 14. How correctness is verified
 
 | Area            | Test approach                                                                                                                                                       |
@@ -577,3 +599,15 @@ before and after.
   University Press, 2008, section 5.3 (variable byte codes and gap encoding).
 - [Protocol Buffers encoding](https://protobuf.dev/programming-guides/encoding/) (base-128 varints)
   and [RFC 4648](https://www.rfc-editor.org/rfc/rfc4648) (base64).
+
+## 18. References for ranking and evaluation
+
+- M. F. Porter. "An algorithm for suffix stripping." _Program_ 14(3), 1980, pp. 130–137.
+- S. Robertson and H. Zaragoza. "The Probabilistic Relevance Framework: BM25 and Beyond."
+  _Foundations and Trends in Information Retrieval_ 3(4), 2009, pp. 333–389.
+- G. V. Cormack, C. L. A. Clarke and S. Büttcher. "Reciprocal Rank Fusion outperforms Condorcet
+  and individual Rank Learning Methods." _SIGIR_ 2009.
+- K. Järvelin and J. Kekäläinen. "Cumulated gain-based evaluation of IR techniques." _ACM
+  Transactions on Information Systems_ 20(4), 2002, pp. 422–446.
+- C. D. Manning, P. Raghavan and H. Schütze. _Introduction to Information Retrieval._ Cambridge
+  University Press, 2008 (inverted indexes, positional intersection, evaluation measures).

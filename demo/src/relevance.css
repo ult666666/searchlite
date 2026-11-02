@@ -4,21 +4,6 @@ main,
 .site-footer {
   max-width: 76rem;
 }
-.site-header nav {
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-.eyebrow {
-  color: var(--muted);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.scope-note {
-  border-left: 3px solid var(--accent);
-  padding: 0.6rem 1rem;
-  background: var(--surface);
-}
 main > section {
   margin: 2rem 0;
 }
@@ -122,6 +107,11 @@ caption {
 }
 .delta-improved {
   font-weight: 700;
+}
+.delta-value {
+  display: inline-block;
+  min-width: 3.75rem;
+  text-align: right;
 }
 .skip-link {
   position: absolute;

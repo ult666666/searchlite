@@ -50,6 +50,11 @@ All notable changes to this project are documented here. The format follows
   BM25F scores differ from Node's in the last digit.
 - The README leads with the library and its live demo; the local-search limits moved to
   `docs/LOCAL_SEARCH.md`.
+- The README is about half as long. The full API table moved to `docs/API.md`, the scripts, CI notes,
+  benchmark commands and layout to `docs/DEVELOPMENT.md`, and the pipeline diagram, roadmap and
+  ranking references to `docs/DESIGN.md`.
+- The demo pages share one navigation bar and a plain footer, number columns are right-aligned,
+  and the workbench pages state their limits once instead of in banners and repeated notes.
 
 ## [0.2.0] - 2026-10-26
 

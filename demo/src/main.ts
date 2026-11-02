@@ -61,23 +61,19 @@ function renderExplanation(explanation: Explanation): HTMLElement {
   const table = document.createElement('table');
   table.className = 'explain';
   const caption = table.createCaption();
-  caption.textContent = `Score ${explanation.score.toFixed(3)} = sum of the clause scores below. Each clause scores weight × idf × (k1 + 1) · tf̃ / (k1 + tf̃) with k1 = ${explanation.k1}, where tf̃ adds up boost × tf / length normalization over the fields.`;
+  caption.textContent = `Score ${explanation.score.toFixed(3)}, the sum of the clause scores. Clause score = weight × idf × (k1 + 1) · tf̃ / (k1 + tf̃), with k1 = ${explanation.k1} and tf̃ the weighted tf.`;
+  // Every column except the clause and the field holds numbers, which are right-aligned.
+  const numeric = (column: number): boolean => column !== 0 && column !== 2;
   const head = table.createTHead().insertRow();
-  for (const label of [
-    'Clause',
-    'idf',
-    'Field',
-    'tf',
-    'Length (avg)',
-    'Boost',
-    'Weighted tf',
-    'Clause score',
-  ]) {
-    const cell = document.createElement('th');
-    cell.scope = 'col';
-    cell.textContent = label;
-    head.append(cell);
-  }
+  ['Clause', 'idf', 'Field', 'tf', 'Length (avg)', 'Boost', 'Weighted tf', 'Clause score'].forEach(
+    (label, column) => {
+      const cell = document.createElement('th');
+      cell.scope = 'col';
+      cell.textContent = label;
+      if (numeric(column)) cell.className = 'num';
+      head.append(cell);
+    },
+  );
   const body = table.createTBody();
   for (const clause of explanation.clauses) {
     clause.fields.forEach((field, i) => {
@@ -93,12 +89,21 @@ function renderExplanation(explanation: Explanation): HTMLElement {
         field.weightedFrequency.toFixed(3),
         i === 0 ? `${clause.score.toFixed(3)}${weight ? ` (fuzzy${weight})` : ''}` : '',
       ];
-      for (const text of cells) {
-        row.insertCell().textContent = text;
-      }
+      cells.forEach((text, column) => {
+        const cell = row.insertCell();
+        cell.textContent = text;
+        if (numeric(column)) cell.className = 'num';
+      });
     });
   }
-  return table;
+  // On narrow screens the table scrolls sideways, so its wrapper takes keyboard focus.
+  const scroll = document.createElement('div');
+  scroll.className = 'explain-scroll';
+  scroll.tabIndex = 0;
+  scroll.setAttribute('role', 'region');
+  scroll.setAttribute('aria-label', `Score explanation for ${explanation.id}`);
+  scroll.append(table);
+  return scroll;
 }
 
 function renderResult(result: SearchResult, query: QueryNode): HTMLLIElement {

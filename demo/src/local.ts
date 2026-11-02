@@ -106,7 +106,7 @@ const metricNames: [keyof LocalMetrics, string][] = [
 ];
 function queryView(query: LocalComparedQuery, target: HTMLElement): void {
   target.replaceChildren();
-  target.append(node('h3', `${query.id} — ${query.text}`));
+  target.append(node('h3', `${query.id}: ${query.text}`));
   target.append(
     node(
       'p',
@@ -125,6 +125,7 @@ function queryView(query: LocalComparedQuery, target: HTMLElement): void {
   for (const name of ['Metric', 'Baseline', 'Candidate', 'Δ']) {
     const th = node('th', name);
     th.scope = 'col';
+    if (name !== 'Metric') th.className = 'num';
     header.append(th);
   }
   const body = table.createTBody();
@@ -137,8 +138,11 @@ function queryView(query: LocalComparedQuery, target: HTMLElement): void {
       query.baseline.metrics[key],
       query.candidate.metrics[key],
       query.delta[key],
-    ])
-      row.insertCell().textContent = value.toFixed(6);
+    ]) {
+      const cell = row.insertCell();
+      cell.className = 'num';
+      cell.textContent = value.toFixed(6);
+    }
   }
   scroll.append(table);
   target.append(scroll);
@@ -175,7 +179,7 @@ function render(text: string): void {
   );
   const description = node(
     'p',
-    'SHA-256 identifies the exact used input bytes; it does not authenticate them.',
+    'SHA-256 of each input file. The hashes identify the files; they do not authenticate them.',
   );
   description.className = 'hint';
   results.append(description);
@@ -244,7 +248,8 @@ function receive(token: number, active: Worker, reply: LocalReply): void {
       }
     }
     render(reply.text);
-    status.textContent = 'Complete. Review individual queries before sharing the report.';
+    status.textContent =
+      'Comparison complete. The report includes your query text and document IDs.';
     update();
   } catch {
     fail('OPERATION_FAILED', 'The local comparison could not be displayed.');

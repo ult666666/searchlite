@@ -56,7 +56,21 @@ main,
 }
 
 .site-header {
-  padding-top: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.site-nav a[aria-current='page'] {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
 }
 
 h1 {
@@ -169,6 +183,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
 }
 
 th,
@@ -177,6 +192,11 @@ td {
   text-align: left;
   vertical-align: top;
   border-bottom: 1px solid var(--border);
+}
+
+th.num,
+td.num {
+  text-align: right;
 }
 
 code {
@@ -240,8 +260,13 @@ mark {
   border-radius: 3px;
 }
 
-.explain {
+.explain-scroll {
   margin-top: 0.75rem;
+  overflow-x: auto;
+}
+
+.explain {
+  min-width: 34rem;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }
@@ -256,11 +281,4 @@ mark {
   padding-top: 2rem;
   padding-bottom: 2.5rem;
   font-size: 0.9rem;
-}
-
-@media (max-width: 40rem) {
-  .explain {
-    display: block;
-    overflow-x: auto;
-  }
 }
