@@ -1,0 +1,1211 @@
+{
+  "description": "A version 1 snapshot written by searchlite 0.2.0 and the results that build returned for each query (limit Infinity).",
+  "command": "npx tsx scripts/snapshot-v1-fixture.ts --module=/absolute/path/to/0.2.0/dist/index.js",
+  "queries": [
+    {
+      "text": "binary",
+      "results": [
+        {
+          "id": "binary-heap",
+          "score": 2.17284024879845,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["binari"],
+          "match": { "title": ["binari"], "body": ["binari"] }
+        },
+        {
+          "id": "binary-search",
+          "score": 2.09709914387025,
+          "fields": {
+            "title": "Binary search",
+            "body": "Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.",
+            "tags": ["algorithms", "searching"]
+          },
+          "terms": ["binari"],
+          "match": { "title": ["binari"], "body": ["binari"] }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 2.0893711360122436,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["binari"],
+          "match": { "title": ["binari"], "body": ["binari"] }
+        }
+      ]
+    },
+    {
+      "text": "binary heap",
+      "results": [
+        {
+          "id": "binary-heap",
+          "score": 5.8398592380492325,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["binari", "heap"],
+          "match": { "title": ["binari", "heap"], "body": ["binari", "heap"] }
+        },
+        {
+          "id": "binary-search",
+          "score": 2.09709914387025,
+          "fields": {
+            "title": "Binary search",
+            "body": "Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.",
+            "tags": ["algorithms", "searching"]
+          },
+          "terms": ["binari"],
+          "match": { "title": ["binari"], "body": ["binari"] }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 2.0893711360122436,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["binari"],
+          "match": { "title": ["binari"], "body": ["binari"] }
+        }
+      ]
+    },
+    {
+      "text": "hash OR tree",
+      "results": [
+        {
+          "id": "big-o-notation",
+          "score": 4.341573359206439,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["hash", "tree"],
+          "match": { "title": ["tree"], "body": ["hash", "tree"] }
+        },
+        {
+          "id": "hash-table",
+          "score": 2.762080732491612,
+          "fields": {
+            "title": "Hash table",
+            "body": "A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.",
+            "tags": ["data-structures", "hashing"]
+          },
+          "terms": ["hash"],
+          "match": { "title": ["hash"], "body": ["hash"] }
+        },
+        {
+          "id": "b-tree",
+          "score": 2.297364276504558,
+          "fields": {
+            "title": "B-tree",
+            "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+            "tags": ["data-structures", "databases"]
+          },
+          "terms": ["tree"],
+          "match": { "title": ["tree"], "body": ["tree"] }
+        },
+        {
+          "id": "binary-heap",
+          "score": 1.1417418351108362,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["tree"],
+          "match": { "body": ["tree"] }
+        }
+      ]
+    },
+    {
+      "text": "\"binary search\"",
+      "results": [
+        {
+          "id": "binary-search",
+          "score": 3.539193637068479,
+          "fields": {
+            "title": "Binary search",
+            "body": "Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.",
+            "tags": ["algorithms", "searching"]
+          },
+          "terms": ["binari", "search"],
+          "match": { "title": ["binari", "search"], "body": ["binari", "search"] }
+        }
+      ]
+    },
+    {
+      "text": "title:hash*",
+      "results": [
+        {
+          "id": "hash-table",
+          "score": 3.298424514388705,
+          "fields": {
+            "title": "Hash table",
+            "body": "A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.",
+            "tags": ["data-structures", "hashing"]
+          },
+          "terms": ["hash"],
+          "match": { "title": ["hash"] }
+        }
+      ]
+    },
+    {
+      "text": "memori~1",
+      "results": [
+        {
+          "id": "garbage-collection",
+          "score": 2.6884912444088114,
+          "fields": {
+            "title": "Garbage collection",
+            "body": "Garbage collection is automatic memory management: the runtime finds objects that the program can no longer reach and frees their memory. Tracing collectors mark everything reachable from a set of roots and sweep the rest, while reference counting frees an object as soon as its count drops to zero. It prevents most use-after-free bugs at the cost of occasional pauses.",
+            "tags": ["programming", "memory"]
+          },
+          "terms": ["memori"],
+          "match": { "body": ["memori"] }
+        }
+      ]
+    },
+    { "text": "data AND structure", "results": [] },
+    {
+      "text": "tree -binary",
+      "results": [
+        {
+          "id": "b-tree",
+          "score": 2.297364276504558,
+          "fields": {
+            "title": "B-tree",
+            "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+            "tags": ["data-structures", "databases"]
+          },
+          "terms": ["tree"],
+          "match": { "title": ["tree"], "body": ["tree"] }
+        }
+      ]
+    },
+    {
+      "text": "(lock OR tree) AND NOT heap",
+      "results": [
+        {
+          "id": "b-tree",
+          "score": 2.297364276504558,
+          "fields": {
+            "title": "B-tree",
+            "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+            "tags": ["data-structures", "databases"]
+          },
+          "terms": ["tree"],
+          "match": { "title": ["tree"], "body": ["tree"] }
+        },
+        {
+          "id": "deadlock",
+          "score": 2.2171938984813315,
+          "fields": {
+            "title": "Deadlock",
+            "body": "A deadlock happens when two or more threads wait forever because each one holds a lock that another needs. It requires mutual exclusion, hold-and-wait, no preemption and a circular wait. Acquiring locks in a consistent global order is a simple way to prevent it.",
+            "tags": ["concurrency", "bugs"]
+          },
+          "terms": ["lock"],
+          "match": { "body": ["lock"] }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 2.0893711360122436,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["tree"],
+          "match": { "title": ["tree"], "body": ["tree"] }
+        },
+        {
+          "id": "race-condition",
+          "score": 1.5282800800246326,
+          "fields": {
+            "title": "Race condition",
+            "body": "A race condition occurs when the result of a program depends on the timing of threads or processes that access shared data. If two threads read, modify and write the same counter without coordination, one update can silently overwrite the other. Locks, atomic operations and immutable data are common defenses.",
+            "tags": ["concurrency", "bugs"]
+          },
+          "terms": ["lock"],
+          "match": { "body": ["lock"] }
+        }
+      ]
+    },
+    {
+      "text": "tags:data-structures",
+      "results": [
+        {
+          "id": "hash-table",
+          "score": 1.2841462696179033,
+          "fields": {
+            "title": "Hash table",
+            "body": "A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.",
+            "tags": ["data-structures", "hashing"]
+          },
+          "terms": ["data", "structures"],
+          "match": { "tags": ["data", "structures"] }
+        },
+        {
+          "id": "b-tree",
+          "score": 1.2841462696179033,
+          "fields": {
+            "title": "B-tree",
+            "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+            "tags": ["data-structures", "databases"]
+          },
+          "terms": ["data", "structures"],
+          "match": { "tags": ["data", "structures"] }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 1.2841462696179033,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["data", "structures"],
+          "match": { "tags": ["data", "structures"] }
+        },
+        {
+          "id": "binary-heap",
+          "score": 1.1619054227985068,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["data", "structures"],
+          "match": { "tags": ["data", "structures"] }
+        }
+      ]
+    },
+    {
+      "text": "test OR time OR data",
+      "results": [
+        {
+          "id": "unit-testing",
+          "score": 2.8041857854655325,
+          "fields": {
+            "title": "Unit testing",
+            "body": "Unit testing checks small pieces of code, such as a single function or class, in isolation from the rest of the system. Good unit tests are fast, deterministic and focused on behavior rather than implementation details. They act as a safety net that lets developers refactor with confidence.",
+            "tags": ["testing", "software-engineering"]
+          },
+          "terms": ["test"],
+          "match": { "title": ["test"], "body": ["test"] }
+        },
+        {
+          "id": "race-condition",
+          "score": 2.35627463548707,
+          "fields": {
+            "title": "Race condition",
+            "body": "A race condition occurs when the result of a program depends on the timing of threads or processes that access shared data. If two threads read, modify and write the same counter without coordination, one update can silently overwrite the other. Locks, atomic operations and immutable data are common defenses.",
+            "tags": ["concurrency", "bugs"]
+          },
+          "terms": ["data", "time"],
+          "match": { "body": ["data", "time"] }
+        },
+        {
+          "id": "hash-table",
+          "score": 2.238672122483274,
+          "fields": {
+            "title": "Hash table",
+            "body": "A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.",
+            "tags": ["data-structures", "hashing"]
+          },
+          "terms": ["data", "time"],
+          "match": { "body": ["time"], "tags": ["data"] }
+        },
+        {
+          "id": "continuous-integration",
+          "score": 1.4899666518345998,
+          "fields": {
+            "title": "Continuous integration",
+            "body": "Continuous integration is the practice of merging code changes into a shared branch frequently and verifying each change with an automated build and test run. A CI server runs the pipeline on every push or pull request and reports failures before the code is merged. Catching integration problems early keeps the main branch releasable.",
+            "tags": ["devops", "testing"]
+          },
+          "terms": ["test"],
+          "match": { "body": ["test"] }
+        },
+        {
+          "id": "b-tree",
+          "score": 0.8027042620574452,
+          "fields": {
+            "title": "B-tree",
+            "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+            "tags": ["data-structures", "databases"]
+          },
+          "terms": ["data"],
+          "match": { "tags": ["data"] }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 0.8027042620574452,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["data"],
+          "match": { "tags": ["data"] }
+        },
+        {
+          "id": "binary-heap",
+          "score": 0.726292990957746,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["data"],
+          "match": { "tags": ["data"] }
+        },
+        {
+          "id": "binary-search",
+          "score": 0.6131044728864089,
+          "fields": {
+            "title": "Binary search",
+            "body": "Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.",
+            "tags": ["algorithms", "searching"]
+          },
+          "terms": ["data"],
+          "match": { "body": ["data"] }
+        }
+      ]
+    },
+    {
+      "text": "queue priority heap",
+      "results": [
+        {
+          "id": "binary-heap",
+          "score": 8.184327506143307,
+          "fields": {
+            "title": "Binary heap",
+            "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+            "tags": ["data-structures", "priority-queue"]
+          },
+          "terms": ["heap", "prioriti", "priority", "queue"],
+          "match": {
+            "title": ["heap"],
+            "body": ["heap", "prioriti", "queue"],
+            "tags": ["priority", "queue"]
+          }
+        },
+        {
+          "id": "big-o-notation",
+          "score": 4.50440444638839,
+          "fields": {
+            "title": "Replaced entry about binary trees",
+            "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+            "tags": ["replaced", "data-structures"]
+          },
+          "terms": ["prioriti", "queue"],
+          "match": { "body": ["prioriti", "queue"] }
+        }
+      ]
+    },
+    {
+      "text": "lock* OR \"race condition\" -deadlock",
+      "results": [
+        {
+          "id": "race-condition",
+          "score": 5.058378346682405,
+          "fields": {
+            "title": "Race condition",
+            "body": "A race condition occurs when the result of a program depends on the timing of threads or processes that access shared data. If two threads read, modify and write the same counter without coordination, one update can silently overwrite the other. Locks, atomic operations and immutable data are common defenses.",
+            "tags": ["concurrency", "bugs"]
+          },
+          "terms": ["condit", "lock", "race"],
+          "match": { "title": ["condit", "race"], "body": ["condit", "lock", "race"] }
+        }
+      ]
+    },
+    { "text": "the OF and", "results": [] }
+  ],
+  "snapshot": {
+    "format": "searchlite",
+    "version": 1,
+    "options": {
+      "fields": [
+        { "name": "title", "boost": 3, "b": 0.75, "stemming": true, "stopwords": true },
+        { "name": "body", "boost": 1, "b": 0.75, "stemming": true, "stopwords": true },
+        { "name": "tags", "boost": 2, "b": 0.75, "stemming": false, "stopwords": true }
+      ],
+      "storeFields": ["title", "body", "tags"],
+      "idField": "id",
+      "k1": 1.2,
+      "b": 0.75,
+      "defaultOperator": "OR"
+    },
+    "documents": [
+      {
+        "id": "binary-search",
+        "lengths": [2, 31, 2],
+        "stored": {
+          "title": "Binary search",
+          "body": "Binary search finds a target value in a sorted array by repeatedly halving the range that could contain it. Each comparison with the middle element discards half of the remaining candidates, so a lookup takes O(log n) steps. It only works when the data is sorted and supports random access.",
+          "tags": ["algorithms", "searching"]
+        }
+      },
+      {
+        "id": "hash-table",
+        "lengths": [2, 38, 3],
+        "stored": {
+          "title": "Hash table",
+          "body": "A hash table stores key-value pairs in an array of buckets and uses a hash function to decide which bucket holds each key. Lookups, inserts and deletes take constant time on average. When two keys land in the same bucket, the table resolves the collision with chaining or open addressing, and it grows when the load factor gets too high.",
+          "tags": ["data-structures", "hashing"]
+        }
+      },
+      {
+        "id": "binary-heap",
+        "lengths": [2, 37, 4],
+        "stored": {
+          "title": "Binary heap",
+          "body": "A binary heap is a complete binary tree stored in an array, where every parent is ordered before its children. It is the usual way to implement a priority queue: reading the top element is O(1), while inserting and removing take O(log n) by sifting elements up or down. Heaps also power heapsort and top-k selection.",
+          "tags": ["data-structures", "priority-queue"]
+        }
+      },
+      {
+        "id": "b-tree",
+        "lengths": [2, 36, 3],
+        "stored": {
+          "title": "B-tree",
+          "body": "A B-tree is a self-balancing search tree whose nodes hold many sorted keys and have many children. Because each node fills a disk page, the tree stays shallow and a lookup needs only a few page reads. Most relational databases and file systems use B-tree variants for their indexes.",
+          "tags": ["data-structures", "databases"]
+        }
+      },
+      {
+        "id": "big-o-notation",
+        "lengths": [4, 8, 3],
+        "stored": {
+          "title": "Replaced entry about binary trees",
+          "body": "A replacement document that mentions a binary tree, a hash and a priority queue.",
+          "tags": ["replaced", "data-structures"]
+        }
+      },
+      {
+        "id": "dynamic-programming",
+        "lengths": [2, 28, 2],
+        "stored": {
+          "title": "Dynamic programming",
+          "body": "Dynamic programming solves problems with overlapping subproblems by solving each subproblem once and reusing the stored answer. It can be written top-down with memoization or bottom-up by filling a table. Edit distance, shortest paths and the knapsack problem are classic examples.",
+          "tags": ["algorithms", "optimization"]
+        }
+      },
+      {
+        "id": "garbage-collection",
+        "lengths": [2, 38, 2],
+        "stored": {
+          "title": "Garbage collection",
+          "body": "Garbage collection is automatic memory management: the runtime finds objects that the program can no longer reach and frees their memory. Tracing collectors mark everything reachable from a set of roots and sweep the rest, while reference counting frees an object as soon as its count drops to zero. It prevents most use-after-free bugs at the cost of occasional pauses.",
+          "tags": ["programming", "memory"]
+        }
+      },
+      {
+        "id": "race-condition",
+        "lengths": [2, 33, 2],
+        "stored": {
+          "title": "Race condition",
+          "body": "A race condition occurs when the result of a program depends on the timing of threads or processes that access shared data. If two threads read, modify and write the same counter without coordination, one update can silently overwrite the other. Locks, atomic operations and immutable data are common defenses.",
+          "tags": ["concurrency", "bugs"]
+        }
+      },
+      {
+        "id": "deadlock",
+        "lengths": [1, 28, 2],
+        "stored": {
+          "title": "Deadlock",
+          "body": "A deadlock happens when two or more threads wait forever because each one holds a lock that another needs. It requires mutual exclusion, hold-and-wait, no preemption and a circular wait. Acquiring locks in a consistent global order is a simple way to prevent it.",
+          "tags": ["concurrency", "bugs"]
+        }
+      },
+      {
+        "id": "unit-testing",
+        "lengths": [2, 29, 3],
+        "stored": {
+          "title": "Unit testing",
+          "body": "Unit testing checks small pieces of code, such as a single function or class, in isolation from the rest of the system. Good unit tests are fast, deterministic and focused on behavior rather than implementation details. They act as a safety net that lets developers refactor with confidence.",
+          "tags": ["testing", "software-engineering"]
+        }
+      },
+      {
+        "id": "continuous-integration",
+        "lengths": [2, 35, 2],
+        "stored": {
+          "title": "Continuous integration",
+          "body": "Continuous integration is the practice of merging code changes into a shared branch frequently and verifying each change with an automated build and test run. A CI server runs the pipeline on every push or pull request and reports failures before the code is merged. Catching integration problems early keeps the main branch releasable.",
+          "tags": ["devops", "testing"]
+        }
+      }
+    ],
+    "postings": {
+      "title": [
+        [
+          "binari",
+          [
+            [0, [0]],
+            [2, [0]],
+            [4, [3]]
+          ]
+        ],
+        ["search", [[0, [1]]]],
+        ["hash", [[1, [0]]]],
+        ["tabl", [[1, [1]]]],
+        ["heap", [[2, [1]]]],
+        ["b", [[3, [0]]]],
+        [
+          "tree",
+          [
+            [3, [1]],
+            [4, [4]]
+          ]
+        ],
+        ["dynam", [[5, [0]]]],
+        ["program", [[5, [1]]]],
+        ["garbag", [[6, [0]]]],
+        ["collect", [[6, [1]]]],
+        ["race", [[7, [0]]]],
+        ["condit", [[7, [1]]]],
+        ["deadlock", [[8, [0]]]],
+        ["replac", [[4, [0]]]],
+        ["entri", [[4, [1]]]],
+        ["unit", [[9, [0]]]],
+        ["test", [[9, [1]]]],
+        ["continu", [[10, [0]]]],
+        ["integr", [[10, [1]]]]
+      ],
+      "body": [
+        [
+          "binari",
+          [
+            [0, [0]],
+            [2, [1, 6]],
+            [4, [6]]
+          ]
+        ],
+        [
+          "search",
+          [
+            [0, [1]],
+            [3, [7]]
+          ]
+        ],
+        [
+          "find",
+          [
+            [0, [2]],
+            [6, [8]]
+          ]
+        ],
+        ["target", [[0, [4]]]],
+        [
+          "valu",
+          [
+            [0, [5]],
+            [1, [5]]
+          ]
+        ],
+        [
+          "sort",
+          [
+            [0, [8, 46]],
+            [3, [13]]
+          ]
+        ],
+        [
+          "arrai",
+          [
+            [0, [9]],
+            [1, [9]],
+            [2, [11]]
+          ]
+        ],
+        ["repeatedli", [[0, [11]]]],
+        ["halv", [[0, [12]]]],
+        ["rang", [[0, [14]]]],
+        ["contain", [[0, [17]]]],
+        ["comparison", [[0, [20]]]],
+        ["middl", [[0, [23]]]],
+        [
+          "element",
+          [
+            [0, [24]],
+            [2, [33, 47]]
+          ]
+        ],
+        ["discard", [[0, [25]]]],
+        ["half", [[0, [26]]]],
+        ["remain", [[0, [29]]]],
+        ["candid", [[0, [30]]]],
+        [
+          "lookup",
+          [
+            [0, [33]],
+            [1, [24]],
+            [3, [32]]
+          ]
+        ],
+        [
+          "take",
+          [
+            [0, [34]],
+            [1, [28]],
+            [2, [41]]
+          ]
+        ],
+        [
+          "o",
+          [
+            [0, [35]],
+            [2, [35, 42]]
+          ]
+        ],
+        [
+          "log",
+          [
+            [0, [36]],
+            [2, [43]]
+          ]
+        ],
+        [
+          "n",
+          [
+            [0, [37]],
+            [2, [44]]
+          ]
+        ],
+        ["step", [[0, [38]]]],
+        [
+          "onli",
+          [
+            [0, [40]],
+            [3, [34]]
+          ]
+        ],
+        ["work", [[0, [41]]]],
+        [
+          "data",
+          [
+            [0, [44]],
+            [7, [21, 46]]
+          ]
+        ],
+        ["support", [[0, [48]]]],
+        ["random", [[0, [49]]]],
+        [
+          "access",
+          [
+            [0, [50]],
+            [7, [19]]
+          ]
+        ],
+        [
+          "hash",
+          [
+            [1, [1, 15]],
+            [4, [9]]
+          ]
+        ],
+        [
+          "tabl",
+          [
+            [1, [2, 42]],
+            [5, [31]]
+          ]
+        ],
+        [
+          "store",
+          [
+            [1, [3]],
+            [2, [8]],
+            [5, [15]]
+          ]
+        ],
+        [
+          "kei",
+          [
+            [1, [4, 23, 35]],
+            [3, [14]]
+          ]
+        ],
+        ["pair", [[1, [6]]]],
+        ["bucket", [[1, [11, 20, 40]]]],
+        [
+          "us",
+          [
+            [1, [13]],
+            [3, [45]],
+            [6, [52]]
+          ]
+        ],
+        [
+          "function",
+          [
+            [1, [16]],
+            [9, [11]]
+          ]
+        ],
+        ["decid", [[1, [18]]]],
+        [
+          "hold",
+          [
+            [1, [21]],
+            [3, [11]],
+            [8, [13, 23]]
+          ]
+        ],
+        [
+          "insert",
+          [
+            [1, [25]],
+            [2, [38]]
+          ]
+        ],
+        ["delet", [[1, [27]]]],
+        ["constant", [[1, [29]]]],
+        [
+          "time",
+          [
+            [1, [30]],
+            [7, [13]]
+          ]
+        ],
+        ["averag", [[1, [32]]]],
+        [
+          "two",
+          [
+            [1, [34]],
+            [7, [23]],
+            [8, [4]]
+          ]
+        ],
+        ["land", [[1, [36]]]],
+        [
+          "same",
+          [
+            [1, [39]],
+            [7, [30]]
+          ]
+        ],
+        ["resolv", [[1, [43]]]],
+        ["collis", [[1, [45]]]],
+        ["chain", [[1, [47]]]],
+        ["open", [[1, [49]]]],
+        ["address", [[1, [50]]]],
+        ["grow", [[1, [53]]]],
+        ["load", [[1, [56]]]],
+        ["factor", [[1, [57]]]],
+        ["get", [[1, [58]]]],
+        ["high", [[1, [60]]]],
+        ["heap", [[2, [2, 51]]]],
+        ["complet", [[2, [5]]]],
+        [
+          "tree",
+          [
+            [2, [7]],
+            [3, [2, 8, 27, 47]],
+            [4, [7]]
+          ]
+        ],
+        [
+          "everi",
+          [
+            [2, [13]],
+            [10, [32]]
+          ]
+        ],
+        ["parent", [[2, [14]]]],
+        [
+          "order",
+          [
+            [2, [16]],
+            [8, [38]]
+          ]
+        ],
+        [
+          "children",
+          [
+            [2, [19]],
+            [3, [18]]
+          ]
+        ],
+        ["usual", [[2, [23]]]],
+        [
+          "wai",
+          [
+            [2, [24]],
+            [8, [42]]
+          ]
+        ],
+        [
+          "implement",
+          [
+            [2, [26]],
+            [9, [34]]
+          ]
+        ],
+        [
+          "prioriti",
+          [
+            [2, [28]],
+            [4, [12]]
+          ]
+        ],
+        [
+          "queue",
+          [
+            [2, [29]],
+            [4, [13]]
+          ]
+        ],
+        [
+          "read",
+          [
+            [2, [30]],
+            [3, [38]],
+            [7, [25]]
+          ]
+        ],
+        [
+          "top",
+          [
+            [2, [32, 56]],
+            [5, [21]]
+          ]
+        ],
+        ["1", [[2, [36]]]],
+        ["remov", [[2, [40]]]],
+        ["sift", [[2, [46]]]],
+        [
+          "up",
+          [
+            [2, [48]],
+            [5, [27]]
+          ]
+        ],
+        [
+          "down",
+          [
+            [2, [50]],
+            [5, [22]]
+          ]
+        ],
+        ["power", [[2, [53]]]],
+        ["heapsort", [[2, [54]]]],
+        ["k", [[2, [57]]]],
+        ["select", [[2, [58]]]],
+        ["index", [[3, [51]]]],
+        ["answer", [[5, [16]]]],
+        ["b", [[3, [1, 46]]]],
+        ["self", [[3, [5]]]],
+        ["balanc", [[3, [6]]]],
+        ["node", [[3, [10, 21]]]],
+        ["mani", [[3, [12, 17]]]],
+        [
+          "fill",
+          [
+            [3, [22]],
+            [5, [29]]
+          ]
+        ],
+        ["disk", [[3, [24]]]],
+        ["page", [[3, [25, 37]]]],
+        ["stai", [[3, [28]]]],
+        ["shallow", [[3, [29]]]],
+        [
+          "need",
+          [
+            [3, [33]],
+            [8, [18]]
+          ]
+        ],
+        ["few", [[3, [36]]]],
+        [
+          "most",
+          [
+            [3, [39]],
+            [6, [51]]
+          ]
+        ],
+        ["relat", [[3, [40]]]],
+        ["databas", [[3, [41]]]],
+        ["file", [[3, [43]]]],
+        [
+          "system",
+          [
+            [3, [44]],
+            [9, [21]]
+          ]
+        ],
+        ["variant", [[3, [48]]]],
+        ["memori", [[6, [4, 20]]]],
+        ["drop", [[6, [46]]]],
+        ["dynam", [[5, [0]]]],
+        [
+          "program",
+          [
+            [5, [1]],
+            [6, [12]],
+            [7, [9]]
+          ]
+        ],
+        ["solv", [[5, [2, 8]]]],
+        [
+          "problem",
+          [
+            [5, [3, 39]],
+            [10, [47]]
+          ]
+        ],
+        ["overlap", [[5, [5]]]],
+        ["subproblem", [[5, [6, 10]]]],
+        ["onc", [[5, [11]]]],
+        ["reus", [[5, [13]]]],
+        ["written", [[5, [20]]]],
+        ["memoiz", [[5, [24]]]],
+        ["bottom", [[5, [26]]]],
+        ["edit", [[5, [32]]]],
+        ["distanc", [[5, [33]]]],
+        ["shortest", [[5, [34]]]],
+        ["path", [[5, [35]]]],
+        ["knapsack", [[5, [38]]]],
+        ["classic", [[5, [41]]]],
+        ["exampl", [[5, [42]]]],
+        ["garbag", [[6, [0]]]],
+        ["collect", [[6, [1]]]],
+        ["automat", [[6, [3]]]],
+        ["manag", [[6, [5]]]],
+        ["runtim", [[6, [7]]]],
+        ["object", [[6, [9, 40]]]],
+        ["longer", [[6, [15]]]],
+        ["reach", [[6, [16]]]],
+        ["free", [[6, [18, 38, 54]]]],
+        ["trace", [[6, [21]]]],
+        ["collector", [[6, [22]]]],
+        ["mark", [[6, [23]]]],
+        ["everyth", [[6, [24]]]],
+        ["reachabl", [[6, [25]]]],
+        ["set", [[6, [28]]]],
+        ["root", [[6, [30]]]],
+        ["sweep", [[6, [32]]]],
+        [
+          "rest",
+          [
+            [6, [34]],
+            [9, [18]]
+          ]
+        ],
+        ["refer", [[6, [36]]]],
+        ["count", [[6, [37, 45]]]],
+        ["soon", [[6, [42]]]],
+        ["zero", [[6, [48]]]],
+        [
+          "prevent",
+          [
+            [6, [50]],
+            [8, [44]]
+          ]
+        ],
+        ["bug", [[6, [55]]]],
+        ["cost", [[6, [58]]]],
+        ["occasion", [[6, [60]]]],
+        ["paus", [[6, [61]]]],
+        ["race", [[7, [1]]]],
+        ["condit", [[7, [2]]]],
+        ["occur", [[7, [3]]]],
+        ["result", [[7, [6]]]],
+        ["depend", [[7, [10]]]],
+        [
+          "thread",
+          [
+            [7, [15, 24]],
+            [8, [7]]
+          ]
+        ],
+        ["process", [[7, [17]]]],
+        [
+          "share",
+          [
+            [7, [20]],
+            [10, [11]]
+          ]
+        ],
+        ["modifi", [[7, [26]]]],
+        ["write", [[7, [28]]]],
+        ["counter", [[7, [31]]]],
+        ["without", [[7, [32]]]],
+        ["coordin", [[7, [33]]]],
+        [
+          "on",
+          [
+            [7, [34]],
+            [8, [12]]
+          ]
+        ],
+        ["updat", [[7, [35]]]],
+        ["silent", [[7, [37]]]],
+        ["overwrit", [[7, [38]]]],
+        ["other", [[7, [40]]]],
+        [
+          "lock",
+          [
+            [7, [41]],
+            [8, [15, 33]]
+          ]
+        ],
+        ["atom", [[7, [42]]]],
+        ["oper", [[7, [43]]]],
+        ["immut", [[7, [45]]]],
+        ["common", [[7, [48]]]],
+        ["defens", [[7, [49]]]],
+        ["deadlock", [[8, [1]]]],
+        ["happen", [[8, [2]]]],
+        ["more", [[8, [6]]]],
+        ["wait", [[8, [8, 25, 31]]]],
+        ["forev", [[8, [9]]]],
+        ["anoth", [[8, [17]]]],
+        ["requir", [[8, [20]]]],
+        ["mutual", [[8, [21]]]],
+        ["exclus", [[8, [22]]]],
+        ["preemption", [[8, [27]]]],
+        ["circular", [[8, [30]]]],
+        ["acquir", [[8, [32]]]],
+        ["consist", [[8, [36]]]],
+        ["global", [[8, [37]]]],
+        ["simpl", [[8, [41]]]],
+        ["replac", [[4, [1]]]],
+        ["document", [[4, [2]]]],
+        ["mention", [[4, [4]]]],
+        ["unit", [[9, [0, 23]]]],
+        [
+          "test",
+          [
+            [9, [1, 24]],
+            [10, [23]]
+          ]
+        ],
+        ["check", [[9, [2]]]],
+        ["small", [[9, [3]]]],
+        ["piec", [[9, [4]]]],
+        [
+          "code",
+          [
+            [9, [6]],
+            [10, [7, 42]]
+          ]
+        ],
+        ["singl", [[9, [10]]]],
+        ["class", [[9, [13]]]],
+        ["isol", [[9, [15]]]],
+        ["good", [[9, [22]]]],
+        ["fast", [[9, [26]]]],
+        ["determinist", [[9, [27]]]],
+        ["focus", [[9, [29]]]],
+        ["behavior", [[9, [31]]]],
+        ["rather", [[9, [32]]]],
+        ["detail", [[9, [35]]]],
+        ["act", [[9, [37]]]],
+        ["safeti", [[9, [40]]]],
+        ["net", [[9, [41]]]],
+        ["let", [[9, [43]]]],
+        ["develop", [[9, [44]]]],
+        ["refactor", [[9, [45]]]],
+        ["confid", [[9, [47]]]],
+        ["continu", [[10, [0]]]],
+        ["integr", [[10, [1, 46]]]],
+        ["practic", [[10, [4]]]],
+        ["merg", [[10, [6, 44]]]],
+        ["chang", [[10, [8, 17]]]],
+        ["branch", [[10, [12, 52]]]],
+        ["frequent", [[10, [13]]]],
+        ["verifi", [[10, [15]]]],
+        ["autom", [[10, [20]]]],
+        ["build", [[10, [21]]]],
+        ["run", [[10, [24, 28]]]],
+        ["ci", [[10, [26]]]],
+        ["server", [[10, [27]]]],
+        ["pipelin", [[10, [30]]]],
+        ["push", [[10, [33]]]],
+        ["pull", [[10, [35]]]],
+        ["request", [[10, [36]]]],
+        ["report", [[10, [38]]]],
+        ["failur", [[10, [39]]]],
+        ["catch", [[10, [45]]]],
+        ["earli", [[10, [48]]]],
+        ["keep", [[10, [49]]]],
+        ["main", [[10, [51]]]],
+        ["releas", [[10, [53]]]]
+      ],
+      "tags": [
+        [
+          "algorithms",
+          [
+            [0, [0]],
+            [5, [0]]
+          ]
+        ],
+        ["searching", [[0, [101]]]],
+        [
+          "data",
+          [
+            [1, [0]],
+            [2, [0]],
+            [3, [0]],
+            [4, [101]]
+          ]
+        ],
+        [
+          "structures",
+          [
+            [1, [1]],
+            [2, [1]],
+            [3, [1]],
+            [4, [102]]
+          ]
+        ],
+        ["hashing", [[1, [102]]]],
+        ["priority", [[2, [102]]]],
+        ["queue", [[2, [103]]]],
+        ["databases", [[3, [102]]]],
+        ["optimization", [[5, [101]]]],
+        ["programming", [[6, [0]]]],
+        ["memory", [[6, [101]]]],
+        [
+          "concurrency",
+          [
+            [7, [0]],
+            [8, [0]]
+          ]
+        ],
+        [
+          "bugs",
+          [
+            [7, [101]],
+            [8, [101]]
+          ]
+        ],
+        ["replaced", [[4, [0]]]],
+        [
+          "testing",
+          [
+            [9, [0]],
+            [10, [101]]
+          ]
+        ],
+        ["software", [[9, [101]]]],
+        ["engineering", [[9, [102]]]],
+        ["devops", [[10, [0]]]]
+      ]
+    }
+  }
+}

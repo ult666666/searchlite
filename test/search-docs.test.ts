@@ -69,7 +69,7 @@ describe('local-documents built-package consumer', () => {
     write('sub/b.txt', 'invoice retention');
     const saved = indexed();
     expect(saved.format).toBe('searchlite');
-    expect(saved.version).toBe(1);
+    expect(saved.version).toBe(2);
     expect(saved.documents.map((d) => d.id)).toEqual(['a.md', 'sub/b.txt']);
     expect(saved.documents[0]?.stored).toEqual({ title: 'a', body: 'quartzoverride instructions' });
     rmSync(docs, { recursive: true });

@@ -57,6 +57,7 @@ export {
   type HybridResult,
   type HybridSearchOptions,
   type IndexSnapshot,
+  type IndexSnapshotV1,
   type IndexStats,
   type SearchDocument,
   type SearchOptions,

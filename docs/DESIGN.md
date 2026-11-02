@@ -28,10 +28,15 @@ concurrent writers, language detection, or approximate-nearest-neighbour vector 
 | `structures/trie.ts`                          | Term dictionary: prefix (breadth-first) and fuzzy (bounded DP) lookup |
 | `structures/edit-distance.ts`                 | Optimal string alignment distance                                     |
 | `structures/top-k.ts`                         | Binary heap for top-k selection                                       |
+| `structures/varint.ts`                        | Variable-byte integers for compressed postings                        |
+| `internal/base64.ts`                          | RFC 4648 base64, so snapshots can carry postings bytes in JSON        |
 | `query/lexer.ts`, `query/parser.ts`, `ast.ts` | Query language: tokens, recursive-descent parser, typed AST           |
 | `engine/field-index.ts`                       | Postings, trie and length statistics for one field                    |
+| `engine/postings.ts`                          | Compressed postings: blocks, skip entries, impacts, cursors           |
+| `engine/postings-codec.ts`                    | Snapshot (version 2) encoding of postings                             |
 | `engine/plan.ts`                              | Compile an AST into an executable plan (analysis + expansion)         |
-| `engine/execute.ts`                           | Term-at-a-time execution, phrase matching, BM25F, tracing             |
+| `engine/daat.ts`                              | Document-at-a-time top-k: MaxScore with block-max bounds              |
+| `engine/execute.ts`                           | Term-at-a-time reference execution, phrases, BM25F, tracing           |
 | `engine/bm25.ts`                              | IDF, length normalization, saturation                                 |
 | `engine/highlight.ts`                         | Snippet window selection, `<mark>` insertion, HTML escaping           |
 | `search-index.ts`                             | Public `SearchIndex` class: documents, search, explain, snapshots     |
@@ -79,8 +84,10 @@ Words of one or two letters and anything that is not plain `a–z` are returned 
 ```text
 SearchIndex
 ├── fields: FieldIndex[]           one per searchable field, in schema order
-│   ├── postings: Map<term, Map<docNumber, positions[]>>
+│   ├── postings: Map<term, PostingsList>   compressed blocks, see 4.1
+│   ├── arena: PostingsArena        one byte buffer shared by the field's small lists
 │   ├── dictionary: Trie            same terms, for prefix/fuzzy expansion
+│   ├── lengths: number[]           field length per document number
 │   ├── totalLength                 Σ field length over documents
 │   └── documentCount               documents where the field is non-empty
 ├── documents: Map<docNumber, { id, lengths[], terms[][], stored, vector? }>
@@ -90,7 +97,8 @@ SearchIndex
 - **Document numbers** are dense integers assigned on insert and never reused for another
   document (a `replace` reuses the replaced document's number so its tie-break order is kept).
   Postings refer to numbers, not string ids, which keeps them compact.
-- **Positional postings**: term frequency is `positions.length`; positions enable phrases.
+- **Positional postings**: each posting holds a term frequency and the positions; positions
+  enable phrases.
 - **Forward term lists** (`terms[][]`, distinct terms per field) make removal O(terms in the
   document) instead of a scan of the whole vocabulary.
 - **Statistics are maintained incrementally.** `add`, `remove` and `replace` update
@@ -105,6 +113,43 @@ SearchIndex
 
 Average field length is computed over documents that have the field (as Lucene does), because a
 document without the field never needs normalizing for it.
+
+### 4.1 Compressed postings
+
+Versions up to 0.2.0 kept `Map<docNumber, positions[]>` per term: a hash-table entry and an array
+per posting, roughly 80 bytes for a word that occurs once. `PostingsList` (`engine/postings.ts`)
+stores the same information with **delta and variable-byte coding** (Manning, Raghavan and
+Schütze, 2008, section 5.3):
+
+- Documents are sorted and grouped into **blocks of 128**. Within a block each posting is written
+  as the gap from the previous document (the block's first document lives in its skip entry), the
+  term frequency, the first position and the gaps between later positions.
+- Every number is a **varint** (`structures/varint.ts`): seven bits per byte, lowest first, high
+  bit set while more bytes follow, as in Protocol Buffers. Gaps and frequencies are small, so a
+  posting of a word that occurs once usually takes three bytes.
+- A **skip entry** per block records its first and last document, where its bytes end, its size
+  and where its impacts start. `advance(target)` passes over every block whose last document is
+  below `target` by reading skip entries only; nothing in a skipped block is decoded.
+- **Impacts** (named after Lucene's): per block, the Pareto frontier of (term frequency, field
+  length) pairs, the pairs that no other posting in the block beats on both counts. BM25 grows with
+  frequency and shrinks with length, so the block's best score is reached at one of these pairs for
+  any average length. Section 8 turns them into block-max upper bounds. The frontier is updated in
+  O(frontier) on every append, so it never needs a rebuild when the average length changes.
+- **Storage.** A `Uint8Array` costs about 200 bytes of headers, more than most rare terms'
+  postings, so small lists share one growable buffer per field (`PostingsArena`). A list that
+  outgrows its region moves to a larger one at the end; when abandoned regions exceed half the
+  buffer (and 64 KiB) the arena is compacted, which keeps the copying amortized linear. Lists past
+  4 KiB move to a buffer of their own, where the header cost no longer matters. Skip entries and
+  impacts share one exactly sized number array per list.
+- **Mutations.** New documents get increasing numbers, so `add` appends to the last block. `remove`
+  and the re-insertion done by `replace` (which reuses the old number) rewrite only the block that
+  holds the document, splitting it if it grows past 256 documents.
+- **Per-document lengths** are also kept per field in a dense array indexed by document number, so
+  document-at-a-time scoring reads them without a map lookup.
+
+A model-based property test compares a `PostingsList` with a plain `Map` after hundreds of random
+appends, removals and out-of-order re-insertions: decoded contents, block invariants, cursor
+`advance` results and every block's frontier (against a brute-force Pareto set).
 
 ## 5. Query language
 
@@ -246,15 +291,63 @@ AND adds its children, OR adds the children that matched, exclusions contribute 
 
 ## 8. Execution
 
-Execution is **term-at-a-time**: each `match` clause produces a map `docNumber → partial score`,
-AND intersects maps (adding scores), OR unions them, and excluded clauses delete documents last.
-AND passes its survivor map to later children, which retain full occurrence tables/global IDF
-but score only candidates. OR/alternatives retain sum/max rules within the candidate set.
-Exclusions use the same interpreter for membership with scoring/tracing disabled; empty
-intersections stop. Original addition/tie order, scorer and complete caches stay unchanged,
-and caller candidate maps are never mutated. Unrestricted clauses retain direct entry iteration.
-This still materializes occurrences; document-at-a-time skipping/WAND remains future work.
-See the [exact-result tests, measurements and limitations](EXECUTION.md).
+`search` evaluates **document at a time** (`engine/daat.ts`). Every plan node becomes a scorer: a
+cursor over its matching documents in ascending order, with `advance(target)`, the exact `score()`
+of its current document, and `shallow(target)`, which returns an upper bound on the score of any
+document from `target` to the end of the current blocks. Term clauses walk their targets'
+postings lists (one per field) together; AND is a leapfrog intersection led by its cheapest child;
+OR and prefix/fuzzy alternatives are unions; groups with exclusions skip documents that an excluded
+plan matches.
+
+**Clause statistics come first.** BM25F's IDF needs the number of documents in which a clause
+matches any of its fields, before a single document is scored. For one field that is the list's
+length. For several, `unionSize` counts the union by walking the smaller lists and probing the
+largest with `advance`, so the largest list's blocks that hold none of those documents are never
+decoded. A phrase's document frequency requires positional matching anyway, so phrase clauses are
+evaluated up front (as before) and become a sorted list with exact scores and per-128-document
+maxima.
+
+**MaxScore** (Turtle and Flood, 1995) for a top-level OR, run in windows as Lucene's
+`MaxScoreBulkScorer` does. A window ends at the first block boundary of any child, so each child's
+block-max bound (Ding and Suel, 2011) holds for the whole window. With θ the k-th best score so
+far:
+
+1. Sort the children by their window bounds. The longest prefix whose bounds add up to at most θ
+   is **non-essential**: a document matching only those children cannot beat θ. If every child is
+   non-essential, the window is skipped without decoding anything.
+2. Candidates come from the essential children only. A candidate whose essential bounds plus all
+   non-essential bounds cannot beat θ is dropped before any exact scoring.
+3. Otherwise the essential children's exact scores are added, then the non-essential children are
+   consulted from the highest bound down, stopping as soon as the partial score plus the remaining
+   bounds cannot beat θ.
+4. A surviving document's final score is computed by adding the children's exact scores **in query
+   order**, which is how term-at-a-time execution adds them.
+
+Other root shapes (one clause, AND, alternatives) use the same windows with the root's own bound,
+so whole windows that cannot compete are skipped. A block's bound for a term clause is
+`weight · idf · saturate(Σ_f max over its impacts of boost_f · tf / B_f(len), k1)`, computed with the
+query's current average lengths.
+
+**Why the results are exactly the same.** Each scored document gets the same floating-point
+operations, in the same order, as `executePlan` would apply, so scores are equal bit for bit, not
+just close. A document is dropped only when a bound shows it cannot enter the top k. Bounds are
+mathematically at least the score, but they are computed with different rounding (sums in a
+different order, and `(k1 + 1)·f / (k1 + f)` is not monotone to the last bit), so every comparison
+uses `bound · (1 + 1e-9) + 1e-300 > θ`. That margin is many orders of magnitude above the few units
+in the last place that rounding can introduce, so a competitive document is never pruned. Documents
+are visited in ascending order, and a later document with a score equal to θ already loses the tie
+to every document kept, so insertion order still breaks ties. Parameters that make a bound
+infinite or NaN (an enormous `k1` or boost) fall back to exhaustive term-at-a-time scoring.
+
+**Filters and exclusions** are checked only for documents that would otherwise enter the top k, in
+ascending order. A rejected document never enters the heap, so it never raises θ; applying a
+filter after selecting the top k would return fewer than k results.
+
+**Term-at-a-time execution** (`executePlan`) remains the reference. `explain`, `highlight` and the
+matched terms of each result run it for single documents, reusing the clause statistics that the
+search computed, so a single document is looked up in each list (one block decoded) instead of
+materializing occurrence tables. The candidate-aware AND and exclusion behaviour described in
+[EXECUTION.md](EXECUTION.md) still applies there.
 
 **Phrase matching** uses positional intersection: the candidate documents come from the rarest
 term's postings, and for each document the position lists are scanned with one cursor per term.
@@ -262,13 +355,13 @@ Candidate start positions only increase, so every cursor only moves forward and 
 O(total positions). As soon as one list runs out, no later start can match and the scan stops.
 
 **Top-k selection** uses a min-heap of size k whose root is the _worst_ kept result: a new result
-only has to beat the root, replacing it and sifting down. Selecting k of n matches is
+only has to beat the root, replacing it and sifting down. The root's score is θ in MaxScore. Selecting k of n matches is
 O(n log k) time and O(k) memory instead of sorting all n. Ties are broken by document number
 (insertion order), so results are deterministic.
 
 **Matched terms and explanations** come from re-executing the plan for one document with tracing
-on (`only` + `trace` in the execution context). Occurrence tables per clause are cached in a
-per-query `Map`, so re-execution does not repeat the postings scans. Because search and explain
+on (`only` + `trace` in the execution context). Document frequencies and phrase occurrence tables
+are cached per query, so re-execution does not repeat the postings scans. Because search and explain
 run the same code in the same order, `explain(id, q).score === search(q)[i].score` exactly; a test
 asserts this equality (not just closeness) for many queries.
 
@@ -335,7 +428,7 @@ produces (line breaks added):
 ```json
 {
   "format": "searchlite",
-  "version": 1,
+  "version": 2,
   "options": {
     "fields": [{ "name": "title", "boost": 3, "b": 0.75, "stemming": true, "stopwords": true }],
     "storeFields": ["title"],
@@ -347,26 +440,48 @@ produces (line breaks added):
   "documents": [{ "id": "heap", "lengths": [2], "stored": { "title": "Binary heap" } }],
   "postings": {
     "title": [
-      ["binari", [[0, [0]]]],
-      ["heap", [[0, [1]]]]
+      ["binari", "AQEA"],
+      ["heap", "AQEB"]
     ]
   }
 }
 ```
 
 Documents are written in document-number order and postings refer to their position in that
-array, so restoring preserves tie-break order. `fromJSON` checks `format` and `version` first
-(an unknown version fails with a clear message instead of misreading data), validates the shape,
-and rebuilds through the same `addDocument` path that indexing uses, so statistics are recomputed
-rather than trusted. A round-trip test compares search results, explanations, highlights and
-statistics before and after.
+array (their _slot_), so restoring preserves tie-break order. Each term's postings are base64
+(RFC 4648) of varints: for each document holding the term, the gap from the previous slot (the
+first counts from -1), the frequency, the first position and the gaps between later positions.
+`AQEA` is the bytes 01 01 00: slot 0, frequency 1, position 0.
+
+`fromJSON` checks `format` and `version` first (an unknown version fails with a clear message
+instead of misreading data), validates the shape, and rebuilds through the same `addDocument` path
+that indexing uses, so statistics are recomputed rather than trusted. Payloads are decoded
+strictly: invalid base64, truncated or non-canonical varints, slots that do not increase or point
+past the documents, zero frequencies and positions that do not increase are all rejected.
+
+**Version 1** (searchlite 0.2.0 and earlier) stored the same postings as JSON arrays,
+`["heap", [[0, [1]]]]`. `fromJSON` still reads it, so migrating a stored snapshot is
+`SearchIndex.fromJSON(old).toJSON()`. A fixture written by the 0.2.0 build
+(`test/fixtures/snapshot-v1.json`, regenerated with `scripts/snapshot-v1-fixture.ts`) stores both the
+snapshot and the results that build returned for 14 queries; the test requires the current build
+to return the same results, scores included, from the migrated index and from its version 2
+round trip. A round-trip test compares search results, explanations, highlights and statistics
+before and after.
 
 ## 13. Trade-offs and limitations
 
-- **Memory-resident and single-threaded.** Everything lives in JavaScript `Map`s; there is no
-  compression of postings (no delta or variable-byte encoding) and no on-disk format besides JSON.
-- **Term-at-a-time execution** still materializes occurrence tables for evaluated clauses, while
-  AND/exclusions avoid irrelevant scoring. Document-at-a-time skipping (WAND/MaxScore) is future work.
+- **Memory-resident and single-threaded.** Postings are compressed in memory (section 4.1), but
+  there is no on-disk format besides the JSON snapshot.
+- **Clause statistics are exact, so some work is not skippable.** Multi-field clauses count the
+  union of their lists before scoring, and phrases are matched in full for their document
+  frequency. Lucene approximates both (its `CombinedFieldQuery` uses the largest per-field
+  document frequency); searchlite keeps the exact BM25F definition and pays for it.
+- **MaxScore, not WAND.** Block-max WAND (Ding and Suel, 2011) can skip more on long disjunctions
+  of similar terms. Pruning only helps once k results are found, so `limit: Infinity` scores every
+  match, and with `k1 = 0` (all clause scores tied) the safety margin prevents most skipping.
+- **Block rewrites.** `remove` and `replace` rewrite a block and move later bytes in its list, so
+  they cost O(list bytes) rather than O(1); the shared arena trades up to about half its size in
+  abandoned regions for fewer object headers.
 - **English-only analysis.** No CJK segmentation (a run of CJK characters is one token), no
   stemming for other languages; letters like "ø" that do not decompose are not folded to ASCII.
 - **Stemming interacts with fuzzy search.** A typo can change how Porter treats a word, so
@@ -376,23 +491,26 @@ statistics before and after.
 
 ## 14. How correctness is verified
 
-| Area            | Test approach                                                                                          |
-| --------------- | ------------------------------------------------------------------------------------------------------ |
-| Porter stemmer  | Every worked example in the 1980 paper, run through the full algorithm, plus well-known pairs          |
-| Analysis        | Offsets slice back to the original text; NFKD, ligatures, full-width forms, dotted capital I           |
-| Edit distance   | Hand-computed distances, including the OSA-specific `ca` → `abc` = 3                                   |
-| Trie fuzzy      | Property test: 100 random queries vs a brute-force scan of a dictionary of 400 random words            |
-| Top-k heap      | Property test: 200 random arrays vs a full sort                                                        |
-| BM25 / BM25F    | Hand-computed scores for single-field and two-field indexes; b = 0 and k1 = 0 special cases            |
-| Query semantics | AND/OR/NOT, default operator, stopword clauses, phrases with gaps, prefix/fuzzy expansion and limits   |
-| Parser          | AST shapes and 19 error messages with exact columns; depth and length limits                           |
-| Index lifecycle | Incremental statistics equal a fresh rebuild after removes/replaces; atomic batches; validation errors |
-| Explain         | `explain().score` equals `search()` score exactly; clause scores sum to the total                      |
-| Highlighting    | Hostile HTML in documents, queries and the ellipsis cannot inject markup; phrase-only marking          |
-| Hybrid          | RRF and cosine against hand computations; end-to-end fused order on a toy index                        |
-| Metrics         | P@k, R@k, RR, AP, nDCG@k against hand computations                                                     |
-| Snapshots       | Round trip equality and rejection of malformed or future-version snapshots                             |
-| Build output    | `scripts/check-dist.js` loads the ESM and CJS builds through the `exports` map                         |
+| Area            | Test approach                                                                                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Porter stemmer  | Every worked example in the 1980 paper, run through the full algorithm, plus well-known pairs                                                                       |
+| Analysis        | Offsets slice back to the original text; NFKD, ligatures, full-width forms, dotted capital I                                                                        |
+| Edit distance   | Hand-computed distances, including the OSA-specific `ca` → `abc` = 3                                                                                                |
+| Trie fuzzy      | Property test: 100 random queries vs a brute-force scan of a dictionary of 400 random words                                                                         |
+| Top-k heap      | Property test: 200 random arrays vs a full sort                                                                                                                     |
+| BM25 / BM25F    | Hand-computed scores for single-field and two-field indexes; b = 0 and k1 = 0 special cases                                                                         |
+| Query semantics | AND/OR/NOT, default operator, stopword clauses, phrases with gaps, prefix/fuzzy expansion and limits                                                                |
+| Parser          | AST shapes and 19 error messages with exact columns; depth and length limits                                                                                        |
+| Index lifecycle | Incremental statistics equal a fresh rebuild after removes/replaces; atomic batches; validation errors                                                              |
+| Explain         | `explain().score` equals `search()` score exactly; clause scores sum to the total                                                                                   |
+| Highlighting    | Hostile HTML in documents, queries and the ellipsis cannot inject markup; phrase-only marking                                                                       |
+| Hybrid          | RRF and cosine against hand computations; end-to-end fused order on a toy index                                                                                     |
+| Metrics         | P@k, R@k, RR, AP, nDCG@k against hand computations                                                                                                                  |
+| Snapshots       | Round trip equality; malformed or future-version rejection; a 0.2.0 version 1 fixture gives identical results                                                       |
+| Codecs          | Protocol Buffers varint examples, RFC 4648 base64 vectors, Node's `Buffer` as a reference, strictness                                                               |
+| Postings        | Model-based property test against a `Map`: contents, blocks, cursors, impact frontiers, arena compaction                                                            |
+| Top-k pruning   | Property tests: pruned top k equals exhaustive scoring (IDs, order, exact scores) over random corpora, queries, filters and mutations; deliberate bugs make it fail |
+| Build output    | `scripts/check-dist.js` loads the ESM and CJS builds through the `exports` map                                                                                      |
 
 ## 15. Toolchain notes
 
@@ -424,3 +542,29 @@ statistics before and after.
 - How does the highlighter guarantee no HTML injection?
 - What do P@5, MRR, MAP and nDCG@10 each reward, and why is a 22-query, single-annotator collection
   not evidence that one configuration is better?
+- Why can MaxScore ignore non-essential clauses when choosing candidates? What changes when θ grows?
+- Why are block bounds computed from a Pareto frontier of (frequency, length) instead of the
+  largest frequency and the shortest length? Why not store the best score itself?
+- Why must pruned results add clause scores in query order, and why do bounds need a margin?
+- Why does a filter have to run before a document enters the heap?
+
+## 17. References for pruning and compression
+
+- H. Turtle and J. Flood. "Query evaluation: Strategies and optimizations." _Information Processing
+  & Management_ 31(6), 1995, pp. 831–850. [doi:10.1016/0306-4573(95)00020-H](<https://doi.org/10.1016/0306-4573(95)00020-H>)
+  (MaxScore).
+- S. Ding and T. Suel. "Faster top-k document retrieval using block-max indexes." _SIGIR_ 2011,
+  pp. 993–1002. [doi:10.1145/2009916.2010048](https://doi.org/10.1145/2009916.2010048) (block-max
+  bounds; also block-max WAND, which searchlite does not implement).
+- A. Z. Broder, D. Carmel, M. Herscovici, A. Soffer and J. Zien. "Efficient query evaluation using a
+  two-level retrieval process." _CIKM_ 2003, pp. 426–434.
+  [doi:10.1145/956863.956944](https://doi.org/10.1145/956863.956944) (WAND, for comparison).
+- Apache Lucene,
+  [`MaxScoreBulkScorer`](https://github.com/apache/lucene/blob/main/lucene/core/src/java/org/apache/lucene/search/MaxScoreBulkScorer.java)
+  (MaxScore in windows) and
+  [`Impact`](https://lucene.apache.org/core/9_0_0/core/org/apache/lucene/index/Impact.html)
+  (per-block frequency and norm pairs).
+- C. D. Manning, P. Raghavan and H. Schütze. _Introduction to Information Retrieval._ Cambridge
+  University Press, 2008, section 5.3 (variable byte codes and gap encoding).
+- [Protocol Buffers encoding](https://protobuf.dev/programming-guides/encoding/) (base-128 varints)
+  and [RFC 4648](https://www.rfc-editor.org/rfc/rfc4648) (base64).

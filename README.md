@@ -25,10 +25,16 @@ any result, and the evaluation harness measures whether a change actually helps.
 - **Analysis per field:** Unicode NFKD normalization with accents stripped, lowercasing, English
   stopwords and a Porter (1980) stemmer; each can be switched off per field (e.g. no stemming for
   tags). Tokens keep positions and source offsets.
-- **Positional inverted index** with a document store; `add`, `addAll` (atomic), `remove` and
-  `replace` keep document counts and average field lengths exact.
-- **BM25F ranking** across weighted fields with configurable `k1` and `b`, and top-k selection with
-  a binary heap.
+- **Compressed positional postings:** delta and variable-byte coded blocks of 128 documents with
+  skip entries, so cursors pass over blocks without decoding them. `add`, `addAll` (atomic),
+  `remove` and `replace` keep document counts and average field lengths exact.
+- **BM25F ranking** across weighted fields with configurable `k1` and `b`.
+- **Document-at-a-time top-k with MaxScore and block-max bounds:** clauses and whole blocks that
+  cannot reach the current top k are skipped, and results stay identical to scoring every match
+  (same documents, order and scores, bit for bit). Property tests check this against exhaustive
+  scoring over random corpora, queries and filters.
+- **Filters:** `search(query, { filter })` keeps only documents that pass a predicate, without
+  changing any score.
 - **Query language** parsed by recursive descent into a typed AST: `AND`/`OR`/`NOT`, `-term`,
   parentheses, `"phrases"`, `field:` scopes, `prefix*` and `fuzzy~1`/`~2`, with error messages
   that give the column.
@@ -42,7 +48,8 @@ any result, and the evaluation harness measures whether a change actually helps.
   fallback; sparse and nonfinite vectors are refused before indexing
   ([numerical boundary and independent reference](docs/VECTOR_NUMERICS.md)).
 - **Evaluation:** precision@k, recall@k, MRR, MAP and graded nDCG@k, plus an ablation script.
-- **Snapshots:** versioned `toJSON()` / `SearchIndex.fromJSON()`.
+- **Snapshots:** versioned `toJSON()` / `SearchIndex.fromJSON()`. Version 2 stores the compressed
+  postings as base64; version 1 snapshots from 0.2.0 still load with identical results.
 
 ## Quick start
 
@@ -191,7 +198,7 @@ only remove documents, so a query made only of exclusions (`-draft`) returns not
 | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- |
 | `new SearchIndex(options)`                                                                                                     | `fields` (each with `boost`, `b`, `stemming`, `stopwords`), `storeFields`, `idField`, `vectorField`, `k1`, `b`, `defaultOperator` |
 | `add(doc)`, `addAll(docs)`, `remove(id)`, `replace(doc)`                                                                       | Maintain the index; `addAll` is atomic, `replace` keeps the document's tie-break position                                         |
-| `search(query, { limit, fields, defaultOperator, maxExpansions })`                                                             | Ranked results: `id`, `score`, stored `fields`, matched `terms`, and `match` (terms per field)                                    |
+| `search(query, { limit, fields, defaultOperator, maxExpansions, filter })`                                                     | Ranked results: `id`, `score`, stored `fields`, matched `terms`, and `match` (terms per field)                                    |
 | `highlight(id, field, query, { maxLength, ellipsis })`                                                                         | HTML snippet of a stored field with `<mark>` around matches                                                                       |
 | `explain(id, query)` and `formatExplanation(explanation)`                                                                      | Score breakdown per clause and field; its total equals the `search` score                                                         |
 | `searchHybrid({ query, vector, k, depth, rrfK })`                                                                              | BM25F and cosine-similarity rankings fused with Reciprocal Rank Fusion                                                            |
@@ -208,12 +215,12 @@ The public API has TSDoc comments that explain the algorithms and cite their sou
 ```mermaid
 flowchart LR
   D[Document] --> A["Analyzer per field<br/>tokenize · NFKD · stopwords · Porter"]
-  A --> I["Positional inverted index<br/>term → document → positions"]
+  A --> I["Compressed positional postings<br/>delta + varint blocks, skips, impacts"]
   A --> T[Term trie per field]
   Q[Query string] --> P[Recursive-descent parser] --> AST[Typed AST]
   AST --> C["Compile: analyze leaves,<br/>expand prefix / fuzzy words"]
   T --> C
-  C --> E["Execute term-at-a-time:<br/>BM25F, phrases, AND / OR / NOT"]
+  C --> E["Execute document-at-a-time:<br/>BM25F, MaxScore, block-max bounds"]
   I --> E
   E --> K[Top-k binary heap] --> R[Results, highlight, explain]
 ```
@@ -222,7 +229,10 @@ Each field is scored with BM25F (Robertson & Zaragoza, 2009): per field,
 `B_f = 1 − b_f + b_f · len/avglen`; the weighted, normalized frequencies are summed,
 `tf̃ = Σ w_f · tf_f / B_f`, and saturated once, `score = idf · (k1 + 1) · tf̃ / (k1 + tf̃)`.
 Phrases are matched by intersecting position lists and scored as single pseudo-terms. Prefix and
-fuzzy words expand through the trie and a document scores with its best expansion.
+fuzzy words expand through the trie and a document scores with its best expansion. Queries run
+document at a time: MaxScore (Turtle and Flood, 1995) sets aside clauses whose upper bounds cannot
+lift a document into the current top k, and per-block upper bounds (Ding and Suel, 2011) skip
+whole blocks. Bounds carry a small safety margin, so pruning never changes a result.
 [docs/DESIGN.md](docs/DESIGN.md) covers the data structures, every formula, the grammar, the
 trade-offs and how each part is tested.
 
@@ -276,9 +286,22 @@ See the [fixed method and actual local receipt](docs/BENCHMARK.md). Repeated glo
 and a uniform query mix limit interpretation; these measurements do not establish production latency.
 `npm run --silent bench -- --smoke` exercises the workflow with smaller collections without a timing gate.
 
-[docs/EXECUTION.md](docs/EXECUTION.md) measures candidate-aware AND/exclusion execution against a
-baseline build of the earlier engine. Both builds must return identical rankings, and every raw
-trial is kept, including the slower cases.
+`npm run --silent bench:pruning -- --baseline=/abs/main/dist/index.js --candidate=/abs/dist/index.js`
+measures two builds side by side and reports only if their rankings are byte-identical. On a shared
+4-CPU Linux machine (November 2, 2026; full method, machine and noise in
+[docs/EXECUTION.md](docs/EXECUTION.md#measured-results-november-2-2026)), against main:
+
+| Synthetic workload, 10,000 documents | Median top-10 latency | Postings heap  | Snapshot size  |
+| ------------------------------------ | --------------------- | -------------- | -------------- |
+| Copies of the glossary               | 2.06 → 0.30 ms        | 35.0 → 3.29 MB | 8.07 → 5.63 MB |
+| Zipf-distributed labels              | 8.48 → 0.57 ms        | 49.9 → 6.04 MB | 9.31 → 6.04 MB |
+
+At 1,000 documents the gains are smaller (median 1.4× and 2.5× faster) and short-lived
+processes see little change there, and one phrase-heavy control query in the filtering benchmark
+is slower; see
+[docs/BENCHMARK.md](docs/BENCHMARK.md#before-and-after-pruning-november-2-2026).
+[docs/EXECUTION.md](docs/EXECUTION.md) also covers the earlier candidate-aware AND/exclusion change,
+which was measured the same way against a baseline build.
 
 Requires Node 20 or newer (CI runs Node 20, 22 and 24).
 
@@ -288,6 +311,7 @@ npm run lint            # ESLint (typescript-eslint strict + stylistic, type-awa
 npm run format:check    # Prettier
 npm run typecheck       # tsc for the tests/scripts, the browser-safe library and the demo
 npm run test:filtering  # Actual paired benchmark/failure/deadline/output-bound checks
+npm run test:pruning    # Paired pruning/memory harness: smoke run, parity and refusals
 npm run test:coverage   # Vitest; fails below 90% line/branch/function/statement coverage
 npm run build           # tsup: ESM + CJS + .d.ts in dist/
 npm run check:dist      # loads both builds through package.json "exports"
@@ -324,11 +348,13 @@ docs/          design notes, workflow guides and benchmark receipts
 
 Limitations:
 
-- Everything lives in memory in a single thread; postings are not compressed, and the only
-  persistence is a full JSON snapshot.
-- Execution remains term-at-a-time with full occurrence tables. Candidate-aware AND/exclusions
-  avoid irrelevant scoring, but do not implement WAND/MaxScore or compression; synthetic
-  measurements do not establish million-document scale.
+- Everything lives in memory in a single thread, and the only persistence is a full JSON
+  snapshot. Postings are compressed in memory and in snapshots.
+- Pruning skips scoring, not statistics: a multi-field word still counts the union of its lists
+  for an exact IDF, and phrases are matched in full. `limit: Infinity`, or `k1 = 0` where all
+  scores tie, leaves little to skip. MaxScore is implemented, block-max WAND is not, and the
+  measurements below are synthetic and do not establish million-document scale.
+- `remove` and `replace` rewrite a block of postings, so they cost more than appending.
 - Analysis is English-oriented: no stemmers for other languages and no segmentation for languages
   written without spaces (a run of Chinese or Japanese characters is a single token).
 - Stemming and fuzzy matching interact: a typo can change how the stemmer treats a word, so
@@ -341,7 +367,7 @@ Limitations:
 
 Roadmap:
 
-- Document-at-a-time execution with WAND/MaxScore skipping, and compressed postings.
+- Block-max WAND for long disjunctions, and an on-disk index format.
 - More analyzers (Snowball stemmers, CJK bigrams) and pluggable tokenizers.
 - An approximate nearest-neighbour index (e.g. HNSW) for larger vector collections.
 - Publishing to npm.
