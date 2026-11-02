@@ -87,6 +87,7 @@ export class FieldIndex {
       const postings = this.postings.get(term);
       postings?.remove(documentNumber, this.lengths);
       if (postings?.count === 0) {
+        postings.release();
         this.postings.delete(term);
         this.dictionary.delete(term);
       }

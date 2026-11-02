@@ -353,7 +353,10 @@ Limitations:
 - Pruning skips scoring, not statistics: a multi-field word still counts the union of its lists
   for an exact IDF, and phrases are matched in full. `limit: Infinity`, or `k1 = 0` where all
   scores tie, leaves little to skip. MaxScore is implemented, block-max WAND is not, and the
-  measurements below are synthetic and do not establish million-document scale.
+  scale measurements above are synthetic and do not establish million-document scale.
+- A prefix or fuzzy word is a union of its expansions, and every step of that union visits each
+  expansion. Raising `maxExpansions` far above its default of 64 can therefore make such words
+  slower than the term-at-a-time execution of 0.2.0.
 - `remove` and `replace` rewrite a block of postings, so they cost more than appending.
 - Analysis is English-oriented: no stemmers for other languages and no segmentation for languages
   written without spaces (a run of Chinese or Japanese characters is a single token).

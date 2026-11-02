@@ -48,6 +48,11 @@ describe('variable-byte integers', () => {
     expect(() => read(0x80, 0x00)).toThrow(/Non-canonical/);
     expect(() => read(0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x10)).toThrow(/2\^53/);
     expect(() => read(0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x01)).toThrow(/2\^53/);
+    // Past about 147 bytes the scale overflows to Infinity and 0 · Infinity is NaN, so a long
+    // run of empty continuation bytes must be refused by its length, not by its value.
+    for (const run of [9, 147, 148, 200, 1000]) {
+      expect(() => read(...new Array<number>(run).fill(0x80), 0x01), `${run}`).toThrow(/2\^53/);
+    }
   });
 });
 

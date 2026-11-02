@@ -4,7 +4,7 @@ import { Analyzer } from '../../src/analysis/analyzer';
 import { topDocuments, type PruningStatistics } from '../../src/engine/daat';
 import { documentFrequencyOf, executePlan, type ExecutionContext } from '../../src/engine/execute';
 import { FieldIndex } from '../../src/engine/field-index';
-import { compileQuery, type Plan } from '../../src/engine/plan';
+import { compileQuery, type MatchPlan, type Plan } from '../../src/engine/plan';
 import { parseQuery, type DefaultOperator } from '../../src/query/parser';
 import { SearchIndex, type SearchResult } from '../../src/search-index';
 
@@ -276,6 +276,72 @@ describe('document-at-a-time top-k equals exhaustive scoring', { timeout: 30_000
         text,
       ).toEqual(expected.map((x) => [x.id, x.score]));
     }
+  });
+
+  it('keeps a document that beats the k-th best score by one unit in the last place', () => {
+    // X (document 0) has the frequencies 1, 2, 3 for "aa bb cc" and Y (document 128, the first of
+    // a new block in every list) has 2, 3, 1. Each word occurs in 129 documents of equal length,
+    // so a clause score depends only on the frequency, and both totals add the same three scores
+    // in different orders. Y's block bounds equal its exact clause scores, and MaxScore adds
+    // bounds in ascending order, which is X's query order, so Y's bound sum is X's score. When
+    // Y's sum rounds one unit in the last place higher, Y must come first, but without the safety
+    // margin its window would be skipped. Extra documents change the IDF until such a case occurs.
+    const pad = (words: string[]): string =>
+      [...words, ...Array<string>(10).fill('zz')].slice(0, 10).join(' ');
+    const repeat = (word: string, count: number): string[] => Array<string>(count).fill(word);
+    let cases = 0;
+    for (let extra = 0; extra < 40; extra++) {
+      const index = new SearchIndex({ fields: { body: { stemming: false } }, k1: 1.2 });
+      index.addAll([
+        { id: 'X', body: pad([...repeat('aa', 1), ...repeat('bb', 2), ...repeat('cc', 3)]) },
+        ...Array.from({ length: 127 }, (_, i) => ({ id: `f${i}`, body: pad(['aa', 'bb', 'cc']) })),
+        { id: 'Y', body: pad([...repeat('aa', 2), ...repeat('bb', 3), ...repeat('cc', 1)]) },
+        ...Array.from({ length: extra }, (_, i) => ({ id: `e${i}`, body: pad(['qq']) })),
+      ]);
+      const x = index.explain('X', 'aa bb cc').score;
+      const y = index.explain('Y', 'aa bb cc').score;
+      if (y <= x) continue;
+      cases++;
+      expect(y - x, `${extra}`).toBeLessThan(1e-15);
+      expect(
+        index.search('aa bb cc', { limit: 1 }).map((r) => [r.id, r.score]),
+        `${extra}`,
+      ).toEqual([['Y', y]]);
+      expect(index.search('aa bb cc', { limit: 2 }).map((r) => r.id)).toEqual(['Y', 'X']);
+    }
+    expect(cases).toBeGreaterThan(0);
+  });
+
+  it('builds a prefix word with more expansions than a call can take arguments', () => {
+    // Prefix and fuzzy words become one alternative per expansion, and maxExpansions may be
+    // Infinity. Spreading 150,000 bounds into Math.max overflows the call stack.
+    const field = new FieldIndex('body', 1, 0.75, new Analyzer());
+    for (let d = 0; d < 3; d++)
+      field.addDocument(d, new Map([['heap', d === 1 ? [0, 2] : [1]]]), 4);
+    const context = (): ExecutionContext => ({
+      fields: [field],
+      documents: new Map([0, 1, 2].map((d) => [d, { lengths: [4] }])),
+      documentCount: 3,
+      k1: 1.2,
+      trace: false,
+      cache: new Map(),
+      documentFrequencies: new Map(),
+    });
+    const child: MatchPlan = {
+      kind: 'match',
+      clause: 'heap*',
+      targets: [{ field: 0, terms: ['heap'], offsets: [0] }],
+      weight: 1,
+    };
+    const plan: Plan = {
+      kind: 'alternatives',
+      clause: 'heap*',
+      children: Array<MatchPlan>(150_000).fill(child),
+    };
+    const expected = [...executePlan(plan, context())]
+      .map(([d, hit]) => [d, hit.score])
+      .sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0) || (a[0] ?? 0) - (b[0] ?? 0));
+    expect(topDocuments(plan, context(), 2)).toEqual(expected.slice(0, 2));
   });
 
   it('counts document frequencies from cached tables, phrases and postings alike', () => {

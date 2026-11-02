@@ -183,6 +183,18 @@ export class PostingsList {
     this.#rewrite(block, postings, lengths);
   }
 
+  /**
+   * Gives this list's arena region back as garbage, for a list its field is dropping because it
+   * no longer holds any document. Without this, the regions of deleted terms would be neither
+   * live nor garbage, so compaction would never reclaim them.
+   */
+  release(): void {
+    if (this.own === undefined) {
+      this.arena.garbage += this.capacity;
+    }
+    this.capacity = 0;
+  }
+
   /** Removes a document. Returns false if the list does not contain it. */
   remove(document: number, lengths: readonly number[]): boolean {
     if (this.#find(document) < 0) {

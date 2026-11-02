@@ -10,6 +10,8 @@
  */
 
 const TWO_POW_31 = 0x80000000;
+/** Bytes in the longest varint of a safe integer: 2^53 − 1 needs ceil(53 / 7) = 8. */
+const MAX_VARINT_BYTES = 8;
 
 /** A growable byte buffer that varints are appended to. */
 export class ByteWriter {
@@ -73,7 +75,8 @@ export function varintLength(value: number): number {
 /**
  * Reads varints from untrusted bytes (such as a snapshot) with full checks: a value may not run
  * past the end, use a non-canonical encoding (a final zero byte after a continuation) or exceed
- * 2^53 − 1. Every failure is a `RangeError`.
+ * 2^53 − 1, which also rules out anything longer than eight bytes. Every failure is a
+ * `RangeError`.
  */
 export class ByteReader {
   readonly bytes: Uint8Array;
@@ -92,6 +95,11 @@ export class ByteReader {
     let value = 0;
     let scale = 1;
     for (let count = 0; ; count++) {
+      // Eight bytes carry 56 bits. Checking the length (not only the value) matters: after
+      // about 147 empty continuation bytes the scale is Infinity and 0 · Infinity is NaN.
+      if (count === MAX_VARINT_BYTES) {
+        throw new RangeError('Variable-byte integer exceeds 2^53 - 1');
+      }
       const byte = this.bytes[this.offset++];
       if (byte === undefined) {
         throw new RangeError('Truncated variable-byte integer');
