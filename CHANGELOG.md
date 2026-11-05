@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-05
+
 ### Added
 
 - Document-at-a-time top-k evaluation. A top-level OR runs MaxScore (Turtle and Flood, 1995) in

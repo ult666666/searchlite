@@ -1,6 +1,6 @@
 {
   "name": "searchlite",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A zero-dependency full-text search engine for TypeScript: BM25F ranking, a query language, phrase/prefix/fuzzy search, highlighting, hybrid retrieval and an evaluation harness.",
   "keywords": [
     "search",

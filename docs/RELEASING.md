@@ -4,7 +4,7 @@ Searchlite's GitHub release provides a built library tarball and an offline-inst
 
 ## Use the download
 
-Download `searchlite-local-review-0.2.0.zip` and `SHA256SUMS` from [v0.2.0](https://github.com/ult666666/searchlite/releases/tag/v0.2.0). Compare the archive's SHA-256 with the published checksum, extract it into a new directory and enter its one top-level folder. The archive contains a README, local library tarball, private package manifest, exact public CLI example, fictional notes/labels, two guides, MIT license and a payload byte manifest.
+Download `searchlite-local-review-0.3.0.zip` and `SHA256SUMS` from [v0.3.0](https://github.com/ult666666/searchlite/releases/tag/v0.3.0). Compare the archive's SHA-256 with the published checksum, extract it into a new directory and enter its one top-level folder. The archive contains a README, local library tarball, private package manifest, exact public CLI example, fictional notes/labels, two guides, MIT license and a payload byte manifest.
 
 With Node 20+ and npm, run:
 
@@ -20,7 +20,7 @@ No compiler, Python or build dependencies are needed by the extracted consumer. 
 
 The evaluation and unchanged comparison above pass with exit 0. Using `judgments-unmet.json` deliberately produces a complete failing report and exit 3. This is a synthetic negative control. Follow [local comparison](LOCAL_COMPARISON.md) for a real field-weight change whose offsetting improvements cannot conceal a per-query drop.
 
-The standalone `searchlite-0.2.0.tgz` asset is the library package for consumers who want to install just the ESM/CJS builds and types. The local-review ZIP includes that same exact tarball. Neither artifact implies npm-registry publication.
+The standalone `searchlite-0.3.0.tgz` asset is the library package for consumers who want to install just the ESM/CJS builds and types. The local-review ZIP includes that same exact tarball. Neither artifact implies npm-registry publication.
 
 ## Build from reviewed source
 
@@ -38,8 +38,8 @@ The parent directory must exist; the destination must be new. The builder refuse
 
 It collects all payload bytes before creating the final destination and writes files exclusively. Expected failures remove only newly created output files and its owned temporary staging. It does not claim crash-proof filesystem transactions or containment against a hostile filesystem owner. Help exits 0; invalid usage 2; build/output failures 1 with no success JSON. Ctrl+C terminates the owned build group, removes newly created outputs and exits 130. A successful build prints one JSON receipt identifying these three files:
 
-- `searchlite-0.2.0.tgz`: freshly built public package.
-- `searchlite-local-review-0.2.0.zip`: fixed-metadata, sorted regular-file payload, including a local dependency manifest and `bundle-manifest.json`.
+- `searchlite-0.3.0.tgz`: freshly built public package.
+- `searchlite-local-review-0.3.0.zip`: fixed-metadata, sorted regular-file payload, including a local dependency manifest and `bundle-manifest.json`.
 - `SHA256SUMS`: SHA-256 of the two actual downloadable artifacts.
 
 The inner manifest records byte lengths and hashes of all other payload files. ZIP entries have relative paths and regular-file modes, with fixed metadata and no timestamp field in either JSON manifest. Compression tooling can affect archive bytes across environments; verify the actual built checksums and extracted payload rather than assuming universal byte-for-byte rebuild equivalence. Hashes identify bytes, not author identity, a signature or source truth.
