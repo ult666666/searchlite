@@ -18,7 +18,7 @@ searchlite is not on npm. Install it from the GitHub release, which also attache
 checksum (Node 20 or newer, ESM and CommonJS):
 
 ```bash
-npm install https://github.com/ult666666/searchlite/releases/download/v0.2.0/searchlite-0.2.0.tgz
+npm install https://github.com/ult666666/searchlite/releases/download/v0.3.0/searchlite-0.3.0.tgz
 ```
 
 To build from source, clone the repository and run `npm ci && npm run build`, then
@@ -174,7 +174,7 @@ checks or compares saved indexes against relevance labels you write. The guides 
 [indexing and searching](docs/LOCAL_SEARCH.md), [evaluating](docs/LOCAL_RELEVANCE.md) and
 [comparing](docs/LOCAL_COMPARISON.md). The
 [local file workbench](https://ult666666.github.io/searchlite/local.html) runs comparisons in
-the browser, and the [v0.2.0 release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0)
+the browser, and the [v0.3.0 release](https://github.com/ult666666/searchlite/releases/tag/v0.3.0)
 includes an offline bundle of the tool ([notes](docs/RELEASING.md)).
 
 ## Development
