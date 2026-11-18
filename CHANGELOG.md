@@ -13,6 +13,9 @@ All notable changes to this project are documented here. The format follows
 - Editing array-valued fields in search results, filter callbacks, or a snapshot now leaves
   the index's stored field values intact. Restored indexes also copy their vectors, so editing
   the original snapshot cannot change a document's cosine ranking.
+- Fuzzy searches across fields with different analyzers now use the edit distance of a
+  document's best matching field. A tag that requires one edit receives half weight even if
+  another document contains an exact match in its stemmed title.
 
 ## [0.3.0] - 2026-11-05
 

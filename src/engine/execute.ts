@@ -284,6 +284,7 @@ function scoreDocument(
   if (context.score === false) return { score: 0, trace: undefined };
   const lengths = context.documents.get(document)?.lengths ?? [];
   let pseudoFrequency = 0;
+  let weight = 0;
   const fields: FieldExplanation[] = [];
   plan.targets.forEach((target, t) => {
     const frequency = at(frequencies, t);
@@ -295,6 +296,7 @@ function scoreDocument(
     const normalization = lengthNormalization(field.b, length, field.averageLength);
     const weightedFrequency = (field.boost * frequency) / normalization;
     pseudoFrequency += weightedFrequency;
+    weight = Math.max(weight, target.weight ?? plan.weight);
     if (context.trace) {
       fields.push({
         field: field.name,
@@ -308,7 +310,7 @@ function scoreDocument(
       });
     }
   });
-  const score = plan.weight * idf * saturate(pseudoFrequency, context.k1);
+  const score = weight * idf * saturate(pseudoFrequency, context.k1);
   if (!context.trace) {
     return { score, trace: undefined };
   }
@@ -319,7 +321,7 @@ function scoreDocument(
     documentCount: context.documentCount,
     idf,
     frequency: pseudoFrequency,
-    weight: plan.weight,
+    weight,
     score,
     fields,
   };

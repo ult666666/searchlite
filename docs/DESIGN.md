@@ -259,8 +259,10 @@ the trie returns exactly what a brute-force scan of the dictionary returns.
 **Combining expansions.** A prefix or fuzzy word stands for a single word of the query, so a
 document scores with its **best** expansion (max), not the sum of all of them. Otherwise a
 document mentioning "data", "database" and "dataset" would outrank one that is actually about
-databases. Fuzzy expansions are also weighted by `1 / (1 + edits)`, so an exact match beats a
-typo-corrected one.
+databases. Fuzzy expansions are weighted by `1 / (1 + edits)`. For the same term, the edit
+distance can differ across fields with different analyzers. A document receives the highest
+weight among its matching fields. The term still uses one document frequency across fields
+and saturates once. Pruning uses the highest possible field weight as an upper bound.
 
 ## 7. Scoring: BM25 and BM25F
 
