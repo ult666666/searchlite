@@ -253,6 +253,44 @@ describe('options validation', () => {
 });
 
 describe('serialization', () => {
+  it('isolates searchable arrays and vectors from subsequent snapshot edits', () => {
+    const original = new SearchIndex({ fields: ['tags'], vectorField: 'embedding' });
+    original.addAll([
+      { id: 'early', tags: ['binary heap'], embedding: [1, 0] },
+      { id: 'later', tags: ['search tree'], embedding: [0, 1] },
+    ]);
+    const snapshot = original.toJSON();
+    const restored = SearchIndex.fromJSON(snapshot);
+    const early = snapshot.documents[0];
+    if (!early?.vector) throw new Error('Expected the stored vector for early');
+    (early.stored.tags as string[])[0] = 'changed';
+    early.vector.splice(0, 2, -1, 0);
+    for (const index of [restored, original]) {
+      expect(index.searchHybrid({ vector: [1, 0] })[0]?.id).toBe('early');
+      expect(index.highlight('early', 'tags', '"binary heap"')).toBe('<mark>binary heap</mark>');
+    }
+  });
+
+  it('keeps edits to array fields returned to callers out of the index', () => {
+    const index = new SearchIndex({ fields: ['tags'] });
+    index.add({ id: 'x', tags: ['heap'] });
+    const edit = (fields?: Record<string, unknown>) => {
+      if (!Array.isArray(fields?.tags)) throw new Error('Expected stored tags');
+      fields.tags[0] = 'other';
+    };
+    edit(index.get('x'));
+    edit(index.search('heap')[0]?.fields);
+    edit(index.searchHybrid({ query: 'heap' })[0]?.fields);
+    index.search('heap', {
+      filter: (_id, fields) => {
+        edit(fields);
+        return true;
+      },
+    });
+    expect(index.get('x')).toEqual({ tags: ['heap'] });
+    expect(index.highlight('x', 'tags', 'heap')).toBe('<mark>heap</mark>');
+  });
+
   it('round-trips through JSON with identical results, explanations and statistics', () => {
     const index = build();
     index.remove('trie');

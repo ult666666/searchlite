@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Phrase snippets now use the same token positions as search for multi-valued fields. A phrase
+  that occurs in one tag no longer causes unrelated words in neighboring tags to be highlighted.
+- Editing array-valued fields in search results, filter callbacks, or a snapshot now leaves
+  the index's stored field values intact. Restored indexes also copy their vectors, so editing
+  the original snapshot cannot change a document's cosine ranking.
+
 ## [0.3.0] - 2026-11-05
 
 ### Added

@@ -147,6 +147,7 @@ export interface SnapshotDocument {
 
 /** Gap inserted between the elements of an array field, so phrases never span two elements. */
 const ARRAY_POSITION_GAP = 100;
+const ARRAY_SEPARATOR = ', ';
 
 interface DocumentRecord {
   id: string;
@@ -215,16 +216,36 @@ function fieldTexts(value: unknown, field: string, id: string): string[] {
 }
 
 function analyzeTexts(analyzer: Analyzer, texts: readonly string[]): Token[] {
+  if (texts.length === 1) return analyzer.analyze(at(texts, 0));
   const tokens: Token[] = [];
-  let base = 0;
+  let positionBase = 0;
+  let textOffset = 0;
   for (const text of texts) {
     const analyzed = analyzer.analyze(text);
     for (const token of analyzed) {
-      tokens.push({ ...token, position: base + token.position });
+      tokens.push({
+        term: token.term,
+        position: positionBase + token.position,
+        start: textOffset + token.start,
+        end: textOffset + token.end,
+      });
     }
-    base += (analyzed.at(-1)?.position ?? 0) + 1 + ARRAY_POSITION_GAP;
+    positionBase += (analyzed.at(-1)?.position ?? 0) + 1 + ARRAY_POSITION_GAP;
+    textOffset += text.length + ARRAY_SEPARATOR.length;
   }
   return tokens;
+}
+
+/** Own the array containers used for searchable values and stored metadata. */
+function copyStoredFields(fields: Record<string, unknown>): Record<string, unknown> {
+  const stored = { ...fields };
+  for (const name of Object.keys(stored)) {
+    const value = stored[name];
+    if (Array.isArray(value)) {
+      stored[name] = [...(value as unknown[])];
+    }
+  }
+  return stored;
 }
 
 function validVector(value: unknown): value is number[] {
@@ -298,7 +319,7 @@ export class SearchIndex {
   /** A copy of a document's stored fields, or undefined if there is no such document. */
   get(id: string | number): Record<string, unknown> | undefined {
     const number = this.#numbers.get(String(id));
-    return number === undefined ? undefined : { ...this.#record(number).stored };
+    return number === undefined ? undefined : copyStoredFields(this.#record(number).stored);
   }
 
   /**
@@ -397,7 +418,7 @@ export class SearchIndex {
       filter &&
       ((document: number): boolean => {
         const record = this.#record(document);
-        return filter(record.id, { ...record.stored });
+        return filter(record.id, copyStoredFields(record.stored));
       });
     return topDocuments(plan, context, settings.limit, accept).map(([document, score]) => {
       const record = this.#record(document);
@@ -405,7 +426,7 @@ export class SearchIndex {
       return {
         id: record.id,
         score,
-        fields: { ...record.stored },
+        fields: copyStoredFields(record.stored),
         terms: [...new Set(Object.values(match).flat())].sort(),
         match,
       };
@@ -465,8 +486,9 @@ export class SearchIndex {
       throw argumentError('ellipsis must be a string');
     }
     const record = this.#record(number);
-    const text = fieldTexts(record.stored[field], field, record.id).join(', ');
-    const tokens = at(this.#fields, fieldIndex).analyzer.analyze(text);
+    const values = fieldTexts(record.stored[field], field, record.id);
+    const text = values.join(ARRAY_SEPARATOR);
+    const tokens = analyzeTexts(at(this.#fields, fieldIndex).analyzer, values);
     const plan = this.#compile(query, this.#settings(options, 10));
     const trace = plan ? (this.#traced(plan, this.#context(), number)?.trace ?? []) : [];
     const targets = trace.flatMap((entry) =>
@@ -506,7 +528,7 @@ export class SearchIndex {
       const result: HybridResult = {
         id,
         score,
-        fields: { ...this.#record(this.#numberOf(id)).stored },
+        fields: copyStoredFields(this.#record(this.#numberOf(id)).stored),
       };
       const lexicalRank = lexicalRanks.get(id);
       const semanticRank = semanticRanks.get(id);
@@ -544,7 +566,7 @@ export class SearchIndex {
       const snapshot: SnapshotDocument = {
         id: record.id,
         lengths: [...record.lengths],
-        stored: { ...record.stored },
+        stored: copyStoredFields(record.stored),
       };
       if (record.vector) {
         snapshot.vector = [...record.vector];
@@ -679,8 +701,8 @@ export class SearchIndex {
           positionsByTerm,
           length: at(lengths, f),
         })),
-        stored: { ...document.stored },
-        vector: document.vector,
+        stored: copyStoredFields(document.stored),
+        vector: document.vector === undefined ? undefined : [...document.vector],
       };
     });
     const ids = new Set(prepared.map((document) => document.id));
