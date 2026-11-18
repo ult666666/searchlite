@@ -4,7 +4,7 @@ Searchlite's GitHub release provides a built library tarball and an offline-inst
 
 ## Use the download
 
-Download `searchlite-local-review-0.3.0.zip` and `SHA256SUMS` from [v0.3.0](https://github.com/ult666666/searchlite/releases/tag/v0.3.0). Compare the archive's SHA-256 with the published checksum, extract it into a new directory and enter its one top-level folder. The archive contains a README, local library tarball, private package manifest, exact public CLI example, fictional notes/labels, two guides, MIT license and a payload byte manifest.
+Download `searchlite-local-review-0.2.0.zip` and `SHA256SUMS` from the [v0.2.0 release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) to use that version. For the current engine and snapshot format, [build from reviewed source](#build-from-reviewed-source). Compare the downloaded archive's SHA-256 with the published checksum, extract it into a new directory and enter its one top-level folder. The archive contains a README, local library tarball, private package manifest, exact public CLI example, fictional notes/labels, two guides, MIT license and a payload byte manifest.
 
 With Node 20+ and npm, run:
 
@@ -20,7 +20,7 @@ No compiler, Python or build dependencies are needed by the extracted consumer. 
 
 The evaluation and unchanged comparison above pass with exit 0. Using `judgments-unmet.json` deliberately produces a complete failing report and exit 3. This is a synthetic negative control. Follow [local comparison](LOCAL_COMPARISON.md) for a real field-weight change whose offsetting improvements cannot conceal a per-query drop.
 
-The standalone `searchlite-0.3.0.tgz` asset is the library package for consumers who want to install just the ESM/CJS builds and types. The local-review ZIP includes that same exact tarball. Neither artifact implies npm-registry publication.
+The standalone `searchlite-0.2.0.tgz` asset contains the ESM/CJS builds and types for v0.2.0. The v0.2.0 local-review ZIP includes that same tarball.
 
 ## Build from reviewed source
 

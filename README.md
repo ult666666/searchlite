@@ -14,15 +14,20 @@ explanations.
 
 ## Install
 
-searchlite is not on npm. Install it from the GitHub release, which also attaches a SHA-256
-checksum (Node 20 or newer, ESM and CommonJS):
+These commands build the current ESM and CommonJS package from a fresh checkout using Node 24
+and npm.
 
 ```bash
-npm install https://github.com/ult666666/searchlite/releases/download/v0.3.0/searchlite-0.3.0.tgz
+git clone https://github.com/ult666666/searchlite.git
+cd searchlite
+npm ci
+npm pack
 ```
 
-To build from source, clone the repository and run `npm ci && npm run build`, then
-`npm install ../searchlite` from your own project.
+`npm pack` builds the library and writes `searchlite-0.3.0.tgz`. In an application next
+to the checkout, install it with `npm install ../searchlite/searchlite-0.3.0.tgz`. The
+[v0.2.0 release](https://github.com/ult666666/searchlite/releases/tag/v0.2.0) includes a
+prebuilt library and checksums for that earlier version.
 
 ## Quick start
 
@@ -174,8 +179,8 @@ checks or compares saved indexes against relevance labels you write. The guides 
 [indexing and searching](docs/LOCAL_SEARCH.md), [evaluating](docs/LOCAL_RELEVANCE.md) and
 [comparing](docs/LOCAL_COMPARISON.md). The
 [local file workbench](https://ult666666.github.io/searchlite/local.html) runs comparisons in
-the browser, and the [v0.3.0 release](https://github.com/ult666666/searchlite/releases/tag/v0.3.0)
-includes an offline bundle of the tool ([notes](docs/RELEASING.md)).
+the browser. To build an offline bundle from the current source or use the published v0.2.0
+bundle, follow the [local-review guide](docs/RELEASING.md).
 
 ## Development
 
