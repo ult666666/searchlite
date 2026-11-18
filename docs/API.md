@@ -27,6 +27,8 @@ the public surface; [DESIGN.md](DESIGN.md) explains how each part works.
   Rank Fusion. Vectors of very large or very small magnitude use a scaled cosine; sparse and
   nonfinite vectors are refused before indexing ([VECTOR_NUMERICS.md](VECTOR_NUMERICS.md)).
 - `toJSON()` writes a versioned snapshot. Version 2 stores the compressed postings as base64, and
-  version 1 snapshots from 0.2.0 still load with identical results.
+  version 1 snapshots from 0.2.0 still load with identical results. Searchable field arrays
+  and embedding vectors are copied across the snapshot boundary. Results and filters also
+  receive their own array containers. Objects nested in custom metadata are shared references.
 - Errors are typed: `SearchliteError` carries a `code`, and `QuerySyntaxError` the `column` where
   parsing failed.

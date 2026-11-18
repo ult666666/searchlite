@@ -123,6 +123,22 @@ describe('SearchIndex.highlight', () => {
     expect(index.highlight('evil', 'tags', 'xss')).toBe('heap, <mark>xss</mark>');
   });
 
+  it('highlights only scored phrase occurrences in a multi-valued field', () => {
+    const original = new SearchIndex({ fields: ['tags'] });
+    original.addAll([
+      { id: 'across', tags: ['bank', 'of america'] },
+      { id: 'mixed', tags: ['🌎 bank', 'of america', '', 'bank of america'] },
+    ]);
+    const phrase = '"bank of america"';
+    for (const index of [original, SearchIndex.fromJSON(JSON.parse(JSON.stringify(original)))]) {
+      expect(index.search(phrase).map((result) => result.id)).toEqual(['mixed']);
+      expect(index.highlight('across', 'tags', phrase)).toBe('bank, of america');
+      expect(index.highlight('mixed', 'tags', phrase)).toBe(
+        '🌎 bank, of america, , <mark>bank</mark> of <mark>america</mark>',
+      );
+    }
+  });
+
   it('validates its arguments', () => {
     expect(() => index.highlight('missing', 'body', 'heap')).toThrow(/No document/);
     expect(() => index.highlight('plain', 'url', 'heap')).toThrow(/not a searchable field/);
