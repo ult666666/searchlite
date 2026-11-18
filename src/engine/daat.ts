@@ -365,21 +365,22 @@ function clause(plan: MatchPlan, context: ExecutionContext, scoring: boolean): S
   }
   const cursors: PostingsCursor[] = [];
   const fields: FieldIndex[] = [];
+  const weightIdfs: number[] = [];
+  const idf = scoring
+    ? inverseDocumentFrequency(context.documentCount, documentFrequencyOf(plan, context))
+    : 0;
   for (const target of plan.targets) {
     const list = postingsOf(target, context);
     if (list) {
       cursors.push(new PostingsCursor(list));
       fields.push(at(context.fields, target.field));
+      weightIdfs.push((target.weight ?? plan.weight) * idf);
     }
   }
   if (cursors.length === 0) {
     return EMPTY;
   }
-  const weightIdf = scoring
-    ? plan.weight *
-      inverseDocumentFrequency(context.documentCount, documentFrequencyOf(plan, context))
-    : 0;
-  return new TermScorer(cursors, fields, weightIdf, context.k1, scoring);
+  return new TermScorer(cursors, fields, weightIdfs, context.k1, scoring);
 }
 
 /**
@@ -395,8 +396,9 @@ class TermScorer implements Scorer {
   readonly #cursors: PostingsCursor[];
   readonly #fields: FieldIndex[];
   readonly #averageLengths: number[];
-  /** plan.weight · idf, multiplied first as in `scoreDocument`. */
-  readonly #weightIdf: number;
+  /** Each field's edit-distance multiplier times the expansion's shared IDF. */
+  readonly #weightIdfs: number[];
+  readonly #maxWeightIdf: number;
   readonly #k1: number;
   readonly #blocks: number[];
   readonly #weights: number[];
@@ -404,14 +406,15 @@ class TermScorer implements Scorer {
   constructor(
     cursors: PostingsCursor[],
     fields: FieldIndex[],
-    weightIdf: number,
+    weightIdfs: number[],
     k1: number,
     scoring: boolean,
   ) {
     this.#cursors = cursors;
     this.#fields = fields;
     this.#averageLengths = fields.map((field) => field.averageLength);
-    this.#weightIdf = weightIdf;
+    this.#weightIdfs = weightIdfs;
+    this.#maxWeightIdf = weightIdfs.reduce((best, value) => Math.max(best, value), 0);
     this.#k1 = k1;
     this.#blocks = cursors.map(() => -1);
     this.#weights = cursors.map(() => 0);
@@ -426,7 +429,7 @@ class TermScorer implements Scorer {
         pseudoFrequency += best;
       });
     }
-    this.maxScore = scoring ? weightIdf * saturate(pseudoFrequency, k1) : 0;
+    this.maxScore = scoring ? this.#maxWeightIdf * saturate(pseudoFrequency, k1) : 0;
   }
 
   advance(target: number): number {
@@ -445,6 +448,7 @@ class TermScorer implements Scorer {
   score(): number {
     const document = this.document;
     let pseudoFrequency = 0;
+    let weightIdf = 0;
     const cursors = this.#cursors;
     for (let c = 0; c < cursors.length; c++) {
       const cursor = at(cursors, c);
@@ -456,9 +460,10 @@ class TermScorer implements Scorer {
           this.#averageLengths[c] ?? 0,
         );
         pseudoFrequency += (field.boost * cursor.frequency) / normalization;
+        weightIdf = Math.max(weightIdf, at(this.#weightIdfs, c));
       }
     }
-    return this.#weightIdf * saturate(pseudoFrequency, this.#k1);
+    return weightIdf * saturate(pseudoFrequency, this.#k1);
   }
 
   shallow(target: number): number {
@@ -476,7 +481,8 @@ class TermScorer implements Scorer {
       pseudoFrequency += this.#weights[c] ?? 0;
       end = Math.min(end, cursor.list.blockLast(block));
     }
-    this.bound = pseudoFrequency === 0 ? 0 : this.#weightIdf * saturate(pseudoFrequency, this.#k1);
+    this.bound =
+      pseudoFrequency === 0 ? 0 : this.#maxWeightIdf * saturate(pseudoFrequency, this.#k1);
     return end;
   }
 }

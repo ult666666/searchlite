@@ -13,6 +13,8 @@ export interface MatchTarget {
   terms: string[];
   /** Position of each term relative to the first, so stopword gaps are preserved. */
   offsets: number[];
+  /** Edit-distance multiplier when the field's analyzer gives a fuzzy expansion its own weight. */
+  weight?: number;
 }
 
 /**
@@ -24,7 +26,7 @@ export interface MatchPlan {
   /** The query clause as the user wrote it, e.g. `title:heap` or `"binary heap"`. */
   clause: string;
   targets: MatchTarget[];
-  /** Multiplier on the clause's score: 1, or 1 / (1 + edits) for a fuzzy expansion. */
+  /** Default score multiplier and upper bound on any field-specific fuzzy weight. */
   weight: number;
 }
 
@@ -196,7 +198,12 @@ function alternatives(
     children.push({
       kind: 'match',
       clause,
-      targets: [...fields.keys()].map((field) => ({ field, terms: [term], offsets: [0] })),
+      targets: [...fields].map(([field, edits]) => ({
+        field,
+        terms: [term],
+        offsets: [0],
+        weight: weightFor(edits),
+      })),
       weight: weightFor(distance),
     });
   }

@@ -309,6 +309,35 @@ describe('fuzzy queries', () => {
     expect(typo.score).toBeCloseTo(exact.score / 2, 12);
   });
 
+  it('uses the best edit distance in the matching document across different analyzers', () => {
+    const original = new SearchIndex({ fields: { title: {}, tags: { stemming: false } } });
+    original.addAll([
+      { id: 'tag', tags: 'run' },
+      { id: 'title', title: 'run' },
+      { id: 'both', title: 'run', tags: 'run' },
+    ]);
+    // The query stems to "run" in titles, but remains "runs" (one edit) in tags.
+    // Every document has the same expanded term. IDF is common to all three.
+    const idf = Math.log(1 + 0.5 / 3.5);
+    const query = 'runs~1';
+    for (const index of [original, SearchIndex.fromJSON(JSON.parse(JSON.stringify(original)))]) {
+      const hits = index.search(query);
+      expect(hits.map((hit) => hit.id)).toEqual(['both', 'title', 'tag']);
+      expect(hits[0]?.score).toBeCloseTo((idf * 2.2 * 2) / 3.2, 14);
+      expect(hits[1]?.score).toBeCloseTo(idf, 14);
+      expect(hits[2]?.score).toBeCloseTo(idf / 2, 14);
+      for (const hit of hits) {
+        const explanation = index.explain(hit.id, query);
+        expect(explanation.score).toBe(hit.score);
+        expect(explanation.clauses[0]?.documentFrequency).toBe(3);
+        expect(explanation.clauses[0]?.weight).toBe(hit.id === 'tag' ? 0.5 : 1);
+      }
+      expect(ids(index, query, { limit: 1, filter: (id: string) => id !== 'both' })).toEqual([
+        'title',
+      ]);
+    }
+  });
+
   it('can be scoped to a field', () => {
     expect(ids(index, 'tags:databaes~2')).toEqual(['database']);
     expect(ids(index, 'tags:volatlity~1')).toEqual([]);
